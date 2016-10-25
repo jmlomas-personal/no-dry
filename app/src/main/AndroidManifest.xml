@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.nodry.nodry">
 
-    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:label="@string/app_name"
+    <!-- Otorgamos los permisos para poder salir a internet a la aplicacion -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/por_defecto"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Presentacion.MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

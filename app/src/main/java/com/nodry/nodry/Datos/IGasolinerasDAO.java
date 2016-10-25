@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IGasolinerasDAO {
 
-    List<IGasolinerasDAO> getListGasolineras();
+    List<Gasolinera> getListGasolineras();
 
 }
