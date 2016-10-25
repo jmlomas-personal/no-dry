@@ -7,8 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.unican.juanmanuellomas.nodry.Datos.Gasolinera;
-import com.unican.juanmanuellomas.nodry.R;
+import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.R;
 
 import java.util.ArrayList;
 

@@ -10,9 +10,9 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.widget.ArrayAdapter;
 
-import com.unican.juanmanuellomas.nodry.Datos.Gasolinera;
-import com.unican.juanmanuellomas.nodry.Negocio.GestionGasolineras;
-import com.unican.juanmanuellomas.nodry.Negocio.IGestionGasolineras;
+import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Negocio.GestionGasolineras;
+import com.nodry.nodry.Negocio.IGestionGasolineras;
 
 import java.util.List;
 

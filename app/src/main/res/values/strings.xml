@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">NoDry</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_estadisticas">Estadisticas</string>
+    <string name="obteniendo">Obteniendo los datos...</string>
+    <string name="datos_exito">Datos obtenidos con éxito</string>
+    <string name="datos_no_obtenidos">No se han podido obtener los datos</string>
+    <string name="lbl_diesel">Diesel:</string>
+    <string name="lbl_gasolina">Gasolina:</string>
 </resources>

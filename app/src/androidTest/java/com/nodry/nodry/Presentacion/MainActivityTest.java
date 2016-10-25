@@ -1,4 +1,4 @@
-package com.nodry.nodry.Negocio;
+package com.nodry.nodry.Presentacion;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.unican.juanmanuellomas.nodry.R;
-import com.unican.juanmanuellomas.nodry.Presentacion.MainActivity;
+import com.nodry.nodry.R;
+import com.nodry.nodry.Presentacion.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

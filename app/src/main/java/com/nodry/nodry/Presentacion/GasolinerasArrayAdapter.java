@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.unican.juanmanuellomas.nodry.Datos.Gasolinera;
-import com.unican.juanmanuellomas.nodry.R;
+import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.R;
 
 /**
  * Created by Juan Manuel Lomas on 04/10/2016.

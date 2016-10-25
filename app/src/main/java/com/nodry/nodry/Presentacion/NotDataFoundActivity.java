@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.unican.juanmanuellomas.nodry.R;
+import com.nodry.nodry.R;
 
 public class NotDataFoundActivity extends AppCompatActivity {
 
