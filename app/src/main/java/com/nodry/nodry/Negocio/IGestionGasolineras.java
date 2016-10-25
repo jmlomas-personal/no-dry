@@ -1,14 +1,15 @@
 package com.nodry.nodry.Negocio;
 
-import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Datos.Gasolinera;
 
 import java.util.List;
 
 /**
- * Created by att3mpt on 10/24/16.
+ * Interfaz de la capa de negocio que opera con gasolineras
+ * Created 0rlando 10/24/16.
  */
 public interface IGestionGasolineras {
 
-    List<IGasolinerasDAO> getGasolineras();
+    List<Gasolinera> getGasolineras();
 
 }
