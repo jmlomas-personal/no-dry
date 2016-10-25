@@ -1,6 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.nodry.nodry.MainActivity">
-    <item android:id="@+id/action_settings" android:orderInCategory="100"
-        android:title="@string/action_settings" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.unican.juanmanuellomas.nodry.Presentacion.MainActivity">
+    <item
+        android:id="@+id/action_estadisticas"
+        android:orderInCategory="100"
+        android:title="@string/action_estadisticas"
+        app:showAsAction="never" />
 </menu>
