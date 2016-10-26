@@ -1,4 +1,6 @@
-package com.nodry.nodry.Datos;
+package com.nodry.nodry.Utils;
+
+import com.nodry.nodry.Datos.Gasolinera;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

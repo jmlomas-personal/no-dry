@@ -18,15 +18,29 @@ import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.R;
 
 /**
- * Created by Juan Manuel Lomas on 04/10/2016.
+ * Clase para la el renderizado en la visualizacion
+ * en el listado de Gasolineras, pudiendo aplicar
+ * a cada una plantilla prederterminada.
+ * @author Alba Zubizarreta.
+ * @version 1.0
  */
 public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements IUpdateable
 {
-        private Context context;
-        private List<Gasolinera> listaGasolineras;
-        int imageDefaultID;
+    // Contexto de la aplicacion
+    private Context context;
 
-        //constructor, call on creation
+    // Listado de las gasolineras
+    private List<Gasolinera> listaGasolineras;
+
+    // Imagen por defecto de una gasolinera
+    int imageDefaultID;
+
+    /**
+     * Constructor de la clase
+     * @param context con el contexto de la aplicacion
+     * @param resource heredado
+     * @param objects con el listado de objetos a representar
+     */
     public GasolinerasArrayAdapter(Context context, int resource, List<Gasolinera> objects) {
         super(context, resource, objects);
 
@@ -36,6 +50,8 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
     }
 
     //called when rendering the list
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //get the property we are displaying

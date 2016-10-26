@@ -12,6 +12,12 @@ import com.nodry.nodry.R;
 
 import java.util.ArrayList;
 
+/**
+ * Actividad principal de la aplicacion.
+ * Muestra el listado de gasolineras.
+ * @author Alba Zubizarreta.
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity implements ILoadable {
 
     //TextView textView;
@@ -20,9 +26,6 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
 
     //create our new array adapter
     ArrayAdapter<Gasolinera> adapter;
-
-    //booleano para ver si ya ha empezado a cargar
-    Boolean loading = false;
 
     GetGasolinerasTask getGasolinerasTask;
 
@@ -40,8 +43,12 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
         adapter = new GasolinerasArrayAdapter(this, 0, new ArrayList<Gasolinera>());
         listView.setAdapter(adapter);
 
-        refresh();
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        refresh();
     }
 
     private void refresh()
@@ -53,21 +60,11 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
 
     @Override
     public void startLoading() {
-        //synchronized (this) {
-        //if(!loading) {
         this.progress = ProgressDialog.show(this, "", "Cargando...");
-        loading = true;
-        //}
-        //}
     }
 
     @Override
     public void stopLoading() {
-        //synchronized (this) {
-        //if(loading) {
         this.progress.dismiss();
-        loading = false;
-        //}
-        //}
     }
 }

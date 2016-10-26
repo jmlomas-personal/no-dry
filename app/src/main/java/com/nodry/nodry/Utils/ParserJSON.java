@@ -1,8 +1,10 @@
-package com.nodry.nodry.Datos;
+package com.nodry.nodry.Utils;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
+
+import com.nodry.nodry.Datos.Gasolinera;
 
 import java.io.IOException;
 import java.io.InputStream;

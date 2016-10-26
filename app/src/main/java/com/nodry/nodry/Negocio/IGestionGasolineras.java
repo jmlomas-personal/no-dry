@@ -6,10 +6,15 @@ import java.util.List;
 
 /**
  * Interfaz de la capa de negocio que opera con gasolineras
- * Created 0rlando 10/24/16.
+ * @author 0rlando Britto.
+ * @version 1.0
  */
 public interface IGestionGasolineras {
 
+    /**
+     * Metodo que retorna la lista de gasolineras obtenidas de la capa de Datos
+     * @return la lista de gasolineras obtenidas de la capa de Datos
+     */
     List<Gasolinera> getGasolineras();
 
 }
