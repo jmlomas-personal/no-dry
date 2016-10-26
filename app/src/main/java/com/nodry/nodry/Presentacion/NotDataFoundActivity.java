@@ -19,7 +19,7 @@ public class NotDataFoundActivity extends AppCompatActivity {
         setContentView(R.layout.activity_not_data_found);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.por_defecto);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
     }
