@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -14,7 +13,7 @@ import static org.mockito.Mockito.verify;
  * Created by Orlando on 23/10/16.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ControllerTest {
+public class GestionGasolinerasTest {
 
     @Mock
     IGestionGasolineras gestionGasolinera;
@@ -28,7 +27,7 @@ public class ControllerTest {
      * Test que comprueba la correcta llamada al metodo getListaGasolineras()
      */
     @Test
-    public void testExecutionGetLista(){
+    public void getListGasolinerasTest(){
         gestionGasolinera.getGasolineras();
         verify(gestionGasolinera).getGasolineras();
     }
