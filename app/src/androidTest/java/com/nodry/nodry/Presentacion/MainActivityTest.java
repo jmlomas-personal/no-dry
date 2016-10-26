@@ -20,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -27,6 +28,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 
 @LargeTest
@@ -48,14 +51,44 @@ public class MainActivityTest {
                         isDisplayed()));
         imageView.check(matches(isDisplayed()));
 
-        onView(withId(R.id.rotulo));
-        onView(withId(R.id.direccion));
-        onView(allOf(withId(R.id.lbldiesel), withText("Diesel:")));
-        onView(withId(R.id.diesel));
-        onView(allOf(withId(R.id.lblgasolina), withText("Gasolina:")));
-        onView(withId(R.id.gasolina));
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.rotulo))
+                .check(matches(isDisplayed()));
+
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.direccion))
+                .check(matches(isDisplayed()));
 
 
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.diesel))
+                .check(matches(isDisplayed()));
+
+
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.lbldiesel))
+                .check(matches(withText(startsWith("Diesel:"))));
+
+
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.lblgasolina))
+                .check(matches(withText(startsWith("Gasolina:"))));
+
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.gasolina))
+                .check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
