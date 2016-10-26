@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.unican.juanmanuellomas.nodry.Presentacion.MainActivity">
+    tools:context="com.nodry.nodry.Presentacion.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

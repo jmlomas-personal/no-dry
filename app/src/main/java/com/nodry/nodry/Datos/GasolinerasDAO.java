@@ -27,9 +27,9 @@ public class GasolinerasDAO implements IGasolinerasDAO {
     }
 
     @Override
-    public List<Gasolinera> getListGasolineras(){
+    public List<Gasolinera> getListGasolineras(String CCAA){
         try {
-            RemoteFetch remoteFetch = new RemoteFetch();
+            RemoteFetch remoteFetch = new RemoteFetch(CCAA);
             remoteFetch.getJSON();
             listaGasolineras = ParserJSON.readJsonStream(remoteFetch.getBufferedDataGasolineras());
         }catch(Exception e){
@@ -38,4 +38,5 @@ public class GasolinerasDAO implements IGasolinerasDAO {
             return listaGasolineras;
         }
     }
+
 }

@@ -15,5 +15,5 @@ public interface IUpdateable {
      * Metodo que actualiza los datos.
      * @param c con la coleccion que serrvira la actualizacion
      */
-    public void update(Collection<?> c);
+    void update(Collection<?> c);
 }

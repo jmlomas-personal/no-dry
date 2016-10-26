@@ -1,5 +1,7 @@
 package com.nodry.nodry.Negocio;
 
+import com.nodry.nodry.Datos.IGasolinerasDAO;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +30,8 @@ public class GestionGasolinerasTest {
      */
     @Test
     public void getListGasolinerasTest(){
-        gestionGasolinera.getGasolineras();
-        verify(gestionGasolinera).getGasolineras();
+        gestionGasolinera.getGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
+        verify(gestionGasolinera).getGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
     }
 
 }

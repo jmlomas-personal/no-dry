@@ -17,11 +17,10 @@ public class NotDataFoundActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_not_data_found);
-        //Editamos la toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.drawable.por_defecto);
-        toolbar.setTitle("NoDry");
-        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.por_defecto);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
     }
 

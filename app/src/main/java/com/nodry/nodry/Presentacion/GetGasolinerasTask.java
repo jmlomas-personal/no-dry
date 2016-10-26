@@ -28,6 +28,9 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
     // Contexto de la actividad origen
     private Context context;
 
+    // String con la comunidad de las gasolineras a obtener
+    private String CCAA;
+
     // Adapter que se encargara de presentar los datos una vez obtenidos
     private ArrayAdapter adapter;
 
@@ -36,6 +39,10 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
     // Tarea que se encarga de que no se sobrepase el tiempo de peticion especificado
     private CancelerTask cancelerTask;
+
+    // Mensajes de error
+    private static final String MSG_NO_CONEXION = "No hay conexion a internet";
+    private static final String MSG_NO_DATA = "No hay datos que mostrar,\nintentelo mas tarde de nuevo";
 
     // Tiempo de peticion especificado de un minuto
     private static final long RESPONSE_DELAY = 60000;
@@ -50,15 +57,16 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
      * @param adapter con el adaptador que visualizara los datos
      * @param context con la actividad origen de la llamada
      */
-    public GetGasolinerasTask (ArrayAdapter adapter, Context context){
+    public GetGasolinerasTask (ArrayAdapter adapter, String CCAA, Context context){
         this.adapter = adapter;
+        this.CCAA = CCAA;
         this.context = context;
         this.handler = new Handler();
         this.cancelerTask = new CancelerTask(this, this.context);
 
         // Si la conexion no funciona mostramos el mensaje y acabamos
         if(!isNetworkAvailable(context)){
-            showMessage();
+            showMessage(ERROR_MSG ,MSG_NO_CONEXION);
         }
     }
 
@@ -79,23 +87,30 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
         gestionGasolineras = new GestionGasolineras();
 
-        return gestionGasolineras.getGasolineras();
+        return gestionGasolineras.getGasolineras(CCAA);
     }
 
     @Override
     protected void onPostExecute(List<Gasolinera> listaGasolineras) {
-        ((IUpdateable)adapter).update(listaGasolineras);
+
         handler.removeCallbacks(cancelerTask);
-        ((ILoadable)context).stopLoading();
+
+        if(listaGasolineras == null || listaGasolineras.size() == 0){
+            showMessage(ERROR_MSG ,MSG_NO_DATA);
+        }else {
+            ((IUpdateable) adapter).update(listaGasolineras);
+        }
+
+        ((ILoadable) context).stopLoading();
     }
 
     @Override
-    public void showMessage() {
+    public void showMessage(String title, String msg) {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("Error");
-        builder.setMessage("No hay conexión a internet");
+        builder.setTitle(title);
+        builder.setMessage(msg);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which)
