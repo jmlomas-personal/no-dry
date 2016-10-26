@@ -24,9 +24,9 @@ public class GestionGasolineras implements IGestionGasolineras {
     }
 
     @Override
-    public List<Gasolinera> getGasolineras() {
+    public List<Gasolinera> getGasolineras(String CCAA) {
 
-        return gasolinerasDAO.getListGasolineras();
+        return gasolinerasDAO.getListGasolineras(CCAA);
 
     }
 

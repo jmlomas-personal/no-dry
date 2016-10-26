@@ -12,9 +12,10 @@ import java.util.List;
 public interface IGestionGasolineras {
 
     /**
-     * Metodo que retorna la lista de gasolineras obtenidas de la capa de Datos
-     * @return la lista de gasolineras obtenidas de la capa de Datos
+     * Metodo que retorna la lista de gasolineras
+     * para una comunidad autonoma especifica.
+     * @return la lista de gasolineras de esa CCAA
      */
-    List<Gasolinera> getGasolineras();
+    List<Gasolinera> getGasolineras(String CCAA);
 
 }

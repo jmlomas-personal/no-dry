@@ -1,6 +1,7 @@
 package com.nodry.nodry.Utils;
 
 import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Datos.IGasolinerasDAO;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -151,7 +152,7 @@ public class ParserJSONTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        remoteFetch = new RemoteFetch();
+        remoteFetch = new RemoteFetch("");
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         listaGasolineras = ParserJSON.readJsonStream(stream);
     }
