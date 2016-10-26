@@ -9,16 +9,17 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Clase en la que se realizan la descarga de los datos desde el servicio REST
- * Created by Andrés Barrado Martín on 10/24/16
+ * Clase en la que se realizan la descarga de los
+ * datos desde el servicio REST
+ * @author Juan Manuel Lomas Fernandez
+ * @version 1.0
  */
-
 public class RemoteFetch {
     //URL para obtener todas las gasolineras
     //private static final String URL_GASOLINERAS_SPAIN="https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/";
 
-    //ID de la comunidad autonoma de Cantabria: 06
-    private static final String URL_GASOLINERAS_CANTABRIA="https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroCCAA/06";
+    //ID de la comunidad autonoma
+    private static final String URL_GASOLINERAS_CCAA = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroCCAA/";
 
     //ID de Santander: 5819
     //private static final String URL_GASOLINERAS_SANTANDER= "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/5819";
@@ -29,6 +30,15 @@ public class RemoteFetch {
     private List<Gasolinera> gasolineraList;
 
     private BufferedInputStream bufferedDataGasolineras;
+    private String URL;
+
+    /**
+     * Constructor
+     * @param CCAA con la comunidad autonoma por la que sacar el listado
+     */
+    public RemoteFetch(String CCAA){
+        URL = URL_GASOLINERAS_CCAA + CCAA;
+    }
 
     /**
      * Metodo que a través de una dirección URL obtiene el bufferedInputStream correspondiente
@@ -37,7 +47,7 @@ public class RemoteFetch {
      * @throws IOException
      */
     public void getJSON() throws IOException {
-        URL url= new URL(URL_GASOLINERAS_CANTABRIA);
+        URL url= new URL(URL);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.addRequestProperty("Accept", "application/json");
         //BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

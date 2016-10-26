@@ -20,6 +20,9 @@ public class CancelerTask implements Runnable, INotificable {
     // Contexto de la aplicacion
     private Context context;
 
+    // Mensajes de error
+    private static final String MSG_TIME_EXCEEDED = "Se ha sobrepasado el tiempo de peticion.";
+
     /**
      * Constructor de la clase
      * @param mainTask con la tarea a monitorizar
@@ -38,16 +41,16 @@ public class CancelerTask implements Runnable, INotificable {
         }
 
         ((ILoadable)context).stopLoading();
-        showMessage();
+        showMessage(ERROR_MSG, MSG_TIME_EXCEEDED);
     }
 
     @Override
-    public void showMessage() {
+    public void showMessage(String title, String msg) {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("Error");
-        builder.setMessage("Se ha sobrepasado el tiempo de petición.");
+        builder.setTitle(title);
+        builder.setMessage(msg);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -55,7 +58,7 @@ public class CancelerTask implements Runnable, INotificable {
                 dialog.dismiss();
                 //finish();
                 //Lanzamos el NotDataFoundActivity
-                Intent intent = new Intent(context,NotDataFoundActivity.class);
+                Intent intent = new Intent(context, NotDataFoundActivity.class);
                 context.startActivity(intent);
             }
         });

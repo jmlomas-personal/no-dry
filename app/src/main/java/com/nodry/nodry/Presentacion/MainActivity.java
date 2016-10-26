@@ -1,13 +1,17 @@
 package com.nodry.nodry.Presentacion;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Datos.IGasolinerasDAO;
 import com.nodry.nodry.R;
 
 import java.util.ArrayList;
@@ -28,20 +32,32 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
     ArrayAdapter<Gasolinera> adapter;
 
     GetGasolinerasTask getGasolinerasTask;
+    Intent intent;
+    String CCAA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Editamos la toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.drawable.por_defecto);
+        toolbar.setLogo(R.mipmap.ic_launcher);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
         //If que comprueba la conectividad a internet y llama al hilo GetGasolinerasTask para la obtención de la lista.
         listView = (ListView) findViewById(R.id.customListView);
         adapter = new GasolinerasArrayAdapter(this, 0, new ArrayList<Gasolinera>());
         listView.setAdapter(adapter);
+
+        // Cargamos la CCAA retornada por los filtros o en su defecto, por defecto
+        intent = getIntent();
+        CCAA = intent.getStringExtra("CCAA");
+
+        if(CCAA == null || CCAA.trim().equals("")){
+            CCAA = IGasolinerasDAO.DEFAULT_CCAA;
+        }
 
     }
 
@@ -51,11 +67,45 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
         refresh();
     }
 
+    /**
+     * Metodo para actualizar el listado de gasolineras
+     */
     private void refresh()
     {
         // Obtenemos el listado de Gasolineras
-        getGasolinerasTask = new GetGasolinerasTask(adapter, this);
+        getGasolinerasTask = new GetGasolinerasTask(adapter, CCAA, this);
         getGasolinerasTask.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_filtros) {
+            openFiltrosActivity();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Metodo que abre la pantalla de fltros
+     */
+    private void openFiltrosActivity(){
+        Intent myIntent = new Intent(this, FiltersActivity.class);
+        myIntent.putExtra("CCAA", CCAA); //Optional parameters
+        this.startActivity(myIntent);
     }
 
     @Override

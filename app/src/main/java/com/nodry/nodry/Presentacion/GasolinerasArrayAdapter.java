@@ -68,16 +68,23 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         ImageView image = (ImageView) view.findViewById(R.id.image);
 
         //set address and description
-        String completeRotulo = gasolinera.getRotulo();
-        rotulo.setText(completeRotulo);
+        String rotuloTrim = "",
+                completeRotulo = gasolinera.getRotulo();
+        int rotuloLength = completeRotulo.length();
+        if(rotuloLength >= 32){
+            rotuloTrim = completeRotulo.substring(0, 28) + "...";
+            rotulo.setText(rotuloTrim);
+        }else{
+            rotulo.setText(completeRotulo);
+        }
 
         //display trimmed excerpt for description
         String direccionTrim = "",
                 completeDireccion = gasolinera.getDireccion();//+",\n"+ gasolinera.getLocalidad();
 
         int descriptionLength = completeDireccion.length();
-        if(descriptionLength >= 34){
-            direccionTrim = completeDireccion.substring(0, 30) + "...";
+        if(descriptionLength >= 32){
+            direccionTrim = completeDireccion.substring(0, 28) + "...";
             direccion.setText(direccionTrim);
         }else{
             direccion.setText(completeDireccion);

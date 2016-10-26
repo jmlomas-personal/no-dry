@@ -1,5 +1,7 @@
 package com.nodry.nodry.Utils;
 
+import com.nodry.nodry.Datos.IGasolinerasDAO;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ public class RemoteFetchTest {
 
     @Before
     public void setUp() throws Exception {
-        remoteFetch = new RemoteFetch();
+        remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
     }
 
     @Test

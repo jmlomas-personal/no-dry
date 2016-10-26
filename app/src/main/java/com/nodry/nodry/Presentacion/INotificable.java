@@ -8,8 +8,11 @@ package com.nodry.nodry.Presentacion;
  */
 public interface INotificable {
 
+    String ERROR_MSG = "ATENCION";
+
     /**
      * Metodo que muestra el mensaje correspondiente
+     * @param msg con el mensaje a mostrar
      */
-    void showMessage();
+    void showMessage(String title, String msg);
 }

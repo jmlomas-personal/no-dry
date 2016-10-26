@@ -11,10 +11,10 @@ public interface ILoadable {
     /**
      * Metodo para el comienzo de la carga
      */
-    public void startLoading();
+    void startLoading();
 
     /**
      * Metodo para el fin de la carga.
      */
-    public void stopLoading();
+    void stopLoading();
 }

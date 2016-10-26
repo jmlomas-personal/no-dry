@@ -10,10 +10,13 @@ import java.util.List;
  */
 public interface IGasolinerasDAO {
 
+    // En caso de que ninguna sea seleccionada mostramos las de Cantabria (06)
+    String DEFAULT_CCAA = "06";
+
     /**
      * Funcion que devuelve el listado de las Gasolineras
-     * @return Lista con las gasolineras
+     * para una determinada CCAA
+     * @return Lista con las gasolineras de la CCAA
      */
-    List<Gasolinera> getListGasolineras();
-
+    List<Gasolinera> getListGasolineras(String CCAA);
 }
