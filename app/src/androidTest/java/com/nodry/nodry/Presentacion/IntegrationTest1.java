@@ -26,12 +26,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-<<<<<<< HEAD:app/src/androidTest/java/com/nodry/nodry/Presentacion/MainActivityTest.java
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
-=======
->>>>>>> abf2ce2aadd9e5352e7d22d983f91a641ae52733:app/src/androidTest/java/com/nodry/nodry/Presentacion/IntegrationTest1.java
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
