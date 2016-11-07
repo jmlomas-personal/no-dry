@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity implements ILoadable {
 
-    //TextView textView;
+    TextView textView;
     ListView listView;
     ProgressDialog progress;
 
@@ -66,12 +68,22 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
         super.onResume();
         refresh();
     }
-
+    @Override
+    public void conexionIncorrecta(String mensaje){
+        textView=(TextView) findViewById(R.id.textViewError);
+        textView.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+        textView.setText(mensaje);
+    }
     /**
      * Metodo para actualizar el listado de gasolineras
      */
     private void refresh()
     {
+        if(listView.getVisibility()==View.GONE){
+            listView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+        }
         // Obtenemos el listado de Gasolineras
         getGasolinerasTask = new GetGasolinerasTask(adapter, CCAA, this);
         getGasolinerasTask.execute();
@@ -94,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filtros) {
             openFiltrosActivity();
+        }
+        if(id== R.id.action_actualizar){
+            refresh();
         }
 
         return super.onOptionsItemSelected(item);

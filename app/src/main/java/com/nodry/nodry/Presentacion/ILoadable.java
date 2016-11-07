@@ -17,4 +17,9 @@ public interface ILoadable {
      * Metodo para el fin de la carga.
      */
     void stopLoading();
+
+    /**
+     * Método que muestra un mensaje por pantalla de que no hay datos que mostrar
+     */
+    void conexionIncorrecta(String mensaje);
 }

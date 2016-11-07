@@ -24,6 +24,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MENSAJE ERROR"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        />
 
     <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

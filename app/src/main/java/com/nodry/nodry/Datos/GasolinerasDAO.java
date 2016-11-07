@@ -35,11 +35,11 @@ public class GasolinerasDAO implements IGasolinerasDAO {
             RemoteFetch remoteFetch = new RemoteFetch(CCAA);
             remoteFetch.getJSON();
             listaGasolineras = ParserJSON.readJsonStream(remoteFetch.getBufferedDataGasolineras());
-        }catch(Exception e) {
-            Log.d("Error", e.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            return listaGasolineras;
         }
-
-        return listaGasolineras;
     }
 
 }

@@ -68,6 +68,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         // Si la conexion no funciona mostramos el mensaje y acabamos
         if(!isNetworkAvailable(context)){
             showMessage(ERROR_MSG ,MSG_NO_CONEXION);
+            ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
         }
     }
 
@@ -98,7 +99,8 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         handler.removeCallbacks(cancelerTask);
 
         if(listaGasolineras == null || listaGasolineras.size() == 0){
-            showMessage(ERROR_MSG ,MSG_NO_DATA);
+            showMessage(ERROR_MSG ,MSG_NO_CONEXION);
+            ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
         }else {
             ((IUpdateable) adapter).update(listaGasolineras);
         }
@@ -119,8 +121,8 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
             {
                 dialog.dismiss();
                 //finish(); //Lanzamos el NotDataFoundActivity
-                Intent intent = new Intent(context,NotDataFoundActivity.class);
-                context.startActivity(intent);
+                //Intent intent = new Intent(context,NotDataFoundActivity.class);
+                //context.startActivity(intent);
             }
         });
         AlertDialog dialog = builder.create();

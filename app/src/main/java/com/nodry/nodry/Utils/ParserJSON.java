@@ -106,7 +106,7 @@ public class ParserJSON{
         int id = -1;
         double gasoleoA = 0.0, sinplomo95 =0.0;
 
-         while(reader.hasNext()){
+        while(reader.hasNext()){
             String name = reader.nextName();
 
             if (name.equals("Rótulo") && reader.peek() != JsonToken.NULL) {
@@ -114,7 +114,7 @@ public class ParserJSON{
             }else if (name.equals("Localidad") && reader.peek() != JsonToken.NULL) {
                 localidad = reader.nextString();
             }else if(name.equals("Provincia") && reader.peek() != JsonToken.NULL){
-                 provincia = reader.nextString();
+                provincia = reader.nextString();
             }else if(name.equals("IDEESS") && reader.peek() != JsonToken.NULL){
                 id = reader.nextInt();
             }else if(name.equals("Precio Gasoleo A") && reader.peek() != JsonToken.NULL) {
