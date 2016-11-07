@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.nodry.nodry.Datos.Gasolinera;
@@ -83,6 +84,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         try {
             Thread.sleep(TEST_DELAY);
         } catch (InterruptedException e) {
+            Log.d("Error", e.toString());
         }
 
         gestionGasolineras = new GestionGasolineras();

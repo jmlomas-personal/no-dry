@@ -7,7 +7,7 @@ package com.nodry.nodry.Datos;
  * @author Andres Barrado Martin.
  * @version 1.0
  */
-public class Gasolinera implements Comparable<Gasolinera> {
+public class Gasolinera {
 
     //Campos de la Gasolinera
     private int IDEESS;
@@ -139,25 +139,5 @@ public class Gasolinera implements Comparable<Gasolinera> {
         this.gasolina_95 = gasolina_95;
     }
 
-    @Override
-    public int compareTo(Gasolinera another) {
-        //Si el atributo orderByGasoleoA está a true se ordena por precio del diesel
-        if(orderByGasoleoA){
-            if(this.getGasoleo_a()>another.getGasoleo_a())
-                return 1;
-            else if(this.getGasoleo_a()<another.getGasoleo_a())
-                return -1;
-            else
-                return 0;
-         //En caso contrario se ordena por precio de la gasolina
-        }else{
-            if(this.getGasolina_95()>another.getGasolina_95())
-                return 1;
-            else if(this.getGasolina_95()<another.getGasolina_95())
-                return -1;
-            else
-                return 0;
-        }//if
-    }//compareTo
 }// Gasolinera
 

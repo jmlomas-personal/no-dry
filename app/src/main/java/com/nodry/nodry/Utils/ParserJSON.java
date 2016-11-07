@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ParserJSON{
 
-    public static String OK_STATUS = "OK";
+    public static final String OK_STATUS = "OK";
 
     /**
      * Funcion que lee el JSon con formato de cadena de bytes

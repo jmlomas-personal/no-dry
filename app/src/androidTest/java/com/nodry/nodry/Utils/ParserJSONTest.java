@@ -1,5 +1,7 @@
 package com.nodry.nodry.Utils;
 
+import android.util.Log;
+
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
 
@@ -19,6 +21,14 @@ import static org.junit.Assert.*;
  */
 public class ParserJSONTest {
 
+    private static final String TEST_ROTULO             = "CEPSA";
+    private static final String TEST_DIRECCION          = "CARRETERA 6316 KM. 10,5";
+    private static final String TEST_LOCALIDAD          = "NOVALES";
+    private static final String TEST_PROVINCIA          = "CANTABRIA";
+    private static final Double TEST_PRECIO_GASOLEO     = 1.095;
+    private static final Double TEST_PRECIO_GASOLINA    = 1.205;
+    private static final Integer TEST_IDEESS            = 1039;
+
     private static RemoteFetch remoteFetch;
     private static InputStream stream;
     private static List<Gasolinera> listaGasolineras;
@@ -28,10 +38,10 @@ public class ParserJSONTest {
                 "\"ListaEESSPrecio\":[" +
                     "{" +
                         "\"C.P.\": \"39526\"," +
-                        "\"Dirección\": \"CARRETERA 6316 KM. 10,5\"," +
+                        "\"Dirección\": \""+TEST_DIRECCION+"\"," +
                         "\"Horario\": \"L-D: 08:00-21:00\"," +
                         "\"Latitud\": \"43,395944\"," +
-                        "\"Localidad\": \"NOVALES\"," +
+                        "\"Localidad\": \""+TEST_LOCALIDAD+"\"," +
                         "\"Longitud (WGS84)\": \"-4,155194\"," +
                         "\"Margen\": \"I\"," +
                         "\"Municipio\": \"Alfoz de Lloredo\"," +
@@ -40,18 +50,18 @@ public class ParserJSONTest {
                         "\"Precio Gas Natural Comprimido\": null," +
                         "\"Precio Gas Natural Licuado\": null," +
                         "\"Precio Gases licuados del petróleo\": null," +
-                        "\"Precio Gasoleo A\": \"1,095\"," +
+                        "\"Precio Gasoleo A\": \""+TEST_PRECIO_GASOLEO+"\"," +
                         "\"Precio Gasoleo B\": \"0,765\"," +
-                        "\"Precio Gasolina 95 Protección\": \"1,205\"," +
+                        "\"Precio Gasolina 95 Protección\": \""+TEST_PRECIO_GASOLINA+"\"," +
                         "\"Precio Gasolina  98\": \"1,310\"," +
                         "\"Precio Nuevo Gasoleo A\": \"1,155\"," +
-                        "\"Provincia\": \"CANTABRIA\"," +
+                        "\"Provincia\": \""+TEST_PROVINCIA+"\"," +
                         "\"Remisión\": \"dm\"," +
-                        "\"Rótulo\": \"CEPSA\"," +
+                        "\"Rótulo\": \""+TEST_ROTULO+"\"," +
                         "\"Tipo Venta\": \"P\"," +
                         "\"% BioEtanol\": \"0,0\"," +
                         "\"% Éster metílico\": \"0,0\"," +
-                        "\"IDEESS\": \"1039\"," +
+                        "\"IDEESS\": \""+TEST_IDEESS+"\"," +
                         "\"IDMunicipio\": \"5744\"," +
                         "\"IDProvincia\": \"39\"," +
                         "\"IDCCAA\": \"06\"" +
@@ -165,7 +175,7 @@ public class ParserJSONTest {
             remoteFetch.getJSON();
             status = ParserJSON.readJsonStreamStatus(remoteFetch.getBufferedDataGasolineras());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("El test no paso", e.toString());
         }
 
         if (!status) {
@@ -175,11 +185,7 @@ public class ParserJSONTest {
 
     @Test
     public void readJsonStreamRecordCountTest() {
-        try {
-            Assert.assertTrue(listaGasolineras.size() == 4);
-        }catch(Exception e){
-            Assert.fail();
-        }
+        Assert.assertTrue(listaGasolineras.size() == 4);
     }
 
     @Test
@@ -188,16 +194,17 @@ public class ParserJSONTest {
             Gasolinera gasolinera = listaGasolineras.get(0);
 
             Assert.assertTrue(
-                gasolinera.getRotulo().equals("CEPSA")
-                    &&  gasolinera.getDireccion().equals("CARRETERA 6316 KM. 10,5")
-                    &&  gasolinera.getGasoleo_a() == 1.095
-                    &&  gasolinera.getGasolina_95() == 1.205
-                    &&  gasolinera.getIDEESS() == 1039
-                    &&  gasolinera.getLocalidad().equals("NOVALES")
-                    &&  gasolinera.getProvincia().equals("CANTABRIA")
+                gasolinera.getRotulo().equals(TEST_ROTULO)
+                    &&  gasolinera.getDireccion().equals(TEST_DIRECCION)
+                    &&  gasolinera.getGasoleo_a() == TEST_PRECIO_GASOLEO
+                    &&  gasolinera.getGasolina_95() == TEST_PRECIO_GASOLINA
+                    &&  gasolinera.getIDEESS() == TEST_IDEESS
+                    &&  gasolinera.getLocalidad().equals(TEST_LOCALIDAD)
+                    &&  gasolinera.getProvincia().equals(TEST_PROVINCIA)
             );
-        }catch(Exception e){
-            Assert.fail();
+        }catch(IndexOutOfBoundsException e){
+            Log.d("El test no paso", e.toString());
+            fail();
         }
     }
 

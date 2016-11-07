@@ -1,5 +1,7 @@
 package com.nodry.nodry.Datos;
 
+import android.util.Log;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +33,8 @@ public class GasolinerasDAOTest {
         try {
             gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
             assertEquals("CANTABRIA", gasolineras.get(0).getProvincia());
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("El test no paso", e.toString());
             fail();
         }
     }
@@ -46,7 +49,8 @@ public class GasolinerasDAOTest {
             assertTrue(
                     PROVINCIAS_GALICIA.contains(gasolineras.get(0).getProvincia())
             );
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("El test no paso", e.toString());
             fail();
         }
     }

@@ -1,9 +1,13 @@
 package com.nodry.nodry.Utils;
 
+import android.util.Log;
+
 import com.nodry.nodry.Datos.IGasolinerasDAO;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -25,8 +29,8 @@ public class RemoteFetchTest {
         try {
             remoteFetch.getJSON();
         }
-        catch(Exception e)
-        {
+        catch(IOException e) {
+            Log.d("El test no paso", e.toString());
             fail();
         }
 

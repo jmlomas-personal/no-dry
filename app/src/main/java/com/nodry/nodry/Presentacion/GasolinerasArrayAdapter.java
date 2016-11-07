@@ -99,11 +99,9 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         //get the image associated with this property
         Integer imageID = context.getResources().getIdentifier("drawable/" + gasolinera.getRotulo().trim().toLowerCase(), null, context.getPackageName());
         try {
-            image. setImageResource((imageID == 0) ? imageDefaultID : imageID);
+            image.setImageResource((imageID == 0) ? imageDefaultID : imageID);
         }catch (Exception e){
-            Log.d("LLEGO",e.toString());
-        }finally {
-
+            Log.d("Error", e.toString());
         }
 
         return view;

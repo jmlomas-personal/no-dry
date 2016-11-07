@@ -1,5 +1,7 @@
 package com.nodry.nodry.Datos;
 
+import android.util.Log;
+
 import com.nodry.nodry.Utils.ParserJSON;
 import com.nodry.nodry.Utils.RemoteFetch;
 
@@ -28,15 +30,16 @@ public class GasolinerasDAO implements IGasolinerasDAO {
 
     @Override
     public List<Gasolinera> getListGasolineras(String CCAA){
+
         try {
             RemoteFetch remoteFetch = new RemoteFetch(CCAA);
             remoteFetch.getJSON();
             listaGasolineras = ParserJSON.readJsonStream(remoteFetch.getBufferedDataGasolineras());
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
-            return listaGasolineras;
+        }catch(Exception e) {
+            Log.d("Error", e.toString());
         }
+
+        return listaGasolineras;
     }
 
 }
