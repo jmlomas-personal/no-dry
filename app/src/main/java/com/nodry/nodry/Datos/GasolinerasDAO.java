@@ -38,7 +38,7 @@ public class GasolinerasDAO implements IGasolinerasDAO {
             dataFetch.getJSON();
             listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
 
-            if(listaGasolineras == null || listaGasolineras.size()==0){
+            if(listaGasolineras == null || listaGasolineras.isEmpty()){
                 dataFetch = new LocalFetch();
                 dataFetch.getJSON();
                 listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
@@ -46,9 +46,8 @@ public class GasolinerasDAO implements IGasolinerasDAO {
 
         }catch(Exception e){
             e.printStackTrace();
-        }finally {
-            return listaGasolineras;
         }
+        return listaGasolineras;
     }
 
 }

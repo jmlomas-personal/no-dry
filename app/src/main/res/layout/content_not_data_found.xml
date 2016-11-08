@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:text="Not Data Found"
+        android:text="@string/datos_no_encontrados"
         android:textSize="25dp"
         android:textColor="#FF0000"/>
 

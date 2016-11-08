@@ -57,9 +57,6 @@ public class CancelerTask implements Runnable, INotificable {
             {
                 dialog.dismiss();
                 //finish();
-                //Lanzamos el NotDataFoundActivity
-                Intent intent = new Intent(context, NotDataFoundActivity.class);
-                context.startActivity(intent);
             }
         });
         AlertDialog dialog = builder.create();

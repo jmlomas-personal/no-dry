@@ -98,7 +98,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
         handler.removeCallbacks(cancelerTask);
 
-        if(listaGasolineras == null || listaGasolineras.size() == 0){
+        if(listaGasolineras == null || listaGasolineras.isEmpty()){
             showMessage(ERROR_MSG ,MSG_NO_CONEXION);
             ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
         }else {
