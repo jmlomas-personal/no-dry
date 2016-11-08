@@ -1,5 +1,15 @@
 package com.nodry.nodry.Utils;
 
+import android.content.Context;
+import android.util.Log;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,4 +113,52 @@ public class Utils {
         return CCAAList;
     }
 
+    public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) {
+        BufferedInputStream result = null;
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream inAux;
+
+            byte[] contents = new byte[1024];
+
+            int bytesRead = 0;
+            String strFileContents = "";
+
+            while((bytesRead = in.read(contents)) != -1) {
+                baos.write(contents, 0, bytesRead);
+                strFileContents += new String(contents, 0, bytesRead);
+            }
+            baos.flush();
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+            outputStreamWriter.write(strFileContents);
+            outputStreamWriter.close();
+
+            inAux = new ByteArrayInputStream(baos.toByteArray());
+            result = new BufferedInputStream(inAux);
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
+        return result;
+    }
+
+    public static BufferedInputStream readFromFile(String filename, Context context) {
+
+        BufferedInputStream bufferedDataGasolineras = null;
+
+        try {
+            InputStream inputStream = context.openFileInput(filename);
+            bufferedDataGasolineras = new BufferedInputStream(inputStream);
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return bufferedDataGasolineras;
+    }
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
 import com.nodry.nodry.R;
+import com.nodry.nodry.Utils.DataFetch;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DataFetch.setContext(this);
 
         //Editamos la toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

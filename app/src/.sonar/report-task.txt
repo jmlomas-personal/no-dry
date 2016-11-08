@@ -1,5 +1,5 @@
 projectKey=ProyectoNoDry
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/ProyectoNoDry
-ceTaskId=AVgC6lp1rwHVLbJZ4Jhl
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AVgC6lp1rwHVLbJZ4Jhl
+ceTaskId=AVg-b6G6CxZ_-fmsBT0x
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVg-b6G6CxZ_-fmsBT0x

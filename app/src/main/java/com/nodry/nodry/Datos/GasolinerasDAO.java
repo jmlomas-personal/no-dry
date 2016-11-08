@@ -2,6 +2,8 @@ package com.nodry.nodry.Datos;
 
 import android.util.Log;
 
+import com.nodry.nodry.Utils.DataFetch;
+import com.nodry.nodry.Utils.LocalFetch;
 import com.nodry.nodry.Utils.ParserJSON;
 import com.nodry.nodry.Utils.RemoteFetch;
 
@@ -32,9 +34,16 @@ public class GasolinerasDAO implements IGasolinerasDAO {
     public List<Gasolinera> getListGasolineras(String CCAA){
 
         try {
-            RemoteFetch remoteFetch = new RemoteFetch(CCAA);
-            remoteFetch.getJSON();
-            listaGasolineras = ParserJSON.readJsonStream(remoteFetch.getBufferedDataGasolineras());
+            DataFetch dataFetch = new RemoteFetch(CCAA);
+            dataFetch.getJSON();
+            listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+
+            if(listaGasolineras == null || listaGasolineras.size()==0){
+                dataFetch = new LocalFetch();
+                dataFetch.getJSON();
+                listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+            }
+
         }catch(Exception e){
             e.printStackTrace();
         }finally {
