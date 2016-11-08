@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
             refresh();
         }
 
+        
+
         return super.onOptionsItemSelected(item);
     }
 
