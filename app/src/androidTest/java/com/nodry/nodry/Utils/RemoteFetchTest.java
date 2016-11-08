@@ -34,6 +34,6 @@ public class RemoteFetchTest {
             fail();
         }
 
-        assertNotNull(remoteFetch.getBufferedDataGasolineras());
+        assertNotNull(remoteFetch.getBufferedData());
     }
 }

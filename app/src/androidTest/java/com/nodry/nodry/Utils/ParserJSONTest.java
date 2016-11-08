@@ -173,7 +173,7 @@ public class ParserJSONTest {
 
         try {
             remoteFetch.getJSON();
-            status = ParserJSON.readJsonStreamStatus(remoteFetch.getBufferedDataGasolineras());
+            status = ParserJSON.readJsonStreamStatus(remoteFetch.getBufferedData());
         } catch (IOException e) {
             Log.d("El test no paso", e.toString());
         }
