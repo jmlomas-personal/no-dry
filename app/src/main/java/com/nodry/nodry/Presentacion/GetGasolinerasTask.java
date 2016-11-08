@@ -120,9 +120,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
             public void onClick(DialogInterface dialog, int which)
             {
                 dialog.dismiss();
-                //finish(); //Lanzamos el NotDataFoundActivity
-                //Intent intent = new Intent(context,NotDataFoundActivity.class);
-                //context.startActivity(intent);
+                //finish();
             }
         });
         AlertDialog dialog = builder.create();
