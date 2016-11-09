@@ -22,6 +22,8 @@ import com.nodry.nodry.Utils.Utils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**

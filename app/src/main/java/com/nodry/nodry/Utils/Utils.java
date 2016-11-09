@@ -2,10 +2,13 @@ package com.nodry.nodry.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -16,10 +19,15 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by att3mpt on 10/26/16.
@@ -31,7 +39,12 @@ public class Utils {
     private static Map<String, String> CCAAbyValue;
     private static List<String> CCAAList;
 
-    private static final String HORARIO_24h = "";
+    private final static String MSG_NO_GOOGLE_MAPS = "Google maps no instalado";
+    private final static String EMPTY_DATA_RECEIVED = "\"ListaEESSPrecio\":[]";
+
+    private final static List<String> days = new ArrayList<String>(
+            Arrays.asList("L", "M", "X", "J", "V", "S", "D")
+    );
 
     // Cargamos al inicio las distintas colecciones para utilizarlas una vez arrancada la app
     static{
@@ -133,18 +146,21 @@ public class Utils {
             int bytesRead = 0;
             String strFileContents = "";
 
-            while((bytesRead = in.read(contents)) != -1) {
+            while ((bytesRead = in.read(contents)) != -1) {
                 baos.write(contents, 0, bytesRead);
                 strFileContents += new String(contents, 0, bytesRead);
             }
             baos.flush();
 
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-            outputStreamWriter.write(strFileContents);
-            outputStreamWriter.close();
+            if (strFileContents.indexOf(EMPTY_DATA_RECEIVED)!=-1){
 
-            inAux = new ByteArrayInputStream(baos.toByteArray());
-            result = new BufferedInputStream(inAux);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+                outputStreamWriter.write(strFileContents);
+                outputStreamWriter.close();
+
+                inAux = new ByteArrayInputStream(baos.toByteArray());
+                result = new BufferedInputStream(inAux);
+            }
         }
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -181,16 +197,111 @@ public class Utils {
     }
 
     public static void openGoogleMaps(Context context, double latitude, double longitude, String caption) {
-        String uri = String.format(Locale.ENGLISH, "geo:%f,%f?q=%f,%f(%s)", latitude, longitude, latitude, longitude, caption);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        context.startActivity(intent);
+
+        if(isGoogleMapsInstalled(context)) {
+            String uri = String.format(Locale.ENGLISH, "geo:%f,%f?q=%f,%f(%s)", latitude, longitude, latitude, longitude, caption);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            context.startActivity(intent);
+        }else{
+            Toast.makeText(context, MSG_NO_GOOGLE_MAPS, Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public static boolean estaAbierto(String horario){
         boolean bAbierto = false;
 
-        List<String> horarios = Arrays.asList(horario.split("; "));
+        Pattern pI, pII, pIII, pIV;
+        Matcher m;
+        horario = horario.toUpperCase();
+
+        List<String> horarios = Arrays.asList(horario.split("; ")), desglose = new ArrayList<String>();
+
+        String sMatcherI = "([LMXJVSD]-[LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
+        String sMatcherII = "([LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
+        String sMatcherIII = "([LMXJVSD]-[LMXJVSD]):\\s(24H)";
+        String sMatcherIV = "([LMXJVSD]):\\s(24H)";
+
+        pI      = Pattern.compile(sMatcherI);
+        pII     = Pattern.compile(sMatcherII);
+        pIII    = Pattern.compile(sMatcherIII);
+        pIV     = Pattern.compile(sMatcherIV);
+
+        for(String hora : horarios){
+            m = pI.matcher(hora);
+
+            if(m.matches()){
+
+                for(String s: days.subList(days.indexOf(""+m.group(1).charAt(0)), days.indexOf(""+m.group(1).charAt(2))+1)){
+                    desglose.add(s + ";" + m.group(2)+ ";" + m.group(3)+ ";" + m.group(4)+ ";" + m.group(5));
+                }
+
+            }else{
+                m = pII.matcher(hora);
+
+                if(m.matches()){
+                    desglose.add(m.group(1) + ";" + m.group(2)+ ";" + m.group(3)+ ";" + m.group(4)+ ";" + m.group(5));
+                }else{
+                    m = pIII.matcher(hora);
+
+                    if(m.matches()) {
+
+                        for (String s : days.subList(days.indexOf("" + m.group(1).charAt(0)), days.indexOf("" + m.group(1).charAt(2)) + 1)) {
+                            desglose.add(s + ";00;00;00;00");
+                        }
+
+                    }else{
+                        m = pIV.matcher(hora);
+
+                        if(m.matches()) {
+                            desglose.add(m.group(1) + ";00;00;00;00");
+                        }
+                    }
+                }
+            }
+
+        }
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        int horaIni, minutoIni, horaFin, minutoFin, diaSemana = (cal.get(Calendar.DAY_OF_WEEK)>1)?cal.get(Calendar.DAY_OF_WEEK)-2:6;
+        List<String> dia;
+
+        for(String d : desglose){
+            dia = Arrays.asList(d.split(";"));
+
+            if(dia.get(0).equals(days.get(diaSemana))){
+                horaIni     = new Integer(dia.get(1));
+                minutoIni   = new Integer(dia.get(2));
+                horaFin     = new Integer(dia.get(3));
+                minutoFin   = new Integer(dia.get(4));
+
+                if(horaIni==0 && minutoIni==0 && horaFin==0 && minutoFin==0){
+                    bAbierto = true;
+                }else{
+                    if(((cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)) >= (horaIni * 60 + minutoIni)) &&
+                                ((cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)) <= (horaFin * 60 + minutoFin))){
+                        bAbierto = true;
+                    }
+                }
+            }
+        }
 
         return bAbierto;
     }
+
+    public static boolean isGoogleMapsInstalled(Context context)
+    {
+        boolean bExiste = false;
+
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+            bExiste = true;
+        }
+        catch(PackageManager.NameNotFoundException e) {
+            bExiste = false;
+        }
+
+        return bExiste;
+    }
 }
+
