@@ -31,7 +31,7 @@ public class GasolinerasDAOTest {
     @Test
     public void getListGasolineras() {
         try {
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
+            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
             assertEquals("CANTABRIA", gasolineras.get(0).getProvincia());
         } catch (IndexOutOfBoundsException e) {
             Log.d("El test no paso", e.toString());
@@ -42,10 +42,10 @@ public class GasolinerasDAOTest {
     @Test
     public void getListGasolinerasFiltroCCAA() {
         try {
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
+            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
             assertEquals("CANTABRIA", gasolineras.get(0).getProvincia());
 
-            gasolineras = g.getListGasolineras(GALICIA_ID);
+            gasolineras = g.getListGasolineras(GALICIA_ID, false);
             assertTrue(
                     PROVINCIAS_GALICIA.contains(gasolineras.get(0).getProvincia())
             );

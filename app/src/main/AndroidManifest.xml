@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".Presentacion.NotDataFoundActivity" />
         <activity android:name=".Presentacion.FiltersActivity" />
+        <activity android:name=".Presentacion.DetailsActivity" />
     </application>
 
 </manifest>

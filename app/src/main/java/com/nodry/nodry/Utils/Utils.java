@@ -1,6 +1,10 @@
 package com.nodry.nodry.Utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -11,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -24,6 +30,8 @@ public class Utils {
     private static Map<String, String> CCAAbyID;
     private static Map<String, String> CCAAbyValue;
     private static List<String> CCAAList;
+
+    private static final String HORARIO_24h = "";
 
     // Cargamos al inicio las distintas colecciones para utilizarlas una vez arrancada la app
     static{
@@ -158,5 +166,36 @@ public class Utils {
         }
 
         return bufferedDataGasolineras;
+    }
+
+    /**
+     * Metodo que comprueba si el dispositivo dispone de conexión a internet
+     * @param context con el contexto de la aplicacion
+     * @return verdadero si la conexion esta activa, falso en cualquier otro caso
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static void openGoogleMaps(Context context, double latitude, double longitude, String caption) {
+        String uri = String.format(Locale.ENGLISH, "geo:%f,%f?q=%f,%f(%s)", latitude, longitude, latitude, longitude, caption);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        context.startActivity(intent);
+    }
+
+    public static boolean estaAbierto(String horario){
+        boolean bAbierto = false;
+
+        List<String> horarios = Arrays.asList(horario.split("; "));
+        // L-S: 07:00-13:00
+        // (L-[JVSD]):\s(\d{2}:\d{2}-\d{2}:\d{2})
+
+        // L-S: 07:00-13:00
+        // (L-[JVSD]):\s(\d{2}:\d{2}-\d{2}:\d{2})
+
+        return bAbierto;
     }
 }

@@ -107,6 +107,10 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         return view;
     }
 
+    public List<Gasolinera> getGasolineras(){
+        return listaGasolineras;
+    }
+
     @Override
     public void clear() {
         listaGasolineras = new ArrayList<Gasolinera>();

@@ -30,8 +30,8 @@ public class GestionGasolinerasTest {
      */
     @Test
     public void getListGasolinerasTest(){
-        gestionGasolinera.getGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
-        verify(gestionGasolinera).getGasolineras(IGasolinerasDAO.DEFAULT_CCAA);
+        gestionGasolinera.getGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
+        verify(gestionGasolinera).getGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
     }
 
 }

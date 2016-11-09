@@ -102,9 +102,9 @@ public class ParserJSON{
     public static Gasolinera readGasolinera (JsonReader reader) throws IOException {
         reader.beginObject();
         boolean add = false;
-        String rotulo="", localidad ="", provincia="",direccion="";
+        String rotulo="", localidad ="", provincia="", direccion="", horario="";
         int id = -1;
-        double gasoleoA = 0.0, sinplomo95 =0.0;
+        double gasoleoA = 0.0, sinplomo95 = 0.0, gasoleoB = 0.0, sinplomo98 = 0.0, latitud = 0.0, longitud = 0.0;
 
         while(reader.hasNext()){
             String name = reader.nextName();
@@ -121,14 +121,24 @@ public class ParserJSON{
                 gasoleoA = Double.parseDouble(reader.nextString().replace(",","."));
             }else if(name.equals("Precio Gasolina 95 Protección") && reader.peek() != JsonToken.NULL) {
                 sinplomo95 = Double.parseDouble(reader.nextString().replace(",", "."));
+            }else if(name.equals("Precio Gasoleo B") && reader.peek() != JsonToken.NULL) {
+                gasoleoB = Double.parseDouble(reader.nextString().replace(",","."));
+            }else if(name.equals("Precio Gasolina 98") && reader.peek() != JsonToken.NULL) {
+                sinplomo98 = Double.parseDouble(reader.nextString().replace(",", "."));
             }else if(name.equals("Dirección") && reader.peek() != JsonToken.NULL){
                 direccion = reader.nextString();
+            }else if(name.equals("Latitud") && reader.peek() != JsonToken.NULL) {
+                latitud = Double.parseDouble(reader.nextString().replace(",","."));
+            }else if(name.equals("Longitud (WGS84)") && reader.peek() != JsonToken.NULL) {
+                longitud = Double.parseDouble(reader.nextString().replace(",", "."));
+            }else if(name.equals("Horario") && reader.peek() != JsonToken.NULL){
+                horario = reader.nextString();
             }else{
                 reader.skipValue();
             }//if
 
         }// while
         reader.endObject();
-        return new Gasolinera(id,localidad,provincia,direccion,gasoleoA, sinplomo95,rotulo);
+        return new Gasolinera(id,localidad,provincia,direccion,gasoleoA, sinplomo95, rotulo, gasoleoB, sinplomo98, horario, latitud, longitud);
     }// readGasolinera
 }//ParserJSON

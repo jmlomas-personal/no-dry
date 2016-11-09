@@ -1,5 +1,7 @@
 package com.nodry.nodry.Datos;
 
+import java.io.Serializable;
+
 /**
  * Clase que representa una gasolinera.
  * Cada una se rellenara con los datos procesados desde
@@ -7,7 +9,7 @@ package com.nodry.nodry.Datos;
  * @author Andres Barrado Martin.
  * @version 1.0
  */
-public class Gasolinera {
+public class Gasolinera implements Serializable {
 
     //Campos de la Gasolinera
     private int IDEESS;
@@ -15,8 +17,13 @@ public class Gasolinera {
     private String provincia;
     private String direccion;
     private double gasoleo_a;
+    private double gasoleo_b;
     private double gasolina_95;
+    private double gasolina_98;
     private String rotulo;
+    private String horario;
+    private double latitud;
+    private double longitud;
 
     // Preparamos un ejemplo de ordenacion que utilizaremos mas daelante
     private static final boolean orderByGasoleoA = true;
@@ -32,7 +39,7 @@ public class Gasolinera {
      * @param gasolina_95 con el rpecio de la gasolina_95 de la gasolinera
      * @param rotulo con el rotulo de la gasolineras
      */
-    public Gasolinera (int IDEESS, String localidad, String provincia, String direccion, double gasoleo_a, double gasolina_95, String rotulo){
+    public Gasolinera (int IDEESS, String localidad, String provincia, String direccion, double gasoleo_a, double gasolina_95, String rotulo, double gasoleo_b, double gasolina_98, String horario, double latitud, double longitud){
         this.IDEESS = IDEESS;
         this.localidad = localidad;
         this.provincia = provincia;
@@ -40,6 +47,11 @@ public class Gasolinera {
         this.gasoleo_a = gasoleo_a;
         this.gasolina_95 = gasolina_95;
         this.rotulo = rotulo;
+        this.gasoleo_b = gasoleo_b;
+        this.gasolina_98 = gasolina_98;
+        this.horario = horario;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }// Gasolinera
 
     /**
@@ -139,7 +151,89 @@ public class Gasolinera {
         this.gasolina_95 = gasolina_95;
     }
 
+    /**
+     * Retorna el valor del atributo gasoleo_b
+     * @return gasoleo_b
+     */
+    public double getGasoleo_b() {
+        return gasoleo_b;
+    }
 
+    /**
+     * Modifica el valor del atributo gasoleo_b por el pasado por parametro
+     */
+    public void setGasoleo_b(double gasoleo_b) { this.gasoleo_b = gasoleo_b; }
+
+    /**
+     * Retorna el valor del atributo gasolina_98
+     * @return gasolina_98
+     */
+    public double getGasolina_98() {
+        return gasolina_98;
+    }
+
+    /**
+     * Modifica el valor del atributo gasoleo_98 por el pasado por parametro
+     */
+    public void setGasolina_98(double gasolina_98) {
+        this.gasolina_98 = gasolina_98;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Retorna el valor del atributo horario
+     * @return horario
+     */
+    public String getHorario() {
+        return horario;
+    }
+
+    /**
+     * Modifica el valor del atributo horario por el pasado por parametro
+     */
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    /**
+     * Retorna el valor del atributo latitud
+     * @return latitud
+     */
+    public double getLatitud() {
+        return latitud;
+    }
+
+    /**
+     * Modifica el valor del atributo latitud por el pasado por parametro
+     */
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    /**
+     * Retorna el valor del atributo longitud
+     * @return longitud
+     */
+    public double getLongitud() {
+        return longitud;
+    }
+
+    /**
+     * Modifica el valor del atributo longitud por el pasado por parametro
+     */
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
 
 }// Gasolinera
 

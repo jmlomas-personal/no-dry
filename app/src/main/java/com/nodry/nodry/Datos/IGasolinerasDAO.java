@@ -18,5 +18,5 @@ public interface IGasolinerasDAO {
      * para una determinada CCAA
      * @return Lista con las gasolineras de la CCAA
      */
-    List<Gasolinera> getListGasolineras(String CCAA);
+    List<Gasolinera> getListGasolineras(String CCAA, boolean bForceLocal);
 }

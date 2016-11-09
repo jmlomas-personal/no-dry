@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +19,9 @@ import com.nodry.nodry.Datos.IGasolinerasDAO;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.DataFetch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Actividad principal de la aplicacion.
@@ -25,7 +29,7 @@ import java.util.ArrayList;
  * @author Alba Zubizarreta.
  * @version 1.0
  */
-public class MainActivity extends AppCompatActivity implements ILoadable {
+public class MainActivity extends AppCompatActivity implements ILoadable, AdapterView.OnItemClickListener {
 
     TextView textView;
     ListView listView;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
     GetGasolinerasTask getGasolinerasTask;
     Intent intent;
     String CCAA;
+    TextView IDEESS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
         listView = (ListView) findViewById(R.id.customListView);
         adapter = new GasolinerasArrayAdapter(this, 0, new ArrayList<Gasolinera>());
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
 
         // Cargamos la CCAA retornada por los filtros o en su defecto, por defecto
         intent = getIntent();
@@ -114,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
             refresh();
         }
 
-        
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,5 +140,17 @@ public class MainActivity extends AppCompatActivity implements ILoadable {
     @Override
     public void stopLoading() {
         this.progress.dismiss();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        List<Gasolinera> listaGasolineras = ((GasolinerasArrayAdapter)adapter).getGasolineras();
+
+        Intent myIntent = new Intent(this, DetailsActivity.class);
+        myIntent.putExtra("CCAA", CCAA); //Optional parameters
+        myIntent.putExtra("IDEESS", listaGasolineras.get((int)l).getIDEESS()); //Optional parameters
+        myIntent.putExtra("listaGasolineras", (Serializable)listaGasolineras); //Optional parameters
+
+        this.startActivity(myIntent);
     }
 }
