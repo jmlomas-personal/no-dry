@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,12 +51,17 @@ public class RemoteFetch extends DataFetch{
      */
     @Override
     public void getJSON() throws IOException {
-        URL url= new URL(URL);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.addRequestProperty("Accept", "application/json");
-        //BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        bufferedDataGasolineras = new BufferedInputStream(urlConnection.getInputStream());
-        //gasolineraList = ParserJSON.readJsonStream(new BufferedInputStream(urlConnection.getInputStream()));
+
+        if(Utils.isNetworkAvailable(this.context)) {
+            URL url = new URL(URL);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.addRequestProperty("Accept", "application/json");
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            bufferedDataGasolineras = new BufferedInputStream(urlConnection.getInputStream());
+            //gasolineraList = ParserJSON.readJsonStream(new BufferedInputStream(urlConnection.getInputStream()));
+        }else{
+            bufferedDataGasolineras = null;
+        }
     }//getJSON
 
 
@@ -66,11 +72,12 @@ public class RemoteFetch extends DataFetch{
      */
     @Override
     public BufferedInputStream getBufferedData() {
-        try {
-            bufferedDataGasolineras = Utils.writeToFile(bufferedDataGasolineras, LocalFetch.TEMP_FILE_NAME, this.context);
-        }
-        catch(Exception e){
-            Log.e("Exception", "File write failed: " + e.toString());
+        if(bufferedDataGasolineras!=null) {
+            try {
+                bufferedDataGasolineras = Utils.writeToFile(bufferedDataGasolineras, LocalFetch.TEMP_FILE_NAME, this.context);
+            } catch (Exception e) {
+                Log.e("Exception", "File write failed: " + e.toString());
+            }
         }
 
         return bufferedDataGasolineras;

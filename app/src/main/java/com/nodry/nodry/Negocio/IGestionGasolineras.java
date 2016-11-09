@@ -16,6 +16,7 @@ public interface IGestionGasolineras {
      * para una comunidad autonoma especifica.
      * @return la lista de gasolineras de esa CCAA
      */
-    List<Gasolinera> getGasolineras(String CCAA);
+    List<Gasolinera> getGasolineras(String CCAA, boolean bForceLocal);
+    Gasolinera getGasolinera(int IDEESS, List<Gasolinera> listaGasolineras);
 
 }
