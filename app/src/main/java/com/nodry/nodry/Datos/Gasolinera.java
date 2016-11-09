@@ -179,17 +179,6 @@ public class Gasolinera implements Serializable {
         this.gasolina_98 = gasolina_98;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Retorna el valor del atributo horario
      * @return horario
