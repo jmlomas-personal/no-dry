@@ -66,10 +66,10 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         this.cancelerTask = new CancelerTask(this, this.context);
 
         // Si la conexion no funciona mostramos el mensaje y acabamos
-        if(!isNetworkAvailable(context)){
-            showMessage(ERROR_MSG ,MSG_NO_CONEXION);
-            ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
-        }
+        //if(!isNetworkAvailable(context)){
+        //    showMessage(ERROR_MSG ,MSG_NO_CONEXION);
+        //    ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
+        //}
     }
 
     @Override
@@ -90,7 +90,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
         gestionGasolineras = new GestionGasolineras();
 
-        return gestionGasolineras.getGasolineras(CCAA);
+        return gestionGasolineras.getGasolineras(CCAA, false);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         handler.removeCallbacks(cancelerTask);
 
         if(listaGasolineras == null || listaGasolineras.isEmpty()){
-            showMessage(ERROR_MSG ,MSG_NO_CONEXION);
+            showMessage(ERROR_MSG ,MSG_NO_DATA);
             ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
         }else {
             ((IUpdateable) adapter).update(listaGasolineras);
@@ -127,15 +127,4 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         dialog.show();
     }
 
-    /**
-     * Metodo que comprueba si el dispositivo dispone de conexión a internet
-     * @param context con el contexto de la aplicacion
-     * @return verdadero si la conexion esta activa, falso en cualquier otro caso
-     */
-    private static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }// GetGasolineras

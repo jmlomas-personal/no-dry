@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_not_data_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.nodry.nodry.Presentacion.DetailsActivity"
+        tools:showIn="@layout/activity_details">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:srcCompat="@drawable/por_defecto"
+                    android:id="@+id/imageView_icono"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Rotulo"
+                    android:text="textView_Rotulo"
+                    android:width="200dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large"
+                    android:layout_marginLeft="74dp"
+                    android:lines="3"/>
+
+                <TextView
+                    android:text="Localidad:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Localidad"
+                    android:layout_marginTop="84dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textStyle="normal|bold"/>
+
+                <TextView
+                    android:text="textView_Localidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Localidad"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/lbl_Localidad"
+                    android:layout_alignBaseline="@+id/lbl_Localidad"/>
+
+                <TextView
+                    android:text="Provincia:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Provincia"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/lbl_Localidad"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:text="textView_Provincia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Provincia"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/lbl_Provincia"
+                    android:layout_alignBaseline="@+id/lbl_Provincia"/>
+
+                <TextView
+                    android:text="Dirección:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Direccion"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="normal|bold"
+                    android:layout_below="@+id/lbl_Provincia"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:text="textView_Direccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Direccion"
+                    android:lines="3"
+                    android:layout_below="@+id/lbl_Direccion"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <TextView
+                    android:text="Precios:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Precios"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="true"
+                    android:layout_below="@+id/textView_Direccion"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:text="Sin plomo 95:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Gasolina95"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="normal|italic"
+                    android:layout_below="@+id/lbl_Precios"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:id="@+id/textView_Gasolina95"
+                    android:textStyle="normal|italic"
+                    android:text="0.0 €"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/lbl_Gasolina95"
+                    android:layout_alignBottom="@+id/lbl_Gasolina95"
+                    android:layout_toRightOf="@+id/lbl_Gasolina95" />
+
+                <Button
+                    android:text="-0.0"
+                    android:id="@+id/button_Gasolina95"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/textView_Gasolina95"
+                    android:layout_alignBottom="@+id/textView_Gasolina95"
+                    android:layout_toRightOf="@+id/textView_Gasolina95"/>
+
+                <TextView
+                    android:text="Sin plomo 98:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Gasolina98"
+                    android:layout_marginTop="30dp"
+                    android:textStyle="normal|italic"
+                    android:layout_below="@+id/lbl_Gasolina95"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:id="@+id/textView_Gasolina98"
+                    android:textStyle="normal|italic"
+                    android:text="0.0 €"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/lbl_Gasolina98"
+                    android:layout_alignBottom="@+id/lbl_Gasolina98"
+                    android:layout_toRightOf="@+id/lbl_Gasolina98" />
+
+                <Button
+                    android:text="-0.0"
+                    android:id="@+id/button_Gasolina98"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/textView_Gasolina98"
+                    android:layout_alignBottom="@+id/textView_Gasolina98"
+                    android:layout_toRightOf="@+id/textView_Gasolina98"/>
+
+                <TextView
+                    android:text="Diesel:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Diesel"
+                    android:layout_marginTop="30dp"
+                    android:textStyle="normal|italic"
+                    android:layout_below="@+id/lbl_Gasolina98"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:id="@+id/textView_Diesel"
+                    android:textStyle="normal|italic"
+                    android:text="0.0 €"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/lbl_Diesel"
+                    android:layout_alignBottom="@+id/lbl_Diesel"
+                    android:layout_toRightOf="@+id/lbl_Diesel" />
+
+                <Button
+                    android:text="-0.0"
+                    android:id="@+id/button_Diesel"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/textView_Diesel"
+                    android:layout_alignBottom="@+id/textView_Diesel"
+                    android:layout_toRightOf="@+id/textView_Diesel"/>
+
+                <TextView
+                    android:text="Diesel Plus:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_DieselPlus"
+                    android:layout_marginTop="30dp"
+                    android:textStyle="normal|italic"
+                    android:layout_below="@+id/lbl_Diesel"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:id="@+id/textView_DieselPlus"
+                    android:textStyle="normal|italic"
+                    android:text="0.0 €"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/lbl_DieselPlus"
+                    android:layout_alignBottom="@+id/lbl_DieselPlus"
+                    android:layout_toRightOf="@+id/lbl_DieselPlus" />
+
+                <Button
+                    android:text="-0.0"
+                    android:id="@+id/button_DieselPlus"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBaseline="@+id/textView_DieselPlus"
+                    android:layout_alignBottom="@+id/textView_DieselPlus"
+                    android:layout_toRightOf="@+id/textView_DieselPlus"/>
+
+                <TextView
+                    android:text="Ubicación:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Ubicacion"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/lbl_DieselPlus"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_mapmode"
+                    android:id="@+id/imageButton_Mapa"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/lbl_Ubicacion"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:text="Horario:"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_Horario"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="true"
+                    android:layout_alignBaseline="@+id/lbl_Ubicacion"
+                    android:layout_alignBottom="@+id/lbl_Ubicacion"
+                    android:layout_toRightOf="@+id/lbl_Ubicacion" />
+
+                <TextView
+                    android:text="Abierto!!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Estado"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="true"
+                    android:layout_alignBaseline="@+id/lbl_Horario"
+                    android:layout_alignBottom="@+id/lbl_Horario"
+                    android:layout_toRightOf="@+id/lbl_Horario" />
+
+                <TextView
+                    android:text="textView_Horario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_Horario"
+                    android:lines="3"
+                    android:layout_below="@+id/lbl_Horario"
+                    android:layout_alignLeft="@+id/lbl_Horario"
+                    android:layout_alignStart="@+id/lbl_Horario"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+
