@@ -31,17 +31,30 @@ public class GasolinerasDAO implements IGasolinerasDAO {
     }
 
     @Override
-    public List<Gasolinera> getListGasolineras(String CCAA){
+    public List<Gasolinera> getListGasolineras(String CCAA, boolean bForceLocal){
 
         try {
-            DataFetch dataFetch = new RemoteFetch(CCAA);
-            dataFetch.getJSON();
-            listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+            DataFetch dataFetch;
+            List<Gasolinera> laux;
 
-            if(listaGasolineras == null || listaGasolineras.isEmpty()){
+            if(!bForceLocal) {
+                dataFetch = new RemoteFetch(CCAA);
+                dataFetch.getJSON();
+
+                if(dataFetch.getBufferedData()!=null) {
+                    listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+                }else{
+                    bForceLocal = true;
+                }
+            }
+
+            if(bForceLocal) {
                 dataFetch = new LocalFetch();
                 dataFetch.getJSON();
-                listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+
+                if (dataFetch.getBufferedData() != null) {
+                    listaGasolineras = ParserJSON.readJsonStream(dataFetch.getBufferedData());
+                }
             }
 
         }catch(Exception e){
