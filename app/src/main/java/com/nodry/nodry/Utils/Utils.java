@@ -152,7 +152,7 @@ public class Utils {
             }
             baos.flush();
 
-            if (strFileContents.indexOf(EMPTY_DATA_RECEIVED)!=-1){
+            if (strFileContents.indexOf(EMPTY_DATA_RECEIVED)== -1){
 
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
                 outputStreamWriter.write(strFileContents);
