@@ -8,4 +8,5 @@
     <string name="lbl_gasolina">Gasolina:</string>
     <string name="action_actualizar">Actualizar</string>
     <string name="datos_no_encontrados">No se encontraron datos</string>
+    <string name="action_ordenar">Ordenar</string>
 </resources>

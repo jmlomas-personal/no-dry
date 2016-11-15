@@ -8,6 +8,12 @@
         android:title="@string/action_filtros"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_ordenar"
+        android:orderInCategory="100"
+        android:icon="@drawable/flecha"
+        android:title="@string/action_ordenar"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_actualizar"
         android:orderInCategory="100"
         android:icon="@drawable/actualizar"
