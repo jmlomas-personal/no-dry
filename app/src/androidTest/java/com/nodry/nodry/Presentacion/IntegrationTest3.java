@@ -1,5 +1,7 @@
 package com.nodry.nodry.Presentacion;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,10 +11,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.nodry.nodry.R;
+import com.nodry.nodry.Utils.DataFetch;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +31,12 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTest3 {
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        Context context = InstrumentationRegistry.getTargetContext();
+        DataFetch.setContext(context);
+    }
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);

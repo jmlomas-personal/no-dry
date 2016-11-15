@@ -5,25 +5,19 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Datos.MasBaratas;
+import com.nodry.nodry.Negocio.MasBaratas;
 import com.nodry.nodry.Negocio.GestionGasolineras;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.Utils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

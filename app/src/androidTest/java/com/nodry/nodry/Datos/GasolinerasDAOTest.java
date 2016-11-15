@@ -1,8 +1,13 @@
 package com.nodry.nodry.Datos;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
+import com.nodry.nodry.Utils.DataFetch;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,6 +26,12 @@ public class GasolinerasDAOTest {
 
     private static final String GALICIA_ID = "12";
     private static final List<String>  PROVINCIAS_GALICIA = new ArrayList<String>(Arrays.asList("CORUÑA (A)","LUGO","OURENSE","PONTEVEDRA"));
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        Context context = InstrumentationRegistry.getTargetContext();
+        DataFetch.setContext(context);
+    }
 
     @Before
     public void setUp() throws Exception {

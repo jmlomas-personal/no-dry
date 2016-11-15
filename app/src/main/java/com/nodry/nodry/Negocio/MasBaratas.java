@@ -1,4 +1,6 @@
-package com.nodry.nodry.Datos;
+package com.nodry.nodry.Negocio;
+
+import com.nodry.nodry.Datos.Gasolinera;
 
 /**
  * Created by Juan Manuel Lomas on 09/11/2016.

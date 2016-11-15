@@ -1,5 +1,7 @@
 package com.nodry.nodry.Utils;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
 import com.nodry.nodry.Datos.Gasolinera;
@@ -162,6 +164,9 @@ public class ParserJSONTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        Context context = InstrumentationRegistry.getTargetContext();
+        DataFetch.setContext(context);
+
         remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         listaGasolineras = ParserJSON.readJsonStream(stream);
