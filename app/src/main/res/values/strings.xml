@@ -9,4 +9,6 @@
     <string name="action_actualizar">Actualizar</string>
     <string name="datos_no_encontrados">No se encontraron datos</string>
     <string name="action_ordenar">Ordenar</string>
+    <string name="lbl_dieselb">Diesel b:</string>
+    <string name="lbl_gasolina98">Gasolina98:</string>
 </resources>

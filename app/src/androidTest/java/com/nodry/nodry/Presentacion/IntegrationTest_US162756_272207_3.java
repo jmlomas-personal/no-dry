@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest3 {
+public class IntegrationTest_US162756_272207_3 {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

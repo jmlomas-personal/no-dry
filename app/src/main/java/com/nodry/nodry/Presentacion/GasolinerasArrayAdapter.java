@@ -65,6 +65,8 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         TextView direccion = (TextView) view.findViewById(R.id.direccion);
         TextView diesel = (TextView) view.findViewById(R.id.diesel);
         TextView gasolina = (TextView) view.findViewById(R.id.gasolina);
+        TextView dieselb=(TextView) view.findViewById(R.id.dieselb);
+        TextView gasolina98=(TextView) view.findViewById(R.id.gasolina98);
         ImageView image = (ImageView) view.findViewById(R.id.image);
 
         //set address and description
@@ -94,6 +96,8 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         //price.setText("$" + String.valueOf(gasolinera.getGasoleo_a()));
         diesel.setText(String.valueOf(gasolinera.getGasoleo_a()) + "€/L");
         gasolina.setText(String.valueOf(gasolinera.getGasolina_95() + "€/L"));
+        dieselb.setText(String.valueOf(gasolinera.getGasoleo_b()) + "€/L");
+        gasolina98.setText(String.valueOf(gasolinera.getGasolina_98() + "€/L"));
         //carspot.setText("Car: " + String.valueOf(property.getCarspots()));
 
         //get the image associated with this property
