@@ -34,24 +34,24 @@ public class DetailsActivityTest {
     List<Gasolinera> listaGasolineras;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-    @Rule
-    public ActivityTestRule<DetailsActivity> mActivityDetailsTestRule = new ActivityTestRule<>(DetailsActivity.class);
+    public ActivityTestRule<DetailsActivity> mActivityDetailsTestRule = new ActivityTestRule<>(DetailsActivity.class, true, false);
 
     @Test
     public void testIntent() {
-        Context targetContext = InstrumentationRegistry.getInstrumentation()
-                .getTargetContext();
+        Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
         listaGasolineras = new ArrayList<Gasolinera>();
         for(int i=0;i<2;i++){
             Gasolinera gas = new Gasolinera(i,"Santander","Cantabria","Calle Falsa 1 2 3",0.97,1.07,"Gasolinera "+i,1.06,1.15,"L-D: 08:00-21:00",43.395944,-4.155194);
             listaGasolineras.add(gas);
         }
+
         Intent intent = new Intent(targetContext, DetailsActivity.class);
         intent.putExtra("CCAA",06);
         intent.putExtra("IDEESS", listaGasolineras.get((int)1).getIDEESS());
         intent.putExtra("listaGasolineras",(Serializable)listaGasolineras);
         mActivityDetailsTestRule.launchActivity(intent);
+
     /* Your activity is initialized and ready to go. */
         onView(withId(R.id.imageView_icono)).check(matches(isDisplayed()));
 

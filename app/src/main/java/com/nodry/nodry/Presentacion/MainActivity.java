@@ -1,8 +1,10 @@
 package com.nodry.nodry.Presentacion;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,8 +18,11 @@ import android.widget.TextView;
 
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Negocio.GestionGasolineras;
+import com.nodry.nodry.Negocio.TipoGasolina;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.DataFetch;
+import com.nodry.nodry.Utils.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,8 +44,10 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
     ArrayAdapter<Gasolinera> adapter;
 
     GetGasolinerasTask getGasolinerasTask;
+    GestionGasolineras gestionGasolineras;
     Intent intent;
     String CCAA;
+    TipoGasolina tiposgasolina;
     TextView IDEESS;
 
     @Override
@@ -70,13 +77,15 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
             CCAA = IGasolinerasDAO.DEFAULT_CCAA;
         }
 
+        refresh();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        refresh();
+        //refresh();
     }
+
     @Override
     public void conexionIncorrecta(String mensaje){
         textView=(TextView) findViewById(R.id.textViewError);
@@ -116,8 +125,11 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
         if (id == R.id.action_filtros) {
             openFiltrosActivity();
         }
-        if(id== R.id.action_actualizar){
+        if(id == R.id.action_actualizar){
             refresh();
+        }
+        if(id == R.id.action_ordenar){
+            openOrderDialog();
         }
 
         return super.onOptionsItemSelected(item);
@@ -130,6 +142,41 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
         Intent myIntent = new Intent(this, FiltersActivity.class);
         myIntent.putExtra("CCAA", CCAA); //Optional parameters
         this.startActivity(myIntent);
+    }
+
+    private void openOrderDialog(){
+
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Tipos de Carburante");
+
+        b.setItems(Utils.tiposGasolina, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+                switch(which){
+                    case 0:
+                        tiposgasolina = TipoGasolina.SINPLOMO95;
+                        break;
+                    case 1:
+                        tiposgasolina = TipoGasolina.SINPLOMO98;
+                        break;
+                    case 2:
+                        tiposgasolina = TipoGasolina.DIESEL;
+                        break;
+                    case 3:
+                        tiposgasolina = TipoGasolina.DIESELPLUS;
+                        break;
+                }
+
+                refresh();
+
+            }
+
+        });
+
+        b.show();
     }
 
     @Override

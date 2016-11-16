@@ -4,6 +4,8 @@ import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.GasolinerasDAO;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,9 +26,9 @@ public class GestionGasolineras implements IGestionGasolineras {
     }
 
     @Override
-    public List<Gasolinera> getGasolineras(String CCAA, boolean bForceLocal) {
+    public List<Gasolinera> getGasolineras(HashMap<String, String> filtros, boolean bForceLocal) {
 
-        return gasolinerasDAO.getListGasolineras(CCAA, bForceLocal);
+        return gasolinerasDAO.getListGasolineras(filtros, bForceLocal);
 
     }
 
@@ -75,6 +77,11 @@ public class GestionGasolineras implements IGestionGasolineras {
         }
 
         return masBaratas;
+    }
+
+    public List<Gasolinera> ordenarPorPrecio(List<Gasolinera> listaGasolineras, TipoGasolina tipoGasolina){
+        Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
+        return listaGasolineras;
     }
 
 }

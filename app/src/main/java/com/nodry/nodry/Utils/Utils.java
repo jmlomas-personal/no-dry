@@ -111,7 +111,10 @@ public class Utils {
         CCAAList.add("Navarra");
         CCAAList.add("País Vasco");
         CCAAList.add("Rioja (La)");
+
     }
+
+    public static String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
 
     /**
      * Funcion que nos devuelve una tabla con la laista de

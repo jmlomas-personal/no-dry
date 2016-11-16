@@ -1,5 +1,6 @@
 package com.nodry.nodry.Datos;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,5 +19,5 @@ public interface IGasolinerasDAO {
      * para una determinada CCAA
      * @return Lista con las gasolineras de la CCAA
      */
-    List<Gasolinera> getListGasolineras(String CCAA, boolean bForceLocal);
+    List<Gasolinera> getListGasolineras(HashMap<String, String> filtros, boolean bForceLocal);
 }
