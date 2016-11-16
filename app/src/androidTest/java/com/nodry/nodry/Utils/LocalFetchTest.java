@@ -2,28 +2,29 @@ package com.nodry.nodry.Utils;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.util.Log;
 
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- * Created by MacbookAir on 15/11/16.
+ * Created by MacbookAir on 16/11/16.
  */
 
 public class LocalFetchTest {
-
     private static final String TEST_LOCAL_FILE_NAME = "localFileText.txt";
 
     private static final String TEST_ROTULO             = "CEPSA";
@@ -36,7 +37,7 @@ public class LocalFetchTest {
 
     private static Context context;
 
-    //private static RemoteFetch remoteFetch;
+    private static LocalFetch localFetch;
     public static BufferedInputStream bufferedDataGasolinerasTest;
     private static InputStream stream;
     private static List<Gasolinera> listaGasolineras;
@@ -168,6 +169,11 @@ public class LocalFetchTest {
                     "\"ResultadoConsulta\": \"OK\"" +
                     "}";
 
+    @Before
+    public void setUp() throws Exception {
+        localFetch = new LocalFetch();
+    }
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
@@ -175,29 +181,22 @@ public class LocalFetchTest {
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
 
-        //remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
-
-        //listaGasolineras = ParserJSON.readJsonStream(stream);
     }
 
     @Test
-    public void writtenFileExistsTest(){
+    public void ReadFileNotNull(){
+
         Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
-        String path = context.getFilesDir() + "/" +TEST_LOCAL_FILE_NAME;
-        File f = new File(path);
-        assertTrue(f.exists());
+
+        try {
+            localFetch.getJSON();
+        }
+        catch(IOException e) {
+            Log.d("El test no paso", e.toString());
+            fail();
+        }
+
+        assertNotNull(localFetch.getBufferedData());
     }
 
-    @Test
-    public void writtenFileNotNullTest(){
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
-        bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, context);
-
-        assertNotNull(bufferedDataGasolinerasTest);
-    }
-
-    @Test
-    public void writtenFileListSize(){
-
-    }
 }
