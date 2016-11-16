@@ -34,6 +34,8 @@ public class LocalFetchTest {
     private static final Double TEST_PRECIO_GASOLINA    = 1.205;
     private static final Integer TEST_IDEESS            = 1039;
 
+    private static Context context;
+
     //private static RemoteFetch remoteFetch;
     public static BufferedInputStream bufferedDataGasolinerasTest;
     private static InputStream stream;
@@ -168,7 +170,7 @@ public class LocalFetchTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getTargetContext();
         DataFetch.setContext(context);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
@@ -180,15 +182,16 @@ public class LocalFetchTest {
 
     @Test
     public void writtenFileExistsTest(){
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, DataFetch.context);
-        File f = new File(TEST_LOCAL_FILE_NAME);
+        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
+        String path = context.getFilesDir() + "/" +TEST_LOCAL_FILE_NAME;
+        File f = new File(path);
         assertTrue(f.exists());
     }
 
     @Test
     public void writtenFileNotNullTest(){
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, DataFetch.context);
-        bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, DataFetch.context);
+        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
+        bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, context);
 
         assertNotNull(bufferedDataGasolinerasTest);
     }
