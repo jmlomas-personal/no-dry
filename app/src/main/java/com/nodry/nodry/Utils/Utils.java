@@ -114,7 +114,7 @@ public class Utils {
 
     }
 
-    public static String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
+    public static final String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
 
     /**
      * Funcion que nos devuelve una tabla con la laista de

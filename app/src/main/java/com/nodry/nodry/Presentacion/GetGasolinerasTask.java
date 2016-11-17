@@ -15,6 +15,7 @@ import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Negocio.GestionGasolineras;
 import com.nodry.nodry.Negocio.IGestionGasolineras;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
     private Context context;
 
     // String con la comunidad de las gasolineras a obtener
-    private String CCAA;
+    private HashMap<String, String> filtros;
 
     // Adapter que se encargara de presentar los datos una vez obtenidos
     private ArrayAdapter adapter;
@@ -58,10 +59,10 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
      * @param adapter con el adaptador que visualizara los datos
      * @param context con la actividad origen de la llamada
      */
-    public GetGasolinerasTask (ArrayAdapter adapter, String CCAA, Context context){
+    public GetGasolinerasTask (ArrayAdapter adapter, HashMap<String, String> filtros, Context context){
         this.adapter = adapter;
-        this.CCAA = CCAA;
         this.context = context;
+        this.filtros = filtros;
         this.handler = new Handler();
         this.cancelerTask = new CancelerTask(this, this.context);
 
@@ -90,7 +91,7 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
         gestionGasolineras = new GestionGasolineras();
 
-        return gestionGasolineras.getGasolineras(CCAA, false);
+        return gestionGasolineras.getGasolineras(filtros, false);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.nodry.nodry.Negocio;
 
 import com.nodry.nodry.Datos.Gasolinera;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface IGestionGasolineras {
      * para una comunidad autonoma especifica.
      * @return la lista de gasolineras de esa CCAA
      */
-    List<Gasolinera> getGasolineras(String CCAA, boolean bForceLocal);
+    List<Gasolinera> getGasolineras(HashMap<String, String>filtros, boolean bForceLocal);
     Gasolinera getGasolinera(int IDEESS, List<Gasolinera> listaGasolineras);
 
 }

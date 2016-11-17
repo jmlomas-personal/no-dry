@@ -26,6 +26,7 @@ import com.nodry.nodry.Utils.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
     GestionGasolineras gestionGasolineras;
     Intent intent;
     String CCAA;
-    TipoGasolina tiposgasolina;
+    String PRECIO;
     TextView IDEESS;
 
     @Override
@@ -98,12 +99,21 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
      */
     private void refresh()
     {
+        HashMap<String, String> filtros = new HashMap<String, String>();
+        if(CCAA!=null && !CCAA.trim().equals("")){
+            filtros.put("CCAA", CCAA);
+        }
+
+        if(PRECIO!=null && !PRECIO.trim().equals("")){
+            filtros.put("PRECIO", PRECIO);
+        }
+
         if(listView.getVisibility()==View.GONE){
             listView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
         }
         // Obtenemos el listado de Gasolineras
-        getGasolinerasTask = new GetGasolinerasTask(adapter, CCAA, this);
+        getGasolinerasTask = new GetGasolinerasTask(adapter, filtros, this);
         getGasolinerasTask.execute();
     }
 
@@ -126,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
             openFiltrosActivity();
         }
         if(id == R.id.action_actualizar){
+            PRECIO = null;
             refresh();
         }
         if(id == R.id.action_ordenar){
@@ -155,23 +166,9 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.dismiss();
-                switch(which){
-                    case 0:
-                        tiposgasolina = TipoGasolina.SINPLOMO95;
-                        break;
-                    case 1:
-                        tiposgasolina = TipoGasolina.SINPLOMO98;
-                        break;
-                    case 2:
-                        tiposgasolina = TipoGasolina.DIESEL;
-                        break;
-                    case 3:
-                        tiposgasolina = TipoGasolina.DIESELPLUS;
-                        break;
-                }
+                PRECIO = Utils.tiposGasolina[which];
 
                 refresh();
-
             }
 
         });

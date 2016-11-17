@@ -3,8 +3,11 @@ package com.nodry.nodry.Negocio;
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.GasolinerasDAO;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,8 +31,34 @@ public class GestionGasolineras implements IGestionGasolineras {
     @Override
     public List<Gasolinera> getGasolineras(HashMap<String, String> filtros, boolean bForceLocal) {
 
-        return gasolinerasDAO.getListGasolineras(filtros, bForceLocal);
+        List<Gasolinera> listaGasolineras = gasolinerasDAO.getListGasolineras(filtros.get("CCAA"), bForceLocal);
 
+        Comparator comp = null;
+        TipoGasolina tipoGasolina = null;
+
+        if(filtros.containsKey("PRECIO")){
+            String PRECIO = filtros.get("PRECIO");
+
+            switch(PRECIO){
+                case "Sin Plomo 95":
+                    tipoGasolina = TipoGasolina.SINPLOMO95;
+                    break;
+                case "Sin Plomo 98":
+                    tipoGasolina = TipoGasolina.SINPLOMO98;
+                    break;
+                case "Diesel":
+                    tipoGasolina = TipoGasolina.DIESEL;
+                    break;
+                case "Diesel Plus":
+                    tipoGasolina = TipoGasolina.DIESELPLUS;
+                    break;
+            }
+
+            Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
+            removeZeroValue(tipoGasolina, listaGasolineras);
+        }
+
+        return listaGasolineras;
     }
 
     @Override
@@ -43,6 +72,39 @@ public class GestionGasolineras implements IGestionGasolineras {
         }
 
         return gasolinera;
+    }
+
+    private void removeZeroValue(TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+        boolean bdel = false;
+        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
+
+        for(Gasolinera g : listaGasolineras){
+
+            bdel = false;
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    bdel = (g.getGasolina_95() == 0);
+                    break;
+                case SINPLOMO98:
+                    bdel = (g.getGasolina_98() == 0);
+                    break;
+                case DIESEL:
+                    bdel = (g.getGasoleo_a() == 0);
+                    break;
+                case DIESELPLUS:
+                    bdel = (g.getGasoleo_b() == 0);
+                    break;
+            }
+
+            if(bdel){
+                removeList.add(g);
+            }
+
+        }
+
+        listaGasolineras.removeAll(removeList);
+
     }
 
     public MasBaratas getMasBaratas(String localidad, List<Gasolinera> listaGasolineras){

@@ -8,6 +8,7 @@ import com.nodry.nodry.Utils.ParserJSON;
 import com.nodry.nodry.Utils.RemoteFetch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class GasolinerasDAO implements IGasolinerasDAO {
         }catch(Exception e){
             e.printStackTrace();
         }
+
         return listaGasolineras;
     }
 
