@@ -121,7 +121,7 @@ public class ParserJSON{
                 gasoleoA = Double.parseDouble(reader.nextString().replace(",","."));
             }else if(name.equals("Precio Gasolina 95 Protección") && reader.peek() != JsonToken.NULL) {
                 sinplomo95 = Double.parseDouble(reader.nextString().replace(",", "."));
-            }else if(name.equals("Precio Gasoleo B") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals("Precio Nuevo Gasoleo A") && reader.peek() != JsonToken.NULL) {
                 gasoleoB = Double.parseDouble(reader.nextString().replace(",","."));
             }else if(name.equals("Precio Gasolina  98") && reader.peek() != JsonToken.NULL) {
                 sinplomo98 = Double.parseDouble(reader.nextString().replace(",", "."));

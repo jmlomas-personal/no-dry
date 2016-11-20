@@ -5,10 +5,10 @@
     <string name="datos_exito">Datos obtenidos con éxito</string>
     <string name="datos_no_obtenidos">No se han podido obtener los datos</string>
     <string name="lbl_diesel">Diesel:</string>
-    <string name="lbl_gasolina">Gasolina:</string>
+    <string name="lbl_gasolina">Sin Plomo 95:</string>
     <string name="action_actualizar">Actualizar</string>
     <string name="datos_no_encontrados">No se encontraron datos</string>
     <string name="action_ordenar">Ordenar</string>
-    <string name="lbl_dieselb">Diesel b:</string>
-    <string name="lbl_gasolina98">Gasolina98:</string>
+    <string name="lbl_dieselb">Diesel Plus:</string>
+    <string name="lbl_gasolina98">Sin Plomo 98:</string>
 </resources>
