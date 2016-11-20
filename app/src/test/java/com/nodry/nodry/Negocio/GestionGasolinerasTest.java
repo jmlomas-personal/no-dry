@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -19,10 +21,13 @@ public class GestionGasolinerasTest {
 
     @Mock
     IGestionGasolineras gestionGasolinera;
+    HashMap<String, String> filtros;
 
     @Before
     public void setUp() throws Exception{
         gestionGasolinera = mock(IGestionGasolineras.class);
+        filtros = new HashMap<String, String>();
+        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
     }
 
     /**
@@ -30,8 +35,8 @@ public class GestionGasolinerasTest {
      */
     @Test
     public void getListGasolinerasTest(){
-        gestionGasolinera.getGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
-        verify(gestionGasolinera).getGasolineras(IGasolinerasDAO.DEFAULT_CCAA, false);
+        gestionGasolinera.getGasolineras(filtros, false);
+        verify(gestionGasolinera).getGasolineras(filtros, false);
     }
 
 }

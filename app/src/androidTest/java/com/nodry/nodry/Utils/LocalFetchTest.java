@@ -180,7 +180,6 @@ public class LocalFetchTest {
         DataFetch.setContext(context);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
-
     }
 
     @Test
