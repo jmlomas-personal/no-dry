@@ -37,6 +37,7 @@ public class Utils {
 
     private static Map<String, String> CCAAbyID;
     private static Map<String, String> CCAAbyValue;
+
     private static List<String> CCAAList;
 
     private final static String MSG_NO_GOOGLE_MAPS = "Google maps no instalado";
@@ -69,6 +70,8 @@ public class Utils {
         CCAAbyID.put("15", "Navarra");
         CCAAbyID.put("16", "País Vasco");
         CCAAbyID.put("17", "Rioja (La)");
+
+
 
         CCAAbyValue = new HashMap<String, String>();
         CCAAbyValue.put("Andalucia", "01");
@@ -133,9 +136,12 @@ public class Utils {
         return CCAAbyValue.get(Value);
     }
 
+    //public static String getRestTipoCombustibleID(String ID){};
+
     public static List<String> getRestCCAAAAsList(){
         return CCAAList;
     }
+    public static String[] getRestCombustibleList(){return tiposGasolina;}
 
     public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) {
         BufferedInputStream result = null;

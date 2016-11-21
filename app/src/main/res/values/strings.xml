@@ -11,4 +11,6 @@
     <string name="action_ordenar">Ordenar</string>
     <string name="lbl_dieselb">Diesel Plus:</string>
     <string name="lbl_gasolina98">Sin Plomo 98:</string>
+    <string name="minimo">Mínimo: </string>
+    <string name="maximo">Máximo: </string>
 </resources>

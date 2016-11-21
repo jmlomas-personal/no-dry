@@ -23,12 +23,16 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
     Intent intent;
     String CCAA;
+    double precioMaximo;
+    String tipoCombustible;
     Spinner spinner;
+    Spinner spinner2;
     Button btnFiltrar;
 
     // Mensajes de error
     private final static String MSG_FILTER_ERROR_CCAA = "Seleccione una CCAA valida";
-
+    private final static String MSG_FILTER_ERROR_COMBUS="Seleccione un valor máximo";
+    private final static String MSG_FILTER_ERROR_NEG="El número introducido es negativo";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,9 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         spinner = (Spinner) findViewById(R.id.spinner_CCAA);
         spinner.setOnItemSelectedListener(this);
 
+        spinner2=(Spinner) findViewById(R.id.spinner_Filtros);
+        spinner2.setOnItemSelectedListener(this);
+
         // Create an ArrayAdapter using a HashMap
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.add("Seleccione...");
@@ -57,7 +64,17 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         intent = getIntent();
         CCAA = intent.getStringExtra("CCAA");
 
+
         spinner.setSelection(adapter.getPosition(Utils.getRestCCAAAByID(CCAA)));
+
+        //Añadido
+        ArrayAdapter<String>adapter1=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item);
+        adapter1.add("Seleccione...");
+        adapter1.addAll(Utils.getRestCombustibleList());
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter1);
+
+
 
     }
 
@@ -97,6 +114,16 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             spinner.requestFocus();
             bOk = false;
         }
+        if(tipoCombustible!=null && precioMaximo==0.0){
+            msg=MSG_FILTER_ERROR_COMBUS;
+            spinner.requestFocus();
+            bOk=false;
+        }
+        if(tipoCombustible!=null && precioMaximo<0.0){
+            msg=MSG_FILTER_ERROR_NEG;
+            spinner.requestFocus();
+            bOk=false;
+        }
 
         if(!bOk){
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
@@ -104,6 +131,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         return bOk;
     }
+
 
     /**
      * Metodo que abre la pantalla principal
