@@ -144,52 +144,42 @@ public class Utils {
         return CCAAList;
     }
 
-    public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) {
+    public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) throws IOException {
         BufferedInputStream result = null;
 
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            InputStream inAux;
 
-            byte[] contents = new byte[1024];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        InputStream inAux;
 
-            int bytesRead = 0;
-            String strFileContents = "";
+        byte[] contents = new byte[1024];
 
-            while ((bytesRead = in.read(contents)) != -1) {
-                baos.write(contents, 0, bytesRead);
-                strFileContents += new String(contents, 0, bytesRead);
-            }
-            baos.flush();
+        int bytesRead = 0;
+        String strFileContents = "";
 
-            if (strFileContents.indexOf(EMPTY_DATA_RECEIVED)== -1){
-
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-                outputStreamWriter.write(strFileContents);
-                outputStreamWriter.close();
-
-                inAux = new ByteArrayInputStream(baos.toByteArray());
-                result = new BufferedInputStream(inAux);
-            }
+        while ((bytesRead = in.read(contents)) != -1) {
+            baos.write(contents, 0, bytesRead);
+            strFileContents += new String(contents, 0, bytesRead);
         }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+        baos.flush();
+
+        if (strFileContents.indexOf(EMPTY_DATA_RECEIVED)== -1){
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+            outputStreamWriter.write(strFileContents);
+            outputStreamWriter.close();
+
+            inAux = new ByteArrayInputStream(baos.toByteArray());
+            result = new BufferedInputStream(inAux);
         }
 
         return result;
     }
 
-    public static BufferedInputStream readFromFile(String filename, Context context) {
+    public static BufferedInputStream readFromFile(String filename, Context context)  throws FileNotFoundException {
 
         BufferedInputStream bufferedDataGasolineras = null;
-
-        try {
-            InputStream inputStream = context.openFileInput(filename);
-            bufferedDataGasolineras = new BufferedInputStream(inputStream);
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        }
+        InputStream inputStream = context.openFileInput(filename);
+        bufferedDataGasolineras = new BufferedInputStream(inputStream);
 
         return bufferedDataGasolineras;
     }

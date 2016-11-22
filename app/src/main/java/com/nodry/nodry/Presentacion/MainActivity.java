@@ -160,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
     private void openFiltrosActivity(){
         Intent myIntent = new Intent(this, FiltersActivity.class);
         myIntent.putExtra("CCAA", CCAA); //Optional parameters
+        myIntent.putExtra("PRECIO", PRECIO); //Optional parameters
+        myIntent.putExtra("MAXVALUE", MAXVALUE); //Optional parameters
         this.startActivity(myIntent);
     }
 

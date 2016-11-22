@@ -85,12 +85,24 @@ public class IntegrationTest_US162756_272207_1 {
                 .onChildView(withId(R.id.lbldiesel))
                 .check(matches(withText(startsWith("Diesel:"))));
 
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.lbldieselb))
+                .check(matches(withText(startsWith("Diesel Plus:"))));
+
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))
                 .atPosition(0)
                 .onChildView(withId(R.id.lblgasolina))
-                .check(matches(withText(startsWith("Gasolina:"))));
+                .check(matches(withText(startsWith("Sin Plomo 95:"))));
+
+        onData(anything())
+                .inAdapterView(withId(R.id.customListView))
+                .atPosition(0)
+                .onChildView(withId(R.id.lblgasolina98))
+                .check(matches(withText(startsWith("Sin Plomo 98:"))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))

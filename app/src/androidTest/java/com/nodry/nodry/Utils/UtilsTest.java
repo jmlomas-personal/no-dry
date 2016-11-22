@@ -177,25 +177,30 @@ public class UtilsTest {
         DataFetch.setContext(context);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
-
-        //remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
-
-        //listaGasolineras = ParserJSON.readJsonStream(stream);
     }
 
     @Test
     public void writtenFileExistsTest(){
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
-        String path = context.getFilesDir() + "/" +TEST_LOCAL_FILE_NAME;
-        File f = new File(path);
-        assertTrue(f.exists());
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEST_LOCAL_FILE_NAME, context);
+            String path = context.getFilesDir() + "/" + TEST_LOCAL_FILE_NAME;
+            File f = new File(path);
+            assertTrue(f.exists());
+        } catch(IOException e) {
+            Log.d("El test no paso", e.toString());
+            fail();
+        }
     }
 
     @Test
     public void writtenFileNotNullTest(){
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
-        bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, context);
-
-        assertNotNull(bufferedDataGasolinerasTest);
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEST_LOCAL_FILE_NAME, context);
+            bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, context);
+            assertNotNull(bufferedDataGasolinerasTest);
+        } catch(IOException e) {
+            Log.d("El test no paso", e.toString());
+            fail();
+        }
     }
 }

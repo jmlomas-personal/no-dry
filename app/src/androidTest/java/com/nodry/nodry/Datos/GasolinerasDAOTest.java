@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -233,24 +234,23 @@ public class GasolinerasDAOTest {
 
     @Test
     public void getListGasolinerasLocalSize(){
-        Utils.writeToFile(bufferedDataGasolinerasTestListSize,TEMP_FILE_NAME, context);
-
         try {
+            Utils.writeToFile(bufferedDataGasolinerasTestListSize,TEMP_FILE_NAME, context);
             gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_TRUE);
             assertTrue(gasolineras.size() == 4);
-
         } catch (IndexOutOfBoundsException e) {
             Log.d("El test no paso", e.toString());
+            fail();
+        } catch (IOException e2) {
+            Log.d("El test no paso", e2.toString());
             fail();
         }
     }
 
     @Test
     public void getListGasolinerasLocal(){
-
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEMP_FILE_NAME, context);
-
         try {
+            Utils.writeToFile(bufferedDataGasolinerasTest,TEMP_FILE_NAME, context);
             gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_TRUE);
             Assert.assertTrue(
                     gasolineras.get(0).getRotulo().equals(TEST_ROTULO)
@@ -264,6 +264,9 @@ public class GasolinerasDAOTest {
 
         } catch (IndexOutOfBoundsException e) {
             Log.d("El test no paso", e.toString());
+            fail();
+        } catch (IOException e2) {
+            Log.d("El test no paso", e2.toString());
             fail();
         }
     }

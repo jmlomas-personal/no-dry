@@ -209,68 +209,87 @@ public class GasolinerasOrdenadasDAOTest {
     @Test
     public void getListaOrdenadaGasolina95Test(){
 
-        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
 
-        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
-        filtros.put("PRECIO", Utils.tiposGasolina[0]);
-        gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
+            filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+            filtros.put("PRECIO", Utils.tiposGasolina.get(0));
+            gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
 
-        Assert.assertTrue(gasolineras.get(0).getGasolina_95() == TEST_PRECIO_GASOLINA
-                        &&  gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
-                        &&  gasolineras.get(0).getIDEESS() == TEST_IDEESS
-                        &&  gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
-                        &&  gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
-        );
+            Assert.assertTrue(gasolineras.get(0).getGasolina_95() == TEST_PRECIO_GASOLINA
+                    && gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
+                    && gasolineras.get(0).getIDEESS() == TEST_IDEESS
+                    && gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
+                    && gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
+            );
+        }catch(Exception e){
+            Log.d("El test no paso", e.toString());
+            Assert.fail();
+        }
     }
 
     @Test
     public void getListaOrdenadaGasolina98Test(){
 
-        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
 
-        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
-        filtros.put("PRECIO", Utils.tiposGasolina[1]);
-        gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
+            filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+            filtros.put("PRECIO", Utils.tiposGasolina.get(1));
+            gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
 
-        Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLINA98
-                &&  gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
-                &&  gasolineras.get(0).getIDEESS() == TEST_IDEESS
-                &&  gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
-                &&  gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
-        );
+            Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLINA98
+                    && gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
+                    && gasolineras.get(0).getIDEESS() == TEST_IDEESS
+                    && gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
+                    && gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
+            );
+        }catch(Exception e){
+            Log.d("El test no paso", e.toString());
+            Assert.fail();
+        }
     }
 
     @Test
     public void getListaOrdenadaGasoleoTest(){
 
-        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
 
-        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
-        filtros.put("PRECIO", Utils.tiposGasolina[2]);
-        gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
+            filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+            filtros.put("PRECIO", Utils.tiposGasolina.get(2));
+            gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
 
-        Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLEO
-                &&  gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
-                &&  gasolineras.get(0).getIDEESS() == TEST_IDEESS
-                &&  gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
-                &&  gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
-        );
+            Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLEO
+                    && gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
+                    && gasolineras.get(0).getIDEESS() == TEST_IDEESS
+                    && gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
+                    && gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
+            );
+        }catch(Exception e){
+            Log.d("El test no paso", e.toString());
+            Assert.fail();
+        }
     }
 
     @Test
     public void getListaOrdenadaGasoleoPlusTest(){
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
 
-        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
+            filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+            filtros.put("PRECIO", Utils.tiposGasolina.get(3));
+            gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
 
-        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
-        filtros.put("PRECIO", Utils.tiposGasolina[3]);
-        gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
-
-        Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLEO_PLUS
-                &&  gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
-                &&  gasolineras.get(0).getIDEESS() == TEST_IDEESS
-                &&  gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
-                &&  gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
-        );
+            Assert.assertTrue(gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLEO_PLUS
+                    && gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
+                    && gasolineras.get(0).getIDEESS() == TEST_IDEESS
+                    && gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
+                    && gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
+            );
+        }catch(Exception e){
+            Log.d("El test no paso", e.toString());
+            Assert.fail();
+        }
     }
 }

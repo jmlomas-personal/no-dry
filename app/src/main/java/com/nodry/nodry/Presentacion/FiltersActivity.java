@@ -78,15 +78,17 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         spinner.setSelection(adapter.getPosition(Utils.getRestCCAAAByID(CCAA)));
 
         //Añadido
-        ArrayAdapter<String>adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter1.add("Seleccione...");
-        adapter1.addAll(Utils.tiposGasolina);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(adapter1);
+        ArrayAdapter<String>adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        adapter2.add("Seleccione...");
+        adapter2.addAll(Utils.tiposGasolina);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
 
-        spinner2.setSelection(adapter.getPosition(PRECIO));
+        spinner2.setSelection(adapter2.getPosition(PRECIO));
 
-        //maximo.setText(MAXVALUE.toString());
+        if(PRECIO!=null && MAXVALUE>0) {
+            maximo.setText(MAXVALUE.toString());
+        }
 
 
     }

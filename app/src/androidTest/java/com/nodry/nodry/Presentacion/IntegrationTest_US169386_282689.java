@@ -8,6 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Datos.IGasolinerasDAO;
 import com.nodry.nodry.R;
 
 import org.junit.Rule;
@@ -49,8 +50,8 @@ public class IntegrationTest_US169386_282689 {
             listaGasolineras.add(gas);
         }
         Intent intent = new Intent(targetContext, DetailsActivity.class);
-        intent.putExtra("CCAA",06);
-        intent.putExtra("IDEESS", listaGasolineras.get((int)1).getIDEESS());
+        intent.putExtra("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+        intent.putExtra("IDEESS", listaGasolineras.get(1).getIDEESS());
         intent.putExtra("listaGasolineras",(Serializable)listaGasolineras);
         mActivityDetailsTestRule.launchActivity(intent);
 
@@ -76,8 +77,8 @@ public class IntegrationTest_US169386_282689 {
         onView(withId(R.id.textView_Diesel)).check(matches(isDisplayed()));
         onView(withId(R.id.textView_DieselPlus)).check(matches(isDisplayed()));
         //Las etiquetas de los diferentes combustibles coinciden
-        onView(withId(R.id.lbl_Gasolina95)).check(matches(withText("Sin plomo 95:")));
-        onView(withId(R.id.lbl_Gasolina98)).check(matches(withText("Sin plomo 98:")));
+        onView(withId(R.id.lbl_Gasolina95)).check(matches(withText("Sin Plomo 95:")));
+        onView(withId(R.id.lbl_Gasolina98)).check(matches(withText("Sin Plomo 98:")));
         onView(withId(R.id.lbl_Diesel)).check(matches(withText("Diesel:")));
         onView(withId(R.id.lbl_DieselPlus)).check(matches(withText("Diesel Plus:")));
         //Los botones aparecen para las gasolineras más baratas

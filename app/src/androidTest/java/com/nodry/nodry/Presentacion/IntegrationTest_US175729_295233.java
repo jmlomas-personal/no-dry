@@ -11,6 +11,7 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -36,6 +37,7 @@ import org.junit.runner.RunWith;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.nodry.nodry.Utils.DataFetch.context;
 import static org.hamcrest.Matchers.allOf;
+import static org.junit.Assert.fail;
 
 
 @android.support.test.filters.LargeTest
@@ -231,27 +234,28 @@ public class IntegrationTest_US175729_295233 {
     @Test
     public void Ordenar_11() {
 
+        try {
+            ViewInteraction actionMenuItemView = onView(
+                    allOf(withId(R.id.action_ordenar), withContentDescription("Ordenar"), isDisplayed()));
+            actionMenuItemView.perform(click());
 
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_ordenar), withContentDescription("Ordenar"), isDisplayed()));
-        actionMenuItemView.perform(click());
-
-
-
-
-        onView(allOf(withId(android.R.id.text1), withText("Sin Plomo 95"),
-                        childAtPosition(allOf(withId(R.id.select_dialog_listview),
-                                withParent(withId(R.id.contentPanel))), 0),
-                        isDisplayed())).perform(click());
+            onView(allOf(withId(android.R.id.text1), withText("Sin Plomo 95"),
+                    childAtPosition(allOf(withId(R.id.select_dialog_listview),
+                            withParent(withId(R.id.contentPanel))), 0),
+                    isDisplayed())).perform(click());
 
 
-        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
+            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
 
-        filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
-        filtros.put("PRECIO", Utils.tiposGasolina[0]);
-        gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
+            filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
+            filtros.put("PRECIO", Utils.tiposGasolina.get(0));
+            gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
 
-        Assert.assertTrue(gasolineras.get(0).getGasolina_95() < gasolineras.get(1).getGasolina_95());
+            Assert.assertTrue(gasolineras.get(0).getGasolina_95() < gasolineras.get(1).getGasolina_95());
+        } catch (IOException e) {
+            Log.d("El test no paso", e.toString());
+            fail();
+        }
 
 
     }

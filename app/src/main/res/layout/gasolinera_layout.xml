@@ -37,16 +37,59 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:text="@string/dir"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:lines="2"/>
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/pricingSection"
+        android:id="@+id/sectiongasolina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image"
         android:orientation="vertical"
         >
+
+        <TextView
+            android:id="@+id/lblgasolina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:text="@string/lbl_gasolina"/>
+
+        <TextView
+            android:id="@+id/gasolina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/lblgasolina" />
+
+        <TextView
+            android:id="@+id/lblgasolina98"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_below="@+id/lblgasolina"
+            android:layout_marginLeft="10dp"
+            android:text="@string/lbl_gasolina98"/>
+
+        <TextView
+            android:id="@+id/gasolina98"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_below="@+id/gasolina"
+            android:layout_toRightOf="@id/lblgasolina98" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sectiondiesel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_toRightOf="@+id/sectiongasolina"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/lbldiesel"
@@ -65,35 +108,11 @@
             />
 
         <TextView
-            android:id="@+id/lblgasolina"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/diesel"
-            android:layout_marginLeft="10dp"
-            android:text="@string/lbl_gasolina"/>
-
-        <TextView
-            android:id="@+id/gasolina"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_toRightOf="@id/lblgasolina" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/nuevosPrecios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pricingSection"
-        android:orientation="vertical">
-
-        <TextView
             android:id="@+id/lbldieselb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_below="@+id/lbldiesel"
             android:layout_marginLeft="10dp"
             android:text="@string/lbl_dieselb"/>
 
@@ -101,25 +120,10 @@
             android:id="@+id/dieselb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/diesel"
             android:layout_toRightOf="@id/lbldieselb"
             android:layout_marginLeft="2dp"
             />
-
-        <TextView
-            android:id="@+id/lblgasolina98"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/dieselb"
-            android:layout_marginLeft="10dp"
-            android:text="@string/lbl_gasolina98"/>
-
-        <TextView
-            android:id="@+id/gasolina98"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_toRightOf="@id/lblgasolina98" />
 
     </RelativeLayout>
 

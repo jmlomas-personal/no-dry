@@ -85,8 +85,8 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
                 completeDireccion = gasolinera.getDireccion();//+",\n"+ gasolinera.getLocalidad();
 
         int descriptionLength = completeDireccion.length();
-        if(descriptionLength >= 32){
-            direccionTrim = completeDireccion.substring(0, 28) + "...";
+        if(descriptionLength >= 55){
+            direccionTrim = completeDireccion.substring(0, 50) + "...";
             direccion.setText(direccionTrim);
         }else{
             direccion.setText(completeDireccion);

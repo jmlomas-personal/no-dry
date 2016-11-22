@@ -185,17 +185,15 @@ public class LocalFetchTest {
     @Test
     public void ReadFileNotNull(){
 
-        Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
-
         try {
+            Utils.writeToFile(bufferedDataGasolinerasTest,TEST_LOCAL_FILE_NAME, context);
             localFetch.getJSON();
+            assertNotNull(localFetch.getBufferedData());
         }
         catch(IOException e) {
             Log.d("El test no paso", e.toString());
             fail();
         }
-
-        assertNotNull(localFetch.getBufferedData());
     }
 
 }
