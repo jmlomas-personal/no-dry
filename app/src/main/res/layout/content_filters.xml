@@ -46,50 +46,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_filter_CCAA"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@id/lbl_filter_CCAA"/>
     <TextView
         android:id="@+id/textViewFiltros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:text="Tipo de combustible"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_below="@+id/spinner_CCAA"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignLeft="@+id/lbl_filter_CCAA"
+        />
     <Spinner
         android:id="@+id/spinner_TiposGasolina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewFiltros"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"/>
-    <RelativeLayout
-        android:id="@+id/preciosLayout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/spinner_TiposGasolina"
-        android:layout_marginTop="24dp">
+        android:layout_alignLeft="@id/lbl_filter_CCAA"
+        android:layout_marginTop="10dp"/>
+
 
         <TextView
             android:id="@+id/infoMaximo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="@string/maximo"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/lbl_filter_CCAA"
+            android:layout_below="@+id/spinner_TiposGasolina"
             android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
         <EditText
             android:id="@+id/editText_maximo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:layout_toRightOf="@+id/infoMaximo"
+            android:hint="0.0"
+            android:layout_below="@+id/infoMaximo"
+            android:layout_alignLeft="@id/lbl_filter_CCAA"
+            android:layout_marginTop="10dp"
+            android:maxLength="10"
+            android:paddingLeft="5dp"
             />
 
 
 
-    </RelativeLayout>
+
 
 </RelativeLayout>

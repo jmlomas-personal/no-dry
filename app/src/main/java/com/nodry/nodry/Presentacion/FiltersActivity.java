@@ -11,8 +11,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.Utils;
+
 
 /**
  * Actividad donde se ubican los filtros de
@@ -30,6 +32,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     Spinner spinner2;
     TextView maximo;
     Button btnFiltrar;
+
 
     // Mensajes de error
     private final static String MSG_FILTER_ERROR_CCAA   = "Seleccione una CCAA valida";
@@ -83,7 +86,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         spinner2.setSelection(adapter.getPosition(PRECIO));
 
-        maximo.setText(MAXVALUE.toString());
+        //maximo.setText(MAXVALUE.toString());
+
 
     }
 
@@ -162,7 +166,6 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         if(!bOk){
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         }
-
         return bOk;
     }
 
