@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
     Intent intent;
     String CCAA;
     String PRECIO;
+    Double MAXVALUE;
     TextView IDEESS;
 
     @Override
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
             CCAA = IGasolinerasDAO.DEFAULT_CCAA;
         }
 
+        PRECIO = intent.getStringExtra("PRECIO");
+        MAXVALUE = intent.getDoubleExtra("MAXVALUE", 0.0);
+
         refresh();
     }
 
@@ -106,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
 
         if(PRECIO!=null && !PRECIO.trim().equals("")){
             filtros.put("PRECIO", PRECIO);
+
+            if(MAXVALUE>0){
+                filtros.put("MAXVALUE", MAXVALUE.toString());
+            }
         }
 
         if(listView.getVisibility()==View.GONE){
@@ -156,17 +164,18 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
     }
 
     private void openOrderDialog(){
+        CharSequence[] cs = Utils.tiposGasolina.toArray(new CharSequence[Utils.tiposGasolina.size()]);
 
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setTitle("Tipos de Carburante");
 
-        b.setItems(Utils.tiposGasolina, new DialogInterface.OnClickListener() {
+        b.setItems(cs, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.dismiss();
-                PRECIO = Utils.tiposGasolina[which];
+                PRECIO = Utils.tiposGasolina.get(which);
 
                 refresh();
             }

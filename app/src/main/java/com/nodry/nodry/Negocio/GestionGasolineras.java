@@ -54,8 +54,12 @@ public class GestionGasolineras implements IGestionGasolineras {
                     break;
             }
 
-            Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
+            if(filtros.containsKey("MAXVALUE")){
+                removeMaxValue(Double.parseDouble(filtros.get("MAXVALUE")), tipoGasolina, listaGasolineras);
+            }
+
             removeZeroValue(tipoGasolina, listaGasolineras);
+            Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
         }
 
         return listaGasolineras;
@@ -94,6 +98,39 @@ public class GestionGasolineras implements IGestionGasolineras {
                     break;
                 case DIESELPLUS:
                     bdel = (g.getGasoleo_b() == 0);
+                    break;
+            }
+
+            if(bdel){
+                removeList.add(g);
+            }
+
+        }
+
+        listaGasolineras.removeAll(removeList);
+
+    }
+
+    private void removeMaxValue(Double maxValue, TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+        boolean bdel = false;
+        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
+
+        for(Gasolinera g : listaGasolineras){
+
+            bdel = false;
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    bdel = (g.getGasolina_95() > maxValue);
+                    break;
+                case SINPLOMO98:
+                    bdel = (g.getGasolina_98()  > maxValue);
+                    break;
+                case DIESEL:
+                    bdel = (g.getGasoleo_a()  > maxValue);
+                    break;
+                case DIESELPLUS:
+                    bdel = (g.getGasoleo_b()  > maxValue);
                     break;
             }
 

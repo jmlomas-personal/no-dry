@@ -58,7 +58,7 @@
         android:layout_below="@+id/spinner_CCAA"
         android:layout_centerHorizontal="true"/>
     <Spinner
-        android:id="@+id/spinner_Filtros"
+        android:id="@+id/spinner_TiposGasolina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewFiltros"
@@ -68,7 +68,7 @@
         android:id="@+id/preciosLayout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/spinner_Filtros"
+        android:layout_below="@+id/spinner_TiposGasolina"
         android:layout_marginTop="24dp">
 
         <TextView
@@ -84,6 +84,7 @@
             android:id="@+id/editText_maximo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:layout_toRightOf="@+id/infoMaximo"
             />
 

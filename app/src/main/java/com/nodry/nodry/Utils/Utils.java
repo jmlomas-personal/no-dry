@@ -117,7 +117,10 @@ public class Utils {
 
     }
 
-    public static final String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
+    //public static final String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
+    public static final List<String> tiposGasolina = new ArrayList<String>(
+            Arrays.asList("Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus")
+    );
 
     /**
      * Funcion que nos devuelve una tabla con la laista de
@@ -131,7 +134,6 @@ public class Utils {
     public static String getRestCCAAAByID(String ID){
         return CCAAbyID.get(ID);
     }
-
     public static String getRestCCAAAByValue(String Value){
         return CCAAbyValue.get(Value);
     }
@@ -141,7 +143,6 @@ public class Utils {
     public static List<String> getRestCCAAAAsList(){
         return CCAAList;
     }
-    public static String[] getRestCombustibleList(){return tiposGasolina;}
 
     public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) {
         BufferedInputStream result = null;

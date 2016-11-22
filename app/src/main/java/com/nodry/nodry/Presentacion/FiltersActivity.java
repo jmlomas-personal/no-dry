@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nodry.nodry.R;
@@ -23,16 +24,19 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
     Intent intent;
     String CCAA;
-    double precioMaximo;
-    String tipoCombustible;
+    String PRECIO;
+    Double MAXVALUE;
     Spinner spinner;
     Spinner spinner2;
+    TextView maximo;
     Button btnFiltrar;
 
     // Mensajes de error
-    private final static String MSG_FILTER_ERROR_CCAA = "Seleccione una CCAA valida";
-    private final static String MSG_FILTER_ERROR_COMBUS="Seleccione un valor máximo";
-    private final static String MSG_FILTER_ERROR_NEG="El número introducido es negativo";
+    private final static String MSG_FILTER_ERROR_CCAA   = "Seleccione una CCAA valida";
+    private final static String MSG_FILTER_ERROR_COMBUS = "Seleccione un valor máximo";
+    private final static String MSG_FILTER_ERROR_NEG    = "El número introducido es negativo";
+    private final static String MSG_FILTER_FILL_DATA    = "Introduzca un tipo de gasolina";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +52,10 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         spinner = (Spinner) findViewById(R.id.spinner_CCAA);
         spinner.setOnItemSelectedListener(this);
 
-        spinner2=(Spinner) findViewById(R.id.spinner_Filtros);
+        spinner2 = (Spinner) findViewById(R.id.spinner_TiposGasolina);
         spinner2.setOnItemSelectedListener(this);
+
+        maximo = (TextView) findViewById(R.id.editText_maximo);
 
         // Create an ArrayAdapter using a HashMap
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
@@ -63,24 +69,40 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         // Recuperamos la CCAA
         intent = getIntent();
         CCAA = intent.getStringExtra("CCAA");
-
+        PRECIO = intent.getStringExtra("PRECIO");
+        MAXVALUE = intent.getDoubleExtra("MAXVALUE", 0.0);
 
         spinner.setSelection(adapter.getPosition(Utils.getRestCCAAAByID(CCAA)));
 
         //Añadido
-        ArrayAdapter<String>adapter1=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item);
+        ArrayAdapter<String>adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter1.add("Seleccione...");
-        adapter1.addAll(Utils.getRestCombustibleList());
+        adapter1.addAll(Utils.tiposGasolina);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter1);
 
+        spinner2.setSelection(adapter.getPosition(PRECIO));
 
+        maximo.setText(MAXVALUE.toString());
 
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        CCAA = Utils.getRestCCAAAByValue(parent.getItemAtPosition(pos).toString());
+        switch (parent.getId()) {
+            case R.id.spinner_CCAA: {
+                CCAA = Utils.getRestCCAAAByValue(parent.getItemAtPosition(pos).toString());
+                break;
+            }
+            case R.id.spinner_TiposGasolina: {
+                if(Utils.tiposGasolina.contains(parent.getItemAtPosition(pos).toString())){
+                    PRECIO = parent.getItemAtPosition(pos).toString();
+                }else{
+                    PRECIO = null;
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -91,9 +113,15 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_filtrar: {
+
+                if(!maximo.getText().toString().trim().equals("")) {
+                    MAXVALUE = Double.parseDouble(maximo.getText().toString());
+                }
+
                 if(validateFilters()) {
                     openMainActivity();
                 }
+
                 break;
             }
         }
@@ -114,15 +142,21 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             spinner.requestFocus();
             bOk = false;
         }
-        if(tipoCombustible!=null && precioMaximo==0.0){
-            msg=MSG_FILTER_ERROR_COMBUS;
-            spinner.requestFocus();
-            bOk=false;
+
+        if(PRECIO == null && MAXVALUE != null && MAXVALUE > 0.0){
+            msg = MSG_FILTER_FILL_DATA;
+            maximo.requestFocus();
+            bOk = false;
         }
-        if(tipoCombustible!=null && precioMaximo<0.0){
-            msg=MSG_FILTER_ERROR_NEG;
-            spinner.requestFocus();
-            bOk=false;
+
+        if(PRECIO != null && (MAXVALUE == null || MAXVALUE == 0.0)){
+            msg = MSG_FILTER_ERROR_COMBUS;
+            maximo.requestFocus();
+            bOk = false;
+        }else if(PRECIO != null && MAXVALUE < 0.0){
+            msg = MSG_FILTER_ERROR_NEG;
+            maximo.requestFocus();
+            bOk = false;
         }
 
         if(!bOk){
@@ -132,13 +166,14 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         return bOk;
     }
 
-
     /**
      * Metodo que abre la pantalla principal
      */
-    private void openMainActivity(){
+    private void openMainActivity() {
         Intent myIntent = new Intent(this, MainActivity.class);
         myIntent.putExtra("CCAA", CCAA); //Optional parameters
+        myIntent.putExtra("PRECIO", PRECIO);
+        myIntent.putExtra("MAXVALUE", MAXVALUE);
         this.startActivity(myIntent);
     }
 }
