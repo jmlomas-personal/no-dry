@@ -34,6 +34,12 @@ import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 
+/**
+ * US-162756
+ * TASK 272207
+ * TEST 1
+ */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTest_US162756_272207_1 {
