@@ -28,7 +28,7 @@
         android:id="@+id/textViewError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MENSAJE ERROR"
+        android:text="@string/mensaje_error"
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         />

@@ -13,4 +13,22 @@
     <string name="lbl_gasolina98">Sin Plomo 98:</string>
     <string name="minimo">Mínimo: </string>
     <string name="maximo">Máximo: </string>
+    <string name="mensaje_error">MENSAJE ERROR</string>
+    <string name="textviewrotulo">textView_Rotulo</string>
+    <string name="localidad">Localidad:</string>
+    <string name="textViewLocalidad">textView_Localidad</string>
+    <string name="provincia">Provincia:</string>
+    <string name="textViewProvincia">textView_Provincia</string>
+    <string name="direccion">Dirección:</string>
+    <string name="textViewDireccion">textView_Direccion</string>
+    <string name="precios">PRECIOS:</string>
+    <string name="ubicacion">UBICACIÓN:</string>
+    <string name="horario">HORARIO:</string>
+    <string name="abierto">ABIERTO!!</string>
+    <string name="textViewHorario">textView_Horario</string>
+    <string name="botonFiltrar">FILTRAR</string>
+    <string name="comunidadAutonoma">Comunidad Autonoma</string>
+    <string name="tipoCombustible">Tipo de combustible</string>
+    <string name="rotulo">Rotulo</string>
+    <string name="dir">Direccion</string>
 </resources>

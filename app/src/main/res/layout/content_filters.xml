@@ -14,7 +14,7 @@
     tools:showIn="@layout/activity_filters">
 
     <Button
-        android:text="Filtrar"
+        android:text="@string/botonFiltrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_filtrar"
@@ -32,7 +32,7 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:text="Comunidad Autonoma"
+        android:text="@string/comunidadAutonoma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Tipo de combustible"
+        android:text="@string/tipoCombustible"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_below="@+id/spinner_CCAA"
         android:layout_alignLeft="@+id/lbl_filter_CCAA"
