@@ -27,7 +27,7 @@
     <string name="abierto">ABIERTO!!</string>
     <string name="textViewHorario">textView_Horario</string>
     <string name="botonFiltrar">FILTRAR</string>
-    <string name="comunidadAutonoma">Comunidad Autonoma</string>
+    <string name="comunidadAutonoma">Comunidad Autónoma</string>
     <string name="tipoCombustible">Tipo de combustible</string>
     <string name="rotulo">Rotulo</string>
     <string name="dir">Direccion</string>
