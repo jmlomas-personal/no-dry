@@ -31,4 +31,5 @@
     <string name="tipoCombustible">Tipo de combustible</string>
     <string name="rotulo">Rotulo</string>
     <string name="dir">Direccion</string>
+    <string name="valor0">0.0</string>
 </resources>
