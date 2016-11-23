@@ -149,7 +149,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             bOk = false;
         }
 
-        if(PRECIO == null && MAXVALUE != null && MAXVALUE > 0.0){
+        if(PRECIO == null && MAXVALUE != null && MAXVALUE != 0.0){
             msg = MSG_FILTER_FILL_DATA;
             maximo.requestFocus();
             bOk = false;

@@ -81,7 +81,7 @@
             android:id="@+id/editText_maximo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:hint="@string/valor0"
             android:layout_below="@+id/infoMaximo"
             android:layout_alignLeft="@id/lbl_filter_CCAA"
