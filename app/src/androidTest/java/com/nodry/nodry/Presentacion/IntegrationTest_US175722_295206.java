@@ -3,11 +3,13 @@ package com.nodry.nodry.Presentacion;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.app.AppCompatActivity;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,8 +19,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -36,7 +40,6 @@ import static org.junit.Assert.*;
 /**
  * US-175722
  * TASK 295206
- * TEST 4
  */
 
 @LargeTest
@@ -69,6 +72,7 @@ public class IntegrationTest_US175722_295206{
 
         //Editamos el campo Máximo:
         onView(withId(R.id.editText_maximo)).perform(typeText("1"));
+        closeSoftKeyboard();
 
         //Pulsamos el botón Filtrar
         onView(withId(R.id.button_filtrar)).perform(click());
