@@ -45,6 +45,8 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
     // Mensajes de error
     private static final String MSG_NO_CONEXION = "No hay conexion a internet";
     private static final String MSG_NO_DATA = "No hay datos que mostrar,\nintentelo mas tarde de nuevo";
+    private static final String MSG_NO_MINVAL = "El valor de filtro es mayor,\na cualquiera de los valores";
+    private static final String MSG_NO_DATA_FOUND = "No se han encontrado datos";
 
     // Tiempo de peticion especificado de un minuto
     private static final long RESPONSE_DELAY = 60000;
@@ -99,9 +101,14 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
 
         handler.removeCallbacks(cancelerTask);
 
-        if(listaGasolineras == null || listaGasolineras.isEmpty()){
+        if(filtros.containsKey("WARN") &&
+                (listaGasolineras == null || listaGasolineras.isEmpty())){
+            showMessage(ERROR_MSG ,MSG_NO_MINVAL);
+            ((INotificable)context).showMessage("", MSG_NO_DATA_FOUND);
+            filtros.remove("WARN");
+        }else if(listaGasolineras == null || listaGasolineras.isEmpty()){
             showMessage(ERROR_MSG ,MSG_NO_DATA);
-            ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
+            ((INotificable)context).showMessage("", MSG_NO_DATA_FOUND);
         }else {
             ((IUpdateable) adapter).update(listaGasolineras);
         }

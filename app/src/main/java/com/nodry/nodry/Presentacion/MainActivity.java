@@ -35,7 +35,7 @@ import java.util.List;
  * @author Alba Zubizarreta.
  * @version 1.0
  */
-public class MainActivity extends AppCompatActivity implements ILoadable, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements ILoadable, INotificable, AdapterView.OnItemClickListener {
 
     TextView textView;
     ListView listView;
@@ -91,13 +91,6 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
         //refresh();
     }
 
-    @Override
-    public void conexionIncorrecta(String mensaje){
-        textView=(TextView) findViewById(R.id.textViewError);
-        textView.setVisibility(View.VISIBLE);
-        listView.setVisibility(View.GONE);
-        textView.setText(mensaje);
-    }
     /**
      * Metodo para actualizar el listado de gasolineras
      */
@@ -207,5 +200,13 @@ public class MainActivity extends AppCompatActivity implements ILoadable, Adapte
         myIntent.putExtra("listaGasolineras", (Serializable)listaGasolineras); //Optional parameters
 
         this.startActivity(myIntent);
+    }
+
+    @Override
+    public void showMessage(String title, String msg) {
+        textView=(TextView) findViewById(R.id.textViewError);
+        textView.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+        textView.setText(msg);
     }
 }

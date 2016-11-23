@@ -35,6 +35,7 @@ public class GestionGasolineras implements IGestionGasolineras {
 
         Comparator comp = null;
         TipoGasolina tipoGasolina = null;
+        Double minimo = null, maxValue = null;
 
         if(filtros.containsKey("PRECIO")){
             String PRECIO = filtros.get("PRECIO");
@@ -54,11 +55,19 @@ public class GestionGasolineras implements IGestionGasolineras {
                     break;
             }
 
+            removeZeroValue(tipoGasolina, listaGasolineras);
+
             if(filtros.containsKey("MAXVALUE")){
-                removeMaxValue(Double.parseDouble(filtros.get("MAXVALUE")), tipoGasolina, listaGasolineras);
+                minimo = getMasBarata(tipoGasolina, listaGasolineras);
+                maxValue = Double.parseDouble(filtros.get("MAXVALUE"));
+
+                if(minimo > maxValue) {
+                    filtros.put("WARN", "El valor minimo del filtro es\nmayor que cualquiera del listado");
+                }
+
+                removeMaxValue(maxValue, tipoGasolina, listaGasolineras);
             }
 
-            removeZeroValue(tipoGasolina, listaGasolineras);
             Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
         }
 
@@ -142,6 +151,40 @@ public class GestionGasolineras implements IGestionGasolineras {
 
         listaGasolineras.removeAll(removeList);
 
+    }
+
+    public Double getMasBarata (TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+        Double minimo = 0.0;
+
+        for(Gasolinera g : listaGasolineras){
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    if(minimo == 0 || minimo > g.getGasolina_95()){
+                        minimo = g.getGasolina_95();
+                    }
+                    break;
+                case SINPLOMO98:
+                    if(minimo == 0 || minimo > g.getGasolina_98()){
+                        minimo = g.getGasolina_98();
+                    }
+                    break;
+                case DIESEL:
+                    if(minimo == 0 || minimo > g.getGasoleo_a()){
+                        minimo = g.getGasoleo_a();
+                    }
+                    break;
+                case DIESELPLUS:
+                    if(minimo == 0 || minimo > g.getGasoleo_b()){
+                        minimo = g.getGasoleo_b();
+                    }
+                    break;
+            }
+
+
+        }
+
+        return minimo;
     }
 
     public MasBaratas getMasBaratas(String localidad, List<Gasolinera> listaGasolineras){

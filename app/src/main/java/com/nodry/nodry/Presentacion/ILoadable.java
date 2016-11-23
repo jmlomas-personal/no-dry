@@ -18,8 +18,4 @@ public interface ILoadable {
      */
     void stopLoading();
 
-    /**
-     * Método que muestra un mensaje por pantalla de que no hay datos que mostrar
-     */
-    void conexionIncorrecta(String mensaje);
 }
