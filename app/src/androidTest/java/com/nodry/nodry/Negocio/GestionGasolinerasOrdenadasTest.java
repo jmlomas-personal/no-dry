@@ -200,6 +200,8 @@ public class GestionGasolinerasOrdenadasTest {
         DataFetch.setContext(context);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
+
+        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
     }
 
     @Before
@@ -213,8 +215,6 @@ public class GestionGasolinerasOrdenadasTest {
     public void getListaOrdenadaGasolina95Test(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(0));
             gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
@@ -235,8 +235,6 @@ public class GestionGasolinerasOrdenadasTest {
     public void getListaOrdenadaGasolina98Test(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(1));
             gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
@@ -257,8 +255,6 @@ public class GestionGasolinerasOrdenadasTest {
     public void getListaOrdenadaGasoleoTest(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(2));
             gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);
@@ -278,8 +274,6 @@ public class GestionGasolinerasOrdenadasTest {
     @Test
     public void getListaOrdenadaGasoleoPlusTest(){
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(3));
             gasolineras = gestionGasolineras.getGasolineras(filtros, FORCE_LOCAL_TRUE);

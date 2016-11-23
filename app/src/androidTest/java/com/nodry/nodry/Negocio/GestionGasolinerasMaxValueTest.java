@@ -202,6 +202,8 @@ public class GestionGasolinerasMaxValueTest {
         DataFetch.setContext(context);
         stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
+
+        Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
     }
 
     @Before
@@ -212,11 +214,9 @@ public class GestionGasolinerasMaxValueTest {
     }
 
     @Test
-    public void getListaOrdenadaGasolina95Test(){
+    public void getListaMaxValueGasolina95Test(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(0));
             filtros.put("MAXVALUE", MAXVALUE_GASOLINA.toString());
@@ -231,11 +231,9 @@ public class GestionGasolinerasMaxValueTest {
     }
 
     @Test
-    public void getListaOrdenadaGasolina98Test(){
+    public void getListaMaxValueGasolina98Test(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(1));
             filtros.put("MAXVALUE", MAXVALUE_GASOLINA98.toString());
@@ -250,11 +248,9 @@ public class GestionGasolinerasMaxValueTest {
     }
 
     @Test
-    public void getListaOrdenadaGasoleoTest(){
+    public void getListaMaxValueGasoleoTest(){
 
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(2));
             filtros.put("MAXVALUE", MAXVALUE_GASOLEO.toString());
@@ -269,10 +265,8 @@ public class GestionGasolinerasMaxValueTest {
     }
 
     @Test
-    public void getListaOrdenadaGasoleoPlusTest(){
+    public void getListaMaxValueGasoleoPlusTest(){
         try {
-            Utils.writeToFile(bufferedDataGasolinerasTest, TEMP_FILE_NAME, context);
-
             filtros.put("CCAA", IGasolinerasDAO.DEFAULT_CCAA);
             filtros.put("PRECIO", Utils.tiposGasolina.get(3));
             filtros.put("MAXVALUE", MAXVALUE_GASOLEO_PLUS.toString());
