@@ -1,9 +1,12 @@
-package com.nodry.nodry.Datos;
+package com.nodry.nodry.Negocio;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
+import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Datos.GasolinerasDAO;
+import com.nodry.nodry.Datos.IGasolinerasDAO;
 import com.nodry.nodry.Negocio.GestionGasolineras;
 import com.nodry.nodry.Negocio.TipoGasolina;
 import com.nodry.nodry.Utils.DataFetch;
@@ -28,9 +31,9 @@ import static org.junit.Assert.*;
 /**
  * Created by att3mpt on 10/25/16.
  */
-public class GasolinerasOrdenadasDAOTest {
+public class GestionGasolinerasOrdenadasTest {
 
-    GasolinerasDAO  g;
+    GasolinerasDAO g;
     List<Gasolinera> gasolineras;
 
     private static final String TEMP_FILE_NAME = "temp.txt";
