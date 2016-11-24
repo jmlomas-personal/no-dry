@@ -1,4 +1,4 @@
-package com.nodry.nodry.Presentacion;
+package com.nodry.nodry.Presentacion.IntegrationTest_US162756_ListarGasolineras;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.nodry.nodry.Presentacion.MainActivity;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.DataFetch;
 
@@ -29,14 +30,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 /**
- * US-162756
- * TASK 272207
- * TEST 3
+ *  Listar gasolineras
+ * US162756_Prueba3
+ *
+ *  Implementado por Andrés Barrado
+ *
+ * 	PRUEBA 3 – Error en la conexión a internet
+ 1. El usuario abre la aplicación.
+ 2. La aplicación muestra un diálogo para indicar al usuario que se están cargando los datos.
+ 3. La aplicación no consigue descargar los datos y alerta al usuario de la imposibilidad de obtener los datos mediante un mensaje.
+
+
  */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest_US162756_272207_3 {
+public class IntegrationTest_US162756_Prueba3 {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

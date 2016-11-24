@@ -1,10 +1,6 @@
-package com.nodry.nodry.Presentacion;
+package com.nodry.nodry.Presentacion.IntegrationTest_US175729_OrdenarPrecio;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.LargeTest;
-
-
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -55,13 +51,27 @@ import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.fail;
 
 /**
- * US-175729
- * TASK 295233
+ *  Ordenar listado por precio
+ *
+ * US175729_Prueba2
+ *
+ *  Implementado por Orlando Britto
+ *
+ * o	PRUEBA 2 – Ordenar por precio.
+ 1.	El usuario abre la aplicación
+ 2.	La aplicación muestra un diálogo para indicar al usuario que se están cargando los datos.
+ 3.	La aplicación muestra la lista de gasolineras de la comunidad autónoma por defecto.
+ 4.	El usuario selecciona la opción de ordenar que aparece en el toolbar (flecha).
+ 5.	La aplicación mostrará una ventana preguntando al usuario el tipo de combustible por el que desea que se ordene el precio.
+ 6.	El usuario seleccionará un tipo de combustible.
+ 7.	El usuario seleccionará la opción de OK.
+ 8.	La aplicación mostrará la lista de gasolineras de la comunidad autónoma que posean la gasolina seleccionada por el usuario, ordenadas por precio de menor a mayor.
+
  */
 
 @android.support.test.filters.LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest_US175729_295233 {
+public class IntegrationTest_US175729_Prueba2 {
 
 
     private static final String TEMP_FILE_NAME = "temp.txt";

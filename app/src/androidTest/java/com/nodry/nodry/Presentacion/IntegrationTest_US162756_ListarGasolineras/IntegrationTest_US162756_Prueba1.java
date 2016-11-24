@@ -1,4 +1,4 @@
-package com.nodry.nodry.Presentacion;
+package com.nodry.nodry.Presentacion.IntegrationTest_US162756_ListarGasolineras;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.nodry.nodry.Presentacion.MainActivity;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.DataFetch;
 
@@ -35,14 +36,24 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 
 /**
- * US-162756
- * TASK 272207
- * TEST 1
+ * Listar gasolineras
+ * US162756_Prueba1
+ *
+ * Implementado por Alba Zubizarreta
+ *
+ 	PRUEBA 1 – Comprobación de ítems.
+ 1. El usuario abre la aplicación
+ 2. La aplicación muestra un diálogo para indicar al usuario que se están cargando los datos.
+ 3. La aplicación muestra la lista de gasolineras de la comunidad autónoma por defecto.
+ 3.1 Cada ítem de la lista mostrará el logo de la gasolinera en la parte izquierda, o una foto por defecto si la gasolinera
+ no tiene logo asignado. A la derecha de la imagen aparecerá un rótulo con el nombre de la gasolinera. Debajo la dirección
+ de dicha gasolinera. Por último, aparecerá el precio del Diesel y la Gasolinera enunciados por un rótulo indicando cuál es cuál.
+
  */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest_US162756_272207_1 {
+public class IntegrationTest_US162756_Prueba1 {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

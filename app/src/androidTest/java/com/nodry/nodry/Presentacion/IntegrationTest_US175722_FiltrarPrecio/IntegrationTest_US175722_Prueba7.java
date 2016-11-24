@@ -1,10 +1,11 @@
-package com.nodry.nodry.Presentacion;
+package com.nodry.nodry.Presentacion.IntegrationTest_US175722_FiltrarPrecio;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
+import com.nodry.nodry.Presentacion.FiltersActivity;
 import com.nodry.nodry.R;
 
 import org.junit.Rule;
@@ -20,10 +21,8 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.nodry.nodry.Presentacion.IntegrationTest_US175729_295233.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
@@ -31,10 +30,24 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 /**
- * Created by Alba on 22/11/2016.
+ * Filtrar gasolineras por precio
+ *
+ * US175722_Prueba7
+ *
+ *  Implementado por Alba Zubizarreta
+ *
+ * o	PRUEBA 7 – Precio máximo negativo.
+ 1.	El usuario abre la aplicación.
+ 2.	La aplicación muestra un diálogo para indicar al usuario que se están cargando los datos.
+ 3.	La aplicación muestra la lista de gasolineras de la comunidad autónoma por defecto.
+ 4.	El usuario selecciona la opción de filtros del toolbar.
+ 5.	La aplicación muestra una ventana en la que aparecen opciones para filtrar por comunidad autónoma, para filtrar por un rango entre un mínimo fijo y un máximo que podrá establecer el usuario y para establecer el tipo de combustible.
+ 6.	El usuario introduce un valor negativo en el campo del precio máximo.
+ 7.	La aplicación informa al usuario de que el filtrado no se puede realizar porque el valor máximo es negativo.
+
  */
 
-public class IntegrationTest_US175722_295611 {
+public class IntegrationTest_US175722_Prueba7 {
 
     @Rule
     public ActivityTestRule<FiltersActivity> mActivityFiltersTestRule = new ActivityTestRule<>(FiltersActivity.class, true, false);

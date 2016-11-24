@@ -1,4 +1,4 @@
-package com.nodry.nodry.Presentacion;
+package com.nodry.nodry.Presentacion.IntegrationTest_US169386_MostrarDetalle;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.nodry.nodry.Datos.Gasolinera;
 import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Presentacion.DetailsActivity;
 import com.nodry.nodry.R;
 
 import org.junit.Rule;
@@ -23,17 +24,26 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * US-169386
- * TASK 282689
+ * Mostrar detalle de gasolineras
+ * US169386_Prueba1
+ *
+ * Implementado por Juan Manuel Lomas
+ *
+ * o	PRUEBA 1 – Comprobación de ítems.
+ 1.	El usuario abre la aplicación
+ 2.	La aplicación muestra un diálogo para indicar al usuario que se están cargando los datos.
+ 3.	La aplicación muestra la lista de gasolineras de la comunidad autónoma por defecto.
+ 4.	El usuario selecciona una gasolinera para abrir el detalle.
+ 4.1. La aplicación mostrará los datos asociados a la gasolinera tales como icono, nombre, dirección, combustibles disponibles (95, 98, diésel y diésel +), provincia, municipio, horario de apertura, y una opción para ubicar la gasolinera mediante google maps.
+
  */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest_US169386_282689 {
+public class IntegrationTest_US169386_Prueba1 {
 
     List<Gasolinera> listaGasolineras;
 
