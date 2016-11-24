@@ -1,7 +1,5 @@
 package com.nodry.nodry.Presentacion.IntegrationTest_US162756_ListarGasolineras;
 
-
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
@@ -32,7 +30,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
 
 /**
@@ -55,10 +52,14 @@ import static org.hamcrest.Matchers.startsWith;
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTest_US162756_Prueba1 {
 
+    private static final String LBL_SINPLOMO95        = "Sin Plomo 95:";
+    private static final String LBL_SINPLOMO98        = "Sin Plomo 98:";
+    private static final String LBL_DIESEL            = "Diesel:";
+    private static final String LBL_DIESELPLUS        = "Diesel Plus:";
+
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
+        DataFetch.context = InstrumentationRegistry.getTargetContext();
     }
 
     @Rule
@@ -100,26 +101,26 @@ public class IntegrationTest_US162756_Prueba1 {
                 .inAdapterView(withId(R.id.customListView))
                 .atPosition(0)
                 .onChildView(withId(R.id.lbldiesel))
-                .check(matches(withText(startsWith("Diesel:"))));
+                .check(matches(withText(startsWith(LBL_DIESEL))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))
                 .atPosition(0)
                 .onChildView(withId(R.id.lbldieselb))
-                .check(matches(withText(startsWith("Diesel Plus:"))));
+                .check(matches(withText(startsWith(LBL_DIESELPLUS))));
 
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))
                 .atPosition(0)
                 .onChildView(withId(R.id.lblgasolina))
-                .check(matches(withText(startsWith("Sin Plomo 95:"))));
+                .check(matches(withText(startsWith(LBL_SINPLOMO95))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))
                 .atPosition(0)
                 .onChildView(withId(R.id.lblgasolina98))
-                .check(matches(withText(startsWith("Sin Plomo 98:"))));
+                .check(matches(withText(startsWith(LBL_SINPLOMO98))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.customListView))

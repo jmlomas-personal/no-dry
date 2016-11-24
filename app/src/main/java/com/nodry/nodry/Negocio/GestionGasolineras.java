@@ -1,229 +1,42 @@
 package com.nodry.nodry.Negocio;
 
-import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Datos.GasolinerasDAO;
-import com.nodry.nodry.Datos.IGasolinerasDAO;
-import com.nodry.nodry.Utils.Utils;
+import com.nodry.nodry.Comunes.Negocio.IGestionGasolineras;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
+import com.nodry.nodry.Datos.GasolinerasLocalDAO;
+import com.nodry.nodry.Datos.GasolinerasRemoteDAO;
+import com.nodry.nodry.Comunes.Datos.IGasolinerasLocalDAO;
+import com.nodry.nodry.Comunes.Datos.IGasolinerasRemoteDAO;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Clase que realiza una serie de operaciones con los
- * datos de las gasolineras obtenidas de la capa de Datos.
- * @author Orlando Britto.
- * @version 1.0
+ * Clase para tratar con los datos
+ * de Negocio sobre Gasolineras.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
 public class GestionGasolineras implements IGestionGasolineras {
 
-    IGasolinerasDAO gasolinerasDAO;
+    // DAOs con los que trabajaremos
+    IGasolinerasRemoteDAO gasolinerasRemoteDAO;
+    IGasolinerasLocalDAO gasolinerasLocalDAO;
 
     /**
-     * Constructor
+     * Constructor de la clase
      */
     public GestionGasolineras(){
-        gasolinerasDAO = new GasolinerasDAO();
+        gasolinerasRemoteDAO = new GasolinerasRemoteDAO();
+        gasolinerasLocalDAO = new GasolinerasLocalDAO();
     }
 
     @Override
-    public List<Gasolinera> getGasolineras(HashMap<String, String> filtros, boolean bForceLocal) {
-
-        List<Gasolinera> listaGasolineras = gasolinerasDAO.getListGasolineras(filtros.get("CCAA"), bForceLocal);
-
-        Comparator comp = null;
-        TipoGasolina tipoGasolina = null;
-        Double minimo = null, maxValue = null;
-
-        if(filtros.containsKey("PRECIO")){
-            String PRECIO = filtros.get("PRECIO");
-
-            switch(PRECIO){
-                case "Sin Plomo 95":
-                    tipoGasolina = TipoGasolina.SINPLOMO95;
-                    break;
-                case "Sin Plomo 98":
-                    tipoGasolina = TipoGasolina.SINPLOMO98;
-                    break;
-                case "Diesel":
-                    tipoGasolina = TipoGasolina.DIESEL;
-                    break;
-                case "Diesel Plus":
-                    tipoGasolina = TipoGasolina.DIESELPLUS;
-                    break;
-            }
-
-            removeZeroValue(tipoGasolina, listaGasolineras);
-
-            if(filtros.containsKey("MAXVALUE")){
-                minimo = getMasBarata(tipoGasolina, listaGasolineras);
-                maxValue = Double.parseDouble(filtros.get("MAXVALUE"));
-
-                if(minimo > maxValue) {
-                    filtros.put("WARN", "El valor minimo del filtro es\nmayor que cualquiera del listado");
-                }
-
-                removeMaxValue(maxValue, tipoGasolina, listaGasolineras);
-            }
-
-            Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
-        }
-
-        return listaGasolineras;
+    public List<Gasolinera> obtenGasolinerasServicioRest(String CCAA) throws IOException {
+        return gasolinerasRemoteDAO.getListGasolineras(CCAA);
     }
 
     @Override
-    public Gasolinera getGasolinera(int IDEESS, List<Gasolinera> listaGasolineras) {
-        Gasolinera gasolinera = null;
-
-        for(Gasolinera g : listaGasolineras){
-            if(g.getIDEESS()==IDEESS){
-                gasolinera = g;
-            }
-        }
-
-        return gasolinera;
+    public List<Gasolinera> obtenGasolinerasCache() throws IOException  {
+        return gasolinerasLocalDAO.getListGasolineras();
     }
-
-    private void removeZeroValue(TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
-        boolean bdel = false;
-        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
-
-        for(Gasolinera g : listaGasolineras){
-
-            bdel = false;
-
-            switch(tipoGasolina){
-                case SINPLOMO95:
-                    bdel = (g.getGasolina_95() == 0);
-                    break;
-                case SINPLOMO98:
-                    bdel = (g.getGasolina_98() == 0);
-                    break;
-                case DIESEL:
-                    bdel = (g.getGasoleo_a() == 0);
-                    break;
-                case DIESELPLUS:
-                    bdel = (g.getGasoleo_b() == 0);
-                    break;
-            }
-
-            if(bdel){
-                removeList.add(g);
-            }
-
-        }
-
-        listaGasolineras.removeAll(removeList);
-
-    }
-
-    private void removeMaxValue(Double maxValue, TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
-        boolean bdel = false;
-        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
-
-        for(Gasolinera g : listaGasolineras){
-
-            bdel = false;
-
-            switch(tipoGasolina){
-                case SINPLOMO95:
-                    bdel = (g.getGasolina_95() > maxValue);
-                    break;
-                case SINPLOMO98:
-                    bdel = (g.getGasolina_98()  > maxValue);
-                    break;
-                case DIESEL:
-                    bdel = (g.getGasoleo_a()  > maxValue);
-                    break;
-                case DIESELPLUS:
-                    bdel = (g.getGasoleo_b()  > maxValue);
-                    break;
-            }
-
-            if(bdel){
-                removeList.add(g);
-            }
-
-        }
-
-        listaGasolineras.removeAll(removeList);
-
-    }
-
-    public Double getMasBarata (TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
-        Double minimo = 0.0;
-
-        for(Gasolinera g : listaGasolineras){
-
-            switch(tipoGasolina){
-                case SINPLOMO95:
-                    if(minimo == 0 || minimo > g.getGasolina_95()){
-                        minimo = g.getGasolina_95();
-                    }
-                    break;
-                case SINPLOMO98:
-                    if(minimo == 0 || minimo > g.getGasolina_98()){
-                        minimo = g.getGasolina_98();
-                    }
-                    break;
-                case DIESEL:
-                    if(minimo == 0 || minimo > g.getGasoleo_a()){
-                        minimo = g.getGasoleo_a();
-                    }
-                    break;
-                case DIESELPLUS:
-                    if(minimo == 0 || minimo > g.getGasoleo_b()){
-                        minimo = g.getGasoleo_b();
-                    }
-                    break;
-            }
-
-
-        }
-
-        return minimo;
-    }
-
-    public MasBaratas getMasBaratas(String localidad, List<Gasolinera> listaGasolineras){
-
-        MasBaratas masBaratas = new MasBaratas();
-
-        for(Gasolinera g: listaGasolineras){
-
-            if(g.getLocalidad().trim().equals(localidad)) {
-
-                // Comprobamos si es la mas barata de alguno de los cuatro carburantes
-                if ((masBaratas.getMasBarata95() == null && g.getGasolina_95() > 0) ||
-                        (g.getGasolina_95() > 0 && masBaratas.getMasBarata95().getGasolina_95() > g.getGasolina_95())) {
-                    masBaratas.setMasBarata95(g);
-                }
-
-                if ((masBaratas.getMasBarata98() == null && g.getGasolina_98() > 0) ||
-                        (g.getGasolina_98() > 0 && masBaratas.getMasBarata98().getGasolina_98() > g.getGasolina_98())) {
-                    masBaratas.setMasBarata98(g);
-                }
-
-                if ((masBaratas.getMasBarataDiesel() == null && g.getGasoleo_a() > 0) ||
-                        (g.getGasoleo_a() > 0 && masBaratas.getMasBarataDiesel().getGasoleo_a() > g.getGasoleo_a())) {
-                    masBaratas.setMasBarataDiesel(g);
-                }
-
-                if ((masBaratas.getMasBarataDieselPlus() == null && g.getGasoleo_b() > 0) ||
-                        (g.getGasoleo_b() > 0 && masBaratas.getMasBarataDieselPlus().getGasoleo_b() > g.getGasoleo_b())) {
-                    masBaratas.setMasBarataDieselPlus(g);
-                }
-            }
-        }
-
-        return masBaratas;
-    }
-
-    public List<Gasolinera> ordenarPorPrecio(List<Gasolinera> listaGasolineras, TipoGasolina tipoGasolina){
-        Collections.sort(listaGasolineras, new PrecioSort(tipoGasolina));
-        return listaGasolineras;
-    }
-
 }

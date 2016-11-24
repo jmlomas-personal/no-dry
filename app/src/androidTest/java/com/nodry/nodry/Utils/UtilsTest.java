@@ -4,8 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
-import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,13 +20,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/**
- * Created by MacbookAir on 15/11/16.
- */
-
 public class UtilsTest {
 
-    private static final String TEST_LOCAL_FILE_NAME = "localFileText.txt";
+    private static final String TEST_LOCAL_FILE_NAME    = "localFileText.txt";
+    private static final String CHARSET_UTF             = "UTF-8";
+    private static final String TITLE_ERROR             = "ERROR";
 
     private static final String TEST_ROTULO             = "CEPSA";
     private static final String TEST_DIRECCION          = "CARRETERA 6316 KM. 10,5";
@@ -174,32 +171,39 @@ public class UtilsTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
-        stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
+        DataFetch.context =  context;
+        stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
     }
 
     @Test
-    public void writtenFileExistsTest(){
+    public void writeToFileExistsTest(){
+
+        File f = null;
+
         try {
             Utils.writeToFile(bufferedDataGasolinerasTest, TEST_LOCAL_FILE_NAME, context);
             String path = context.getFilesDir() + "/" + TEST_LOCAL_FILE_NAME;
-            File f = new File(path);
+            f = new File(path);
             assertTrue(f.exists());
         } catch(IOException e) {
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
             fail();
+        } finally {
+            if(f!=null){
+                f.delete();
+            }
         }
     }
 
     @Test
-    public void writtenFileNotNullTest(){
+    public void writeToFileNotNullTest(){
         try {
             Utils.writeToFile(bufferedDataGasolinerasTest, TEST_LOCAL_FILE_NAME, context);
             bufferedDataGasolinerasTest = Utils.readFromFile(TEST_LOCAL_FILE_NAME, context);
             assertNotNull(bufferedDataGasolinerasTest);
         } catch(IOException e) {
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
             fail();
         }
     }

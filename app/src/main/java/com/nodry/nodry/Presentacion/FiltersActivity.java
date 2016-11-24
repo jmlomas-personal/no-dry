@@ -13,14 +13,17 @@ import android.widget.Toast;
 
 
 import com.nodry.nodry.R;
+import com.nodry.nodry.Utils.TipoGasolina;
 import com.nodry.nodry.Utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- * Actividad donde se ubican los filtros de
- * la aplicacion.
- * @author Juan Manuel Lomas Fernandez.
- * @version 1.0
+ * Clase de la actividad que muestra los
+ * filtros de la apliacion.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
 public class FiltersActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
@@ -33,12 +36,25 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     TextView maximo;
     Button btnFiltrar;
 
+    private static final ArrayList<String> tiposGasolina = new ArrayList<String>(Arrays.asList(
+            TipoGasolina.SINPLOMO95.getTexto(),
+            TipoGasolina.SINPLOMO98.getTexto(),
+            TipoGasolina.DIESEL.getTexto(),
+            TipoGasolina.DIESELPLUS.getTexto()
+    ));
 
     // Mensajes de error
-    private final static String MSG_FILTER_ERROR_CCAA   = "Seleccione una CCAA valida";
-    private final static String MSG_FILTER_ERROR_COMBUS = "Seleccione un valor máximo";
-    private final static String MSG_FILTER_ERROR_NEG    = "El número introducido es negativo";
-    private final static String MSG_FILTER_FILL_DATA    = "Introduzca un tipo de gasolina";
+    private final static String MSG_FILTER_ERROR_CCAA       = "Seleccione una CCAA valida";
+    private final static String MSG_FILTER_ERROR_COMBUS     = "Seleccione un valor máximo";
+    private final static String MSG_FILTER_ERROR_NEG        = "El número introducido es negativo";
+    private final static String MSG_FILTER_FILL_DATA        = "Introduzca un tipo de gasolina";
+
+    private static final String EMPTY_SPINNER_TEXT          = "Seleccione...";
+
+    // Campos para realizar llamadas a otras actividades
+    private static final String EXTRA_CCAA                  = "CCAA";
+    private static final String EXTRA_PRECIO                = "PRECIO";
+    private static final String EXTRA_MAXVALUE              = "MAXVALUE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +78,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         // Create an ArrayAdapter using a HashMap
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter.add("Seleccione...");
+        adapter.add(EMPTY_SPINNER_TEXT);
         adapter.addAll(Utils.getRestCCAAAAsList());
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,16 +87,16 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         // Recuperamos la CCAA
         intent = getIntent();
-        CCAA = intent.getStringExtra("CCAA");
-        PRECIO = intent.getStringExtra("PRECIO");
-        MAXVALUE = intent.getDoubleExtra("MAXVALUE", 0.0);
+        CCAA = intent.getStringExtra(EXTRA_CCAA);
+        PRECIO = intent.getStringExtra(EXTRA_PRECIO);
+        MAXVALUE = intent.getDoubleExtra(EXTRA_MAXVALUE, 0.0);
 
         spinner.setSelection(adapter.getPosition(Utils.getRestCCAAAByID(CCAA)));
 
         //Añadido
         ArrayAdapter<String>adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter2.add("Seleccione...");
-        adapter2.addAll(Utils.tiposGasolina);
+        adapter2.add(EMPTY_SPINNER_TEXT);
+        adapter2.addAll(tiposGasolina);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
 
@@ -101,7 +117,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
                 break;
             }
             case R.id.spinner_TiposGasolina: {
-                if(Utils.tiposGasolina.contains(parent.getItemAtPosition(pos).toString())){
+                if(tiposGasolina.contains(parent.getItemAtPosition(pos).toString())){
                     PRECIO = parent.getItemAtPosition(pos).toString();
                 }else{
                     PRECIO = null;
@@ -122,6 +138,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
                 if(!maximo.getText().toString().trim().equals("")) {
                     MAXVALUE = Double.parseDouble(maximo.getText().toString());
+                }else{
+                    MAXVALUE = null;
                 }
 
                 if(validateFilters()) {
@@ -176,9 +194,9 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
      */
     private void openMainActivity() {
         Intent myIntent = new Intent(this, MainActivity.class);
-        myIntent.putExtra("CCAA", CCAA); //Optional parameters
-        myIntent.putExtra("PRECIO", PRECIO);
-        myIntent.putExtra("MAXVALUE", MAXVALUE);
+        myIntent.putExtra(EXTRA_CCAA, CCAA); //Optional parameters
+        myIntent.putExtra(EXTRA_PRECIO, PRECIO);
+        myIntent.putExtra(EXTRA_MAXVALUE, MAXVALUE);
         this.startActivity(myIntent);
     }
 }

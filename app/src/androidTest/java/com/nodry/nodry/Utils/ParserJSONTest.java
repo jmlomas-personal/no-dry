@@ -4,8 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
-import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -23,6 +22,10 @@ import static org.junit.Assert.*;
  */
 public class ParserJSONTest {
 
+    private static final String CHARSET_UTF             = "UTF-8";
+    private static final String TITLE_ERROR             = "ERROR";
+
+    private static final String CCAA                    = "06";
     private static final String TEST_ROTULO             = "CEPSA";
     private static final String TEST_DIRECCION          = "CARRETERA 6316 KM. 10,5";
     private static final String TEST_LOCALIDAD          = "NOVALES";
@@ -31,7 +34,7 @@ public class ParserJSONTest {
     private static final Double TEST_PRECIO_GASOLINA    = 1.205;
     private static final Integer TEST_IDEESS            = 1039;
 
-    private static RemoteFetch remoteFetch;
+    private static DataFetch remoteFetch;
     private static InputStream stream;
     private static List<Gasolinera> listaGasolineras;
     private static String jsonData =
@@ -165,10 +168,10 @@ public class ParserJSONTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
+        DataFetch.context = context;
+        remoteFetch = new RemoteFetch(CCAA);
 
-        remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
-        stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
+        stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
         listaGasolineras = ParserJSON.readJsonStream(stream);
     }
 
@@ -180,7 +183,7 @@ public class ParserJSONTest {
             remoteFetch.getJSON();
             status = ParserJSON.readJsonStreamStatus(remoteFetch.getBufferedData());
         } catch (IOException e) {
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
         }
 
         if (!status) {
@@ -208,7 +211,7 @@ public class ParserJSONTest {
                     &&  gasolinera.getProvincia().equals(TEST_PROVINCIA)
             );
         }catch(IndexOutOfBoundsException e){
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
             fail();
         }
     }

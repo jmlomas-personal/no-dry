@@ -2,13 +2,13 @@ package com.nodry.nodry.Utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
+
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -20,7 +20,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -30,9 +29,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by att3mpt on 10/26/16.
+ * Clase con funciones auxiliares para
+ * la aplicacion.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-
 public class Utils {
 
     private static Map<String, String> CCAAbyID;
@@ -40,8 +41,20 @@ public class Utils {
 
     private static List<String> CCAAList;
 
-    private final static String MSG_NO_GOOGLE_MAPS = "Google maps no instalado";
-    private final static String EMPTY_DATA_RECEIVED = "\"ListaEESSPrecio\":[]";
+    private final static String LOCAL_TIMEZONE          = "Europe/Madrid";
+    private final static int TIME_BASE                  = 60;
+    private final static String EMPTY_DATA_RECEIVED     = "\"ListaEESSPrecio\":[]";
+    private final static String MSG_NO_GOOGLE_MAPS      = "Google maps no instalado";
+    private final static String GMAPS_PACKAGE_NAME      = "com.google.android.apps.maps";
+    private final static String GMAPS_URI_FORMAT        = "geo:%f,%f?q=%f,%f(%s)";
+
+    private final static String MATCHER_DAY_RANGE       = "([LMXJVSD]-[LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
+    private final static String MATCHER_DAY_RANGE_24H   = "([LMXJVSD]-[LMXJVSD]):\\s(24H)";
+    private final static String MATCHER_SINGLE_DAY      = "([LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
+    private final static String MATCHER_SINGLE_DAY_24H  = "([LMXJVSD]):\\s(24H)";
+    private final static String MATCHER_SPLITTER        = "; ";
+    private final static String CUSTOM_SPLITTER         = ";";
+    private final static String ALTERNATIVE_24H_FORMAT  = ";00;00;00;00";
 
     private final static List<String> days = new ArrayList<String>(
             Arrays.asList("L", "M", "X", "J", "V", "S", "D")
@@ -70,8 +83,6 @@ public class Utils {
         CCAAbyID.put("15", "Navarra");
         CCAAbyID.put("16", "País Vasco");
         CCAAbyID.put("17", "Rioja (La)");
-
-
 
         CCAAbyValue = new HashMap<String, String>();
         CCAAbyValue.put("Andalucia", "01");
@@ -117,33 +128,41 @@ public class Utils {
 
     }
 
-    //public static final String[] tiposGasolina = {"Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus"};
-    public static final List<String> tiposGasolina = new ArrayList<String>(
-            Arrays.asList("Sin Plomo 95", "Sin Plomo 98", "Diesel", "Diesel Plus")
-    );
-
     /**
-     * Funcion que nos devuelve una tabla con la laista de
-     * las comunidades autonomas para las llamadas al servicio
-     * REST.
-     * !!IMPORTANTE Hay que cambiarlo en un futuro por una consulta contra
-     * el servicio REST:
-     * https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/Listados/ComunidadesAutonomas/
-     * @return tabla con el listado de comunidades
+     * Funcion que nos devuelve el nombre de una comunidad autonoma por su id
+     * @param ID con el id de la comunidad autonoma
+     * @return el nombre de la comunidad autonoma
      */
     public static String getRestCCAAAByID(String ID){
         return CCAAbyID.get(ID);
     }
+
+    /**
+     * Funcion que nos devuelve el identificador de una comunidad autonoma por su nombre
+     * @param Value con el nombre de la comunidad autonoma
+     * @return el id de la comunidad autonoma
+     */
     public static String getRestCCAAAByValue(String Value){
         return CCAAbyValue.get(Value);
     }
 
-    //public static String getRestTipoCombustibleID(String ID){};
-
+    /**
+     * Funcion que nos devuelve un listado con todas las comunidades autonomas con las que
+     * trabaja la aplicacion.
+     * @return listado con las comunidades autonomas
+     */
     public static List<String> getRestCCAAAAsList(){
         return CCAAList;
     }
 
+    /**
+     * Metodo que permite escribir en el directorio de la aplicacion un fichero con un buffer de datos
+     * @param in con el buffer de los datos
+     * @param filename con el nombre del fichero a crear
+     * @param context con el contecto de la aplicacion
+     * @return buffer con los datos utilizados para crear el fichero
+     * @throws IOException en caso de no haberse podido escribir el fichero
+     */
     public static BufferedInputStream writeToFile(BufferedInputStream in, String filename, Context context) throws IOException {
         BufferedInputStream result = null;
 
@@ -175,6 +194,13 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Metodo que permite leer un fichero del directorio de la aplicacion
+     * @param filename con el nombre del fichero
+     * @param context con el contexto de la aplicacion
+     * @return buffer con los datos utilizados para crear el fichero
+     * @throws FileNotFoundException en caso de no haber encontrado del fichero
+     */
     public static BufferedInputStream readFromFile(String filename, Context context)  throws FileNotFoundException {
 
         BufferedInputStream bufferedDataGasolineras = null;
@@ -185,9 +211,9 @@ public class Utils {
     }
 
     /**
-     * Metodo que comprueba si el dispositivo dispone de conexión a internet
+     * Metodo que nos dice si la conexion de datos del movil esta disponible o no
      * @param context con el contexto de la aplicacion
-     * @return verdadero si la conexion esta activa, falso en cualquier otro caso
+     * @return verdadero si esta disponible, falso en cualquier otro caso
      */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -196,10 +222,18 @@ public class Utils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    /**
+     * Metodo que permite abrir una ventana nueva con la aplicacion de Google Maps, indicando las
+     * coordenadas a senyalar en el mapa
+     * @param context con el contexto de la aplicacion
+     * @param latitude con la latitud
+     * @param longitude con la longitud
+     * @param caption con la etiqueta a mostrar sobre al ubicacion
+     */
     public static void openGoogleMaps(Context context, double latitude, double longitude, String caption) {
 
         if(isGoogleMapsInstalled(context)) {
-            String uri = String.format(Locale.ENGLISH, "geo:%f,%f?q=%f,%f(%s)", latitude, longitude, latitude, longitude, caption);
+            String uri = String.format(Locale.ENGLISH, GMAPS_URI_FORMAT, latitude, longitude, latitude, longitude, caption);
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             context.startActivity(intent);
         }else{
@@ -208,19 +242,25 @@ public class Utils {
 
     }
 
+    /**
+     * Metodo que permite saber, pasado un horario en un formato concreto, si esta abierta una gasolinera
+     * o no
+     * @param horario con el formato original
+     * @return verdadero si se pudo comprobar que estaba abierta, falso en cualquier otro caso
+     */
     public static boolean estaAbierto(String horario){
-        boolean bAbierto = false;
+        boolean abierto = false;
 
         Pattern pI, pII, pIII, pIV;
         Matcher m;
         horario = horario.toUpperCase();
 
-        List<String> horarios = Arrays.asList(horario.split("; ")), desglose = new ArrayList<String>();
+        List<String> horarios = Arrays.asList(horario.split(MATCHER_SPLITTER)), desglose = new ArrayList<String>();
 
-        String sMatcherI = "([LMXJVSD]-[LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
-        String sMatcherII = "([LMXJVSD]):\\s(\\d{2}):(\\d{2})-(\\d{2}):(\\d{2})";
-        String sMatcherIII = "([LMXJVSD]-[LMXJVSD]):\\s(24H)";
-        String sMatcherIV = "([LMXJVSD]):\\s(24H)";
+        String sMatcherI    = MATCHER_DAY_RANGE;
+        String sMatcherII   = MATCHER_SINGLE_DAY;
+        String sMatcherIII  = MATCHER_DAY_RANGE_24H;
+        String sMatcherIV   = MATCHER_SINGLE_DAY_24H;
 
         pI      = Pattern.compile(sMatcherI);
         pII     = Pattern.compile(sMatcherII);
@@ -233,28 +273,28 @@ public class Utils {
             if(m.matches()){
 
                 for(String s: days.subList(days.indexOf(""+m.group(1).charAt(0)), days.indexOf(""+m.group(1).charAt(2))+1)){
-                    desglose.add(s + ";" + m.group(2)+ ";" + m.group(3)+ ";" + m.group(4)+ ";" + m.group(5));
+                    desglose.add(s + CUSTOM_SPLITTER + m.group(2)+ CUSTOM_SPLITTER + m.group(3)+ CUSTOM_SPLITTER + m.group(4)+ CUSTOM_SPLITTER + m.group(5));
                 }
 
             }else{
                 m = pII.matcher(hora);
 
                 if(m.matches()){
-                    desglose.add(m.group(1) + ";" + m.group(2)+ ";" + m.group(3)+ ";" + m.group(4)+ ";" + m.group(5));
+                    desglose.add(m.group(1) + CUSTOM_SPLITTER + m.group(2)+ CUSTOM_SPLITTER + m.group(3)+ CUSTOM_SPLITTER + m.group(4)+ CUSTOM_SPLITTER + m.group(5));
                 }else{
                     m = pIII.matcher(hora);
 
                     if(m.matches()) {
 
                         for (String s : days.subList(days.indexOf("" + m.group(1).charAt(0)), days.indexOf("" + m.group(1).charAt(2)) + 1)) {
-                            desglose.add(s + ";00;00;00;00");
+                            desglose.add(s + ALTERNATIVE_24H_FORMAT);
                         }
 
                     }else{
                         m = pIV.matcher(hora);
 
                         if(m.matches()) {
-                            desglose.add(m.group(1) + ";00;00;00;00");
+                            desglose.add(m.group(1) + ALTERNATIVE_24H_FORMAT);
                         }
                     }
                 }
@@ -262,12 +302,12 @@ public class Utils {
 
         }
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(LOCAL_TIMEZONE));
         int horaIni, minutoIni, horaFin, minutoFin, diaSemana = (cal.get(Calendar.DAY_OF_WEEK)>1)?cal.get(Calendar.DAY_OF_WEEK)-2:6;
         List<String> dia;
 
         for(String d : desglose){
-            dia = Arrays.asList(d.split(";"));
+            dia = Arrays.asList(d.split(CUSTOM_SPLITTER));
 
             if(dia.get(0).equals(days.get(diaSemana))){
                 horaIni     = new Integer(dia.get(1));
@@ -276,32 +316,218 @@ public class Utils {
                 minutoFin   = new Integer(dia.get(4));
 
                 if(horaIni==0 && minutoIni==0 && horaFin==0 && minutoFin==0){
-                    bAbierto = true;
+                    abierto = true;
                 }else{
-                    if(((cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)) >= (horaIni * 60 + minutoIni)) &&
-                                ((cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE)) <= (horaFin * 60 + minutoFin))){
-                        bAbierto = true;
+                    if(((cal.get(Calendar.HOUR_OF_DAY) * TIME_BASE + cal.get(Calendar.MINUTE)) >= (horaIni * TIME_BASE + minutoIni)) &&
+                                ((cal.get(Calendar.HOUR_OF_DAY) * TIME_BASE + cal.get(Calendar.MINUTE)) <= (horaFin * TIME_BASE + minutoFin))){
+                        abierto = true;
                     }
                 }
             }
         }
 
-        return bAbierto;
+        return abierto;
     }
 
+    /**
+     * Metodo que comprueba si Google Maps esta instalado en el dispositivo
+     * @param context con el contexto de la aplicacion
+     * @return verdadero si esta instalado, falso en cualquier otro caso
+     */
     public static boolean isGoogleMapsInstalled(Context context)
     {
-        boolean bExiste = false;
+        boolean instalada;
 
         try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
-            bExiste = true;
+            context.getPackageManager().getApplicationInfo(GMAPS_PACKAGE_NAME, 0 );
+            instalada = true;
         }
         catch(PackageManager.NameNotFoundException e) {
-            bExiste = false;
+            instalada = false;
         }
 
-        return bExiste;
+        return instalada;
     }
+
+    /**
+     * Metodo que permite eleminar todas las gasolineras que tengan informado a 0 el precio de un
+     * tipo de gasolina
+     * @param tipoGasolina con el tipo de gasolina a comprobar el precio
+     * @param listaGasolineras con el listado de gasolineras
+     */
+    public static  void removeZeroValue(TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+        boolean bdel = false;
+        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
+
+        for(Gasolinera g : listaGasolineras){
+
+            bdel = false;
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    bdel = (g.getGasolina_95() == 0);
+                    break;
+                case SINPLOMO98:
+                    bdel = (g.getGasolina_98() == 0);
+                    break;
+                case DIESEL:
+                    bdel = (g.getGasoleo_a() == 0);
+                    break;
+                case DIESELPLUS:
+                    bdel = (g.getGasoleo_b() == 0);
+                    break;
+            }
+
+            if(bdel){
+                removeList.add(g);
+            }
+
+        }
+
+        listaGasolineras.removeAll(removeList);
+
+    }
+
+    /**
+     * Metodo que permite eleminar todas las gasolineras que tengan informado el precio de un
+     * tipo de gasolina por encima de un valor dado.
+     * @param maxValue con el valor maximo a comprobar el precio
+     * @param tipoGasolina con el tipo de gasolina a comprobar el precio
+     * @param listaGasolineras con el listado de gasolineras
+     */
+    public static void removeMaxValue(Double maxValue, TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+
+        boolean bdel = false;
+        List<Gasolinera> removeList = new ArrayList<Gasolinera>();
+
+        for(Gasolinera g : listaGasolineras){
+
+            bdel = false;
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    bdel = (g.getGasolina_95() > maxValue);
+                    break;
+                case SINPLOMO98:
+                    bdel = (g.getGasolina_98()  > maxValue);
+                    break;
+                case DIESEL:
+                    bdel = (g.getGasoleo_a()  > maxValue);
+                    break;
+                case DIESELPLUS:
+                    bdel = (g.getGasoleo_b()  > maxValue);
+                    break;
+            }
+
+            if(bdel){
+                removeList.add(g);
+            }
+
+        }
+
+        listaGasolineras.removeAll(removeList);
+
+    }
+
+    /**
+     * Metodo que devuelve el precio mas barato para un tipo de gasolina de entre un listado de
+     * gasolineras
+     * @param tipoGasolina con el tipo de gasolina a comprobar el precio
+     * @param listaGasolineras con el listado de gasolineras
+     * @return precio mas barato
+     */
+    public static  Double getMasBarata (TipoGasolina tipoGasolina, List<Gasolinera> listaGasolineras){
+
+        Double minimo = 0.0;
+
+        for(Gasolinera g : listaGasolineras){
+
+            switch(tipoGasolina){
+                case SINPLOMO95:
+                    if(minimo == 0 || minimo > g.getGasolina_95()){
+                        minimo = g.getGasolina_95();
+                    }
+                    break;
+                case SINPLOMO98:
+                    if(minimo == 0 || minimo > g.getGasolina_98()){
+                        minimo = g.getGasolina_98();
+                    }
+                    break;
+                case DIESEL:
+                    if(minimo == 0 || minimo > g.getGasoleo_a()){
+                        minimo = g.getGasoleo_a();
+                    }
+                    break;
+                case DIESELPLUS:
+                    if(minimo == 0 || minimo > g.getGasoleo_b()){
+                        minimo = g.getGasoleo_b();
+                    }
+                    break;
+            }
+
+        }
+
+        return minimo;
+    }
+
+    /**
+     * Funcion que pasado un listado de gasolineras devuelve las mas baratas por tipo de combustible
+     * para un municipio.
+     * @param municipio con el municipio a comparar el precio
+     * @param listaGasolineras con el listado de gasolineras
+     * @return las gasolineras mas baratas por tipo de carburante
+     */
+    public static MasBaratas getMasBaratas(String municipio, List<Gasolinera> listaGasolineras){
+
+        MasBaratas masBaratas = new MasBaratas();
+
+        for(Gasolinera g: listaGasolineras){
+
+            if(g.getMunicipio().trim().equals(municipio)) {
+
+                // Comprobamos si es la mas barata de alguno de los cuatro carburantes
+                if ((masBaratas.getMasBarata95() == null && g.getGasolina_95() > 0) ||
+                        (g.getGasolina_95() > 0 && masBaratas.getMasBarata95().getGasolina_95() > g.getGasolina_95())) {
+                    masBaratas.setMasBarata95(g);
+                }
+
+                if ((masBaratas.getMasBarata98() == null && g.getGasolina_98() > 0) ||
+                        (g.getGasolina_98() > 0 && masBaratas.getMasBarata98().getGasolina_98() > g.getGasolina_98())) {
+                    masBaratas.setMasBarata98(g);
+                }
+
+                if ((masBaratas.getMasBarataDiesel() == null && g.getGasoleo_a() > 0) ||
+                        (g.getGasoleo_a() > 0 && masBaratas.getMasBarataDiesel().getGasoleo_a() > g.getGasoleo_a())) {
+                    masBaratas.setMasBarataDiesel(g);
+                }
+
+                if ((masBaratas.getMasBarataDieselPlus() == null && g.getGasoleo_b() > 0) ||
+                        (g.getGasoleo_b() > 0 && masBaratas.getMasBarataDieselPlus().getGasoleo_b() > g.getGasoleo_b())) {
+                    masBaratas.setMasBarataDieselPlus(g);
+                }
+            }
+        }
+
+        return masBaratas;
+    }
+
+    /**
+     * Metodo que dado un listado de gasolineras devuelve una por su identificador de estacion
+     * @param IDEESS con el identificador de estacion
+     * @param listaGasolineras con el listado de gasolineras a utiliar
+     * @return gasolinera con el id aportado si se encontro, nulo en cualquier otro caso
+     */
+    public static Gasolinera getGasolinera(int IDEESS, List<Gasolinera> listaGasolineras) {
+        Gasolinera gasolinera = null;
+
+        for(Gasolinera g : listaGasolineras){
+            if(g.getIDEESS()==IDEESS){
+                gasolinera = g;
+            }
+        }
+
+        return gasolinera;
+    }
+
 }
 

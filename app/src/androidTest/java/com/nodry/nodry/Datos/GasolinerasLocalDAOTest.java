@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
+import com.nodry.nodry.Comunes.Datos.IGasolinerasLocalDAO;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 import com.nodry.nodry.Utils.DataFetch;
 import com.nodry.nodry.Utils.LocalFetch;
 import com.nodry.nodry.Utils.Utils;
@@ -18,20 +20,19 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by att3mpt on 10/25/16.
- */
-public class GasolinerasDAOTest {
+public class GasolinerasLocalDAOTest {
 
-    GasolinerasDAO  g;
-    List<Gasolinera> gasolineras;
+    private IGasolinerasLocalDAO gasolinerasDAO;
+    private static List<Gasolinera> listaGasolineras;
+    private static Context context;
 
-    private static final String TEMP_FILE_NAME = "temp.txt";
+    private static final String CACHE_FILE_NAME         = "cache";
+    private static final String TITLE_ERROR             = "ERROR";
+    private static final String CHARSET_UTF             = "UTF-8";
 
     private static final String TEST_ROTULO             = "CEPSA";
     private static final String TEST_DIRECCION          = "CARRETERA 6316 KM. 10,5";
@@ -41,22 +42,13 @@ public class GasolinerasDAOTest {
     private static final Double TEST_PRECIO_GASOLINA    = 1.205;
     private static final Integer TEST_IDEESS            = 1039;
 
-    private static final boolean FORCE_LOCAL_TRUE = true;
-    private static final boolean FORCE_LOCAL_FALSE = false;
-
-    private static final String GALICIA_ID = "12";
-    private static final List<String>  PROVINCIAS_GALICIA = new ArrayList<String>(Arrays.asList("CORUÑA (A)","LUGO","OURENSE","PONTEVEDRA"));
-
-
-    private static Context context;
-
     //private static RemoteFetch remoteFetch;
     private static LocalFetch localFetch;
     private static BufferedInputStream bufferedDataGasolinerasTest;
-    private static BufferedInputStream bufferedDataGasolinerasTestListSize;
+    private static BufferedInputStream bufferedDataGasolinerasSizeTest;
     private static InputStream stream;
-    private static InputStream streamListSize;
-    private static List<Gasolinera> listaGasolineras;
+    private static InputStream streamSize;
+
     private static String jsonData =
             "{" +
                     "\"Fecha\": \"25/10/2016 20:40:39\"," +
@@ -187,86 +179,63 @@ public class GasolinerasDAOTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+
         context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
-        stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
-        streamListSize = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
+        DataFetch.context = context;
+
+        stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
+        streamSize = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
-        bufferedDataGasolinerasTestListSize = new BufferedInputStream(streamListSize);
+        bufferedDataGasolinerasSizeTest = new BufferedInputStream(streamSize);
 
-        //remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
-
-        //listaGasolineras = ParserJSON.readJsonStream(stream);
     }
 
     @Before
     public void setUp() throws Exception {
-        g = new GasolinerasDAO();
-        gasolineras = new ArrayList<Gasolinera>();
+        gasolinerasDAO = new GasolinerasLocalDAO();
+        listaGasolineras = new ArrayList<Gasolinera>();
     }
 
     @Test
-    public void getListGasolinerasTest() {
+    public void getListGasolinerasTest(){
         try {
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_FALSE);
-            assertEquals("CANTABRIA", gasolineras.get(0).getProvincia());
-        } catch (IndexOutOfBoundsException e) {
-            Log.d("El test no paso", e.toString());
-            fail();
-        }
-    }
+            Utils.writeToFile(bufferedDataGasolinerasTest, CACHE_FILE_NAME, context);
+            listaGasolineras = gasolinerasDAO.getListGasolineras();
 
-    @Test
-    public void getListGasolinerasFiltroCCAATest() {
-        try {
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_FALSE);
-            assertEquals("CANTABRIA", gasolineras.get(0).getProvincia());
+            Gasolinera gasolinera = listaGasolineras.get(0);
 
-            gasolineras = g.getListGasolineras(GALICIA_ID, FORCE_LOCAL_FALSE);
-            assertTrue(
-                    PROVINCIAS_GALICIA.contains(gasolineras.get(0).getProvincia())
-            );
-        } catch (IndexOutOfBoundsException e) {
-            Log.d("El test no paso", e.toString());
-            fail();
-        }
-    }
-
-    @Test
-    public void getListGasolinerasLocalSize(){
-        try {
-            Utils.writeToFile(bufferedDataGasolinerasTestListSize,TEMP_FILE_NAME, context);
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_TRUE);
-            assertTrue(gasolineras.size() == 4);
-        } catch (IndexOutOfBoundsException e) {
-            Log.d("El test no paso", e.toString());
-            fail();
-        } catch (IOException e2) {
-            Log.d("El test no paso", e2.toString());
-            fail();
-        }
-    }
-
-    @Test
-    public void getListGasolinerasLocal(){
-        try {
-            Utils.writeToFile(bufferedDataGasolinerasTest,TEMP_FILE_NAME, context);
-            gasolineras = g.getListGasolineras(IGasolinerasDAO.DEFAULT_CCAA, FORCE_LOCAL_TRUE);
             Assert.assertTrue(
-                    gasolineras.get(0).getRotulo().equals(TEST_ROTULO)
-                            &&  gasolineras.get(0).getDireccion().equals(TEST_DIRECCION)
-                            &&  gasolineras.get(0).getGasoleo_a() == TEST_PRECIO_GASOLEO
-                            &&  gasolineras.get(0).getGasolina_95() == TEST_PRECIO_GASOLINA
-                            &&  gasolineras.get(0).getIDEESS() == TEST_IDEESS
-                            &&  gasolineras.get(0).getLocalidad().equals(TEST_LOCALIDAD)
-                            &&  gasolineras.get(0).getProvincia().equals(TEST_PROVINCIA)
+                    gasolinera.getRotulo().equals(TEST_ROTULO)
+                            &&  gasolinera.getDireccion().equals(TEST_DIRECCION)
+                            &&  gasolinera.getGasoleo_a() == TEST_PRECIO_GASOLEO
+                            &&  gasolinera.getGasolina_95() == TEST_PRECIO_GASOLINA
+                            &&  gasolinera.getIDEESS() == TEST_IDEESS
+                            &&  gasolinera.getLocalidad().equals(TEST_LOCALIDAD)
+                            &&  gasolinera.getProvincia().equals(TEST_PROVINCIA)
             );
 
         } catch (IndexOutOfBoundsException e) {
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
             fail();
-        } catch (IOException e2) {
-            Log.d("El test no paso", e2.toString());
+        } catch (IOException e) {
+            Log.d(TITLE_ERROR, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getListGasolinerasSizeTest(){
+        try {
+            Utils.writeToFile(bufferedDataGasolinerasSizeTest, CACHE_FILE_NAME, context);
+            listaGasolineras = gasolinerasDAO.getListGasolineras();
+
+            assertTrue(listaGasolineras.size() == 4);
+
+        } catch (IndexOutOfBoundsException e) {
+            Log.d(TITLE_ERROR, e.toString());
+            fail();
+        } catch (IOException e) {
+            Log.d(TITLE_ERROR, e.toString());
             fail();
         }
     }

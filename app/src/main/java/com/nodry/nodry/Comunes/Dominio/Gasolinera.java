@@ -1,4 +1,4 @@
-package com.nodry.nodry.Datos;
+package com.nodry.nodry.Comunes.Dominio;
 
 import java.io.Serializable;
 
@@ -6,13 +6,14 @@ import java.io.Serializable;
  * Clase que representa una gasolinera.
  * Cada una se rellenara con los datos procesados desde
  * el JSON descargado del servidor.
- * @author Andres Barrado Martin.
- * @version 1.0
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-public class Gasolinera implements Serializable {
+public class Gasolinera implements Serializable, Cloneable {
 
     //Campos de la Gasolinera
     private int IDEESS;
+    private String IDCCAA;
     private String localidad;
     private String provincia;
     private String direccion;
@@ -24,6 +25,7 @@ public class Gasolinera implements Serializable {
     private String horario;
     private double latitud;
     private double longitud;
+    private String municipio;
 
     // Preparamos un ejemplo de ordenacion que utilizaremos mas daelante
     private static final boolean orderByGasoleoA = true;
@@ -39,7 +41,7 @@ public class Gasolinera implements Serializable {
      * @param gasolina_95 con el rpecio de la gasolina_95 de la gasolinera
      * @param rotulo con el rotulo de la gasolineras
      */
-    public Gasolinera (int IDEESS, String localidad, String provincia, String direccion, double gasoleo_a, double gasolina_95, String rotulo, double gasoleo_b, double gasolina_98, String horario, double latitud, double longitud){
+    public Gasolinera (int IDEESS, String localidad, String provincia, String direccion, double gasoleo_a, double gasolina_95, String rotulo, double gasoleo_b, double gasolina_98, String horario, double latitud, double longitud, String municipio, String IDCCAA){
         this.IDEESS = IDEESS;
         this.localidad = localidad;
         this.provincia = provincia;
@@ -52,6 +54,8 @@ public class Gasolinera implements Serializable {
         this.horario = horario;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.municipio = municipio;
+        this.IDCCAA = IDCCAA;
     }// Gasolinera
 
     /**
@@ -222,6 +226,48 @@ public class Gasolinera implements Serializable {
      */
     public void setLongitud(double longitud) {
         this.longitud = longitud;
+    }
+
+    /**
+     * Retorna el valor del atributo municipio
+     * @return municipio
+     */
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    /**
+     * Modifica el valor del atributo municipio por el pasado por parametro
+     */
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
+
+
+    /**
+     * Retorna el valor del atributo IDCCAA
+     * @return IDCCAA
+     */
+    public String getIDCCAA() {
+        return IDCCAA;
+    }
+
+    /**
+     * Modifica el valor del atributo IDCCAA por el pasado por parametro
+     */
+    public void setIDCCAA(String IDCCAA) {
+        this.IDCCAA = IDCCAA;
+    }
+
+
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            // This should never happen
+            throw new InternalError(e.toString());
+        }
     }
 
 }// Gasolinera

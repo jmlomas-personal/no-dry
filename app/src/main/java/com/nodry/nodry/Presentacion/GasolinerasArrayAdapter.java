@@ -14,15 +14,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
+import com.nodry.nodry.Comunes.Presentacion.IUpdateable;
 import com.nodry.nodry.R;
 
 /**
  * Clase para la el renderizado en la visualizacion
  * en el listado de Gasolineras, pudiendo aplicar
  * a cada una plantilla prederterminada.
- * @author Alba Zubizarreta.
- * @version 1.0
+ * @author Code4Fun.org
+ * @version 11/2016
  */
 public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements IUpdateable
 {
@@ -31,6 +32,14 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
 
     // Listado de las gasolineras
     private List<Gasolinera> listaGasolineras;
+
+    // Constantes a utilizar
+    private static final String DEFAULT_IMAGE   = "por_defecto";    // Imagen por defecto
+    private static final String IMAGES_FOLDER   = "drawable";       // Directorio de las imagenes
+    private static final String ERROR_TITLE     = "ERROR";          // Titulo para errores
+
+    private static final String CONS_UNITS      = "€/L";            // Unidades para mostrar divisas
+    private static final String DIR_SEPARATOR   = "/";              // Separador de directorios
 
     // Imagen por defecto de una gasolinera
     int imageDefaultID;
@@ -44,7 +53,7 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
     public GasolinerasArrayAdapter(Context context, int resource, List<Gasolinera> objects) {
         super(context, resource, objects);
 
-        imageDefaultID = context.getResources().getIdentifier("por_defecto", "drawable", context.getPackageName());
+        imageDefaultID = context.getResources().getIdentifier(DEFAULT_IMAGE, IMAGES_FOLDER, context.getPackageName());
         this.context = context;
         this.listaGasolineras = objects;
     }
@@ -61,18 +70,19 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.gasolinera_layout, null);
 
-        TextView rotulo = (TextView) view.findViewById(R.id.rotulo);
-        TextView direccion = (TextView) view.findViewById(R.id.direccion);
-        TextView diesel = (TextView) view.findViewById(R.id.diesel);
-        TextView gasolina = (TextView) view.findViewById(R.id.gasolina);
-        TextView dieselb=(TextView) view.findViewById(R.id.dieselb);
-        TextView gasolina98=(TextView) view.findViewById(R.id.gasolina98);
-        ImageView image = (ImageView) view.findViewById(R.id.image);
+        TextView rotulo =       (TextView) view.findViewById(R.id.rotulo);
+        TextView direccion =    (TextView) view.findViewById(R.id.direccion);
+        TextView diesel =       (TextView) view.findViewById(R.id.diesel);
+        TextView gasolina =     (TextView) view.findViewById(R.id.gasolina);
+        TextView dieselb =      (TextView) view.findViewById(R.id.dieselb);
+        TextView gasolina98 =   (TextView) view.findViewById(R.id.gasolina98);
+        ImageView image =       (ImageView) view.findViewById(R.id.image);
 
         //set address and description
         String rotuloTrim = "",
                 completeRotulo = gasolinera.getRotulo();
         int rotuloLength = completeRotulo.length();
+
         if(rotuloLength >= 32){
             rotuloTrim = completeRotulo.substring(0, 28) + "...";
             rotulo.setText(rotuloTrim);
@@ -81,8 +91,7 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         }
 
         //display trimmed excerpt for description
-        String direccionTrim = "",
-                completeDireccion = gasolinera.getDireccion();//+",\n"+ gasolinera.getLocalidad();
+        String direccionTrim = "", completeDireccion = gasolinera.getDireccion();//+",\n"+ gasolinera.getLocalidad();
 
         int descriptionLength = completeDireccion.length();
         if(descriptionLength >= 55){
@@ -92,27 +101,21 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
             direccion.setText(completeDireccion);
         }
 
-        //set price and rental attributes
-        //price.setText("$" + String.valueOf(gasolinera.getGasoleo_a()));
-        diesel.setText(String.valueOf(gasolinera.getGasoleo_a()) + "€/L");
-        gasolina.setText(String.valueOf(gasolinera.getGasolina_95() + "€/L"));
-        dieselb.setText(String.valueOf(gasolinera.getGasoleo_b()) + "€/L");
-        gasolina98.setText(String.valueOf(gasolinera.getGasolina_98() + "€/L"));
-        //carspot.setText("Car: " + String.valueOf(property.getCarspots()));
+        diesel.setText(String.valueOf(gasolinera.getGasoleo_a())        + CONS_UNITS);
+        gasolina.setText(String.valueOf(gasolinera.getGasolina_95()     + CONS_UNITS));
+        dieselb.setText(String.valueOf(gasolinera.getGasoleo_b())       + CONS_UNITS);
+        gasolina98.setText(String.valueOf(gasolinera.getGasolina_98()   + CONS_UNITS));
 
         //get the image associated with this property
-        Integer imageID = context.getResources().getIdentifier("drawable/" + gasolinera.getRotulo().trim().toLowerCase(), null, context.getPackageName());
+        Integer imageID = context.getResources().getIdentifier(IMAGES_FOLDER + DIR_SEPARATOR + gasolinera.getRotulo().trim().toLowerCase(), null, context.getPackageName());
+
         try {
             image.setImageResource((imageID == 0) ? imageDefaultID : imageID);
         }catch (Exception e){
-            Log.d("Error", e.toString());
+            Log.d(ERROR_TITLE, e.toString());
         }
 
         return view;
-    }
-
-    public List<Gasolinera> getGasolineras(){
-        return listaGasolineras;
     }
 
     @Override
@@ -122,9 +125,9 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
     }
 
     @Override
-    public void update(Collection<?> c) {
-        this.listaGasolineras.clear();
-        this.listaGasolineras.addAll((List<Gasolinera>)c);
-        this.notifyDataSetChanged();
+    public void update(Collection<?> data) {
+        listaGasolineras.clear();
+        listaGasolineras.addAll((List<Gasolinera>)data);
+        notifyDataSetChanged();
     }
-}//gasolinerasArrayAdapter
+}

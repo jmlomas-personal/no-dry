@@ -16,4 +16,5 @@ package com.nodry.nodry.Presentacion.IntegrationTest_US169386_MostrarDetalle;
  */
 
 public class IntegrationTest_US169386_Prueba6 {
+    //No implementado
 }

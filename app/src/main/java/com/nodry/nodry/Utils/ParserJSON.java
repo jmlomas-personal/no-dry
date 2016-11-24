@@ -2,9 +2,8 @@ package com.nodry.nodry.Utils;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.util.Log;
 
-import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,14 +12,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase que contiene los metodos necesarios para formalizar los datos
- * del JSON que devuelve el servicio REST con las estaciones de servicios.
- * @author Juan Manuel Lomas Fernandez
- * @version 1.0
+ * Clase para el parseado de datos de un fichero JSon
+ * en un listado de objetos de tipo gasolinera.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
 public class ParserJSON{
 
-    public static final String OK_STATUS = "OK";
+    private static final String CHARSET_UTF             = "UTF-8";
+    private static final String OK_STATUS               = "OK";
+    private static final String FIELD_STATUS            = "ResultadoConsulta";
+    private static final String FIELD_ARRAY_GASOLINERAS = "ListaEESSPrecio";
+    private static final String FIELD_ROTULO            = "Rótulo";
+    private static final String FIELD_LOCALIDAD         = "Localidad";
+    private static final String FIELD_MUNICIPIO         = "Municipio";
+    private static final String FIELD_PROVINCIA         = "Provincia";
+    private static final String FIELD_IDEESS            = "IDEESS";
+    private static final String FIELD_IDCCAA            = "IDCCAA";
+    private static final String FIELD_SINPLOMO95        = "Precio Gasolina 95 Protección";
+    private static final String FIELD_DIESEL            = "Precio Gasoleo A";
+    private static final String FIELD_DIESELPLUS        = "Precio Nuevo Gasoleo A";
+    private static final String FIELD_SINPLOMO98        = "Precio Gasolina  98";
+    private static final String FIELD_DIRECCION         = "Dirección";
+    private static final String FIELD_LATITUD           = "Latitud";
+    private static final String FIELD_LONGITUD          = "Longitud (WGS84)";
+    private static final String FIELD_HORARIO           = "Horario";
 
     /**
      * Funcion que lee el JSon con formato de cadena de bytes
@@ -29,12 +45,8 @@ public class ParserJSON{
      * @throws IOException
      */
     public static List<Gasolinera> readJsonStream (InputStream in) throws IOException {
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        try {
-            return readArrayGasolineras(reader);
-        } finally {
-            reader.close();
-        }
+        JsonReader reader = new JsonReader(new InputStreamReader(in, CHARSET_UTF));
+        return readArrayGasolineras(reader);
     }
 
     /**
@@ -45,23 +57,21 @@ public class ParserJSON{
      * @throws IOException
      */
     public static Boolean readJsonStreamStatus (InputStream in) throws IOException {
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+        JsonReader reader = new JsonReader(new InputStreamReader(in, CHARSET_UTF));
         String status = "";
 
         reader.beginObject();
         while(reader.hasNext()){
             String name = reader.nextName();
-            if(name.equals("ResultadoConsulta")){
+            if(name.equals(FIELD_STATUS)){
                 status = reader.nextString();
             }else{
                 reader.skipValue();
             }
-
-            Log.d("ENTRA", "Nombre del elemento: "+name);
-        }//while
+        }
         reader.endObject();
         return status.equals(ParserJSON.OK_STATUS);
-    }//readStatus
+    }
 
     /**
      * Funcion que pasado un lector de JSon, mapea las gasolineras
@@ -71,26 +81,28 @@ public class ParserJSON{
      * @throws IOException
      */
     public static List readArrayGasolineras (JsonReader reader) throws IOException {
+
         List<Gasolinera> listGasolineras = new ArrayList<Gasolinera>();
 
         reader.beginObject();
         while(reader.hasNext()){
             String name = reader.nextName();
-            Log.d("ENTRA", "Nombre del elemento: "+name);
-            if(name.equals("ListaEESSPrecio")){
+            if(name.equals(FIELD_ARRAY_GASOLINERAS)){
                 reader.beginArray();
                 while (reader.hasNext()){
                     listGasolineras.add(readGasolinera(reader));
-                }//while
+                }
                 reader.endArray();
             }else{
                 reader.skipValue();
-                //if
             }
-        }//while
+        }
+
         reader.endObject();
+        reader.close();
+
         return listGasolineras;
-    }//readArrayGasolineras
+    }
 
     /**
      * Funcion que pasado un lector de JSon, mapea una gasolinera
@@ -100,45 +112,50 @@ public class ParserJSON{
      * @throws IOException
      */
     public static Gasolinera readGasolinera (JsonReader reader) throws IOException {
-        reader.beginObject();
-        boolean add = false;
-        String rotulo="", localidad ="", provincia="", direccion="", horario="";
-        int id = -1;
-        double gasoleoA = 0.0, sinplomo95 = 0.0, gasoleoB = 0.0, sinplomo98 = 0.0, latitud = 0.0, longitud = 0.0;
 
+        String rotulo="", localidad ="", provincia="", direccion="", horario="", municipio = "", idccaa = "";
+        double gasoleoA = 0.0, sinplomo95 = 0.0, gasoleoB = 0.0, sinplomo98 = 0.0, latitud = 0.0, longitud = 0.0;
+        int id = -1;
+
+        reader.beginObject();
         while(reader.hasNext()){
             String name = reader.nextName();
 
-            if (name.equals("Rótulo") && reader.peek() != JsonToken.NULL) {
+            if (name.equals(FIELD_ROTULO) && reader.peek() != JsonToken.NULL) {
                 rotulo = reader.nextString();
-            }else if (name.equals("Localidad") && reader.peek() != JsonToken.NULL) {
+            }else if (name.equals(FIELD_LOCALIDAD) && reader.peek() != JsonToken.NULL) {
                 localidad = reader.nextString();
-            }else if(name.equals("Provincia") && reader.peek() != JsonToken.NULL){
+            }else if (name.equals(FIELD_MUNICIPIO) && reader.peek() != JsonToken.NULL) {
+                municipio = reader.nextString();
+            }else if(name.equals(FIELD_PROVINCIA) && reader.peek() != JsonToken.NULL){
                 provincia = reader.nextString();
-            }else if(name.equals("IDEESS") && reader.peek() != JsonToken.NULL){
+            }else if(name.equals(FIELD_IDEESS) && reader.peek() != JsonToken.NULL){
                 id = reader.nextInt();
-            }else if(name.equals("Precio Gasoleo A") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_IDCCAA) && reader.peek() != JsonToken.NULL){
+                idccaa = reader.nextString();
+            }else if(name.equals(FIELD_DIESEL) && reader.peek() != JsonToken.NULL) {
                 gasoleoA = Double.parseDouble(reader.nextString().replace(",","."));
-            }else if(name.equals("Precio Gasolina 95 Protección") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_SINPLOMO95) && reader.peek() != JsonToken.NULL) {
                 sinplomo95 = Double.parseDouble(reader.nextString().replace(",", "."));
-            }else if(name.equals("Precio Nuevo Gasoleo A") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_DIESELPLUS) && reader.peek() != JsonToken.NULL) {
                 gasoleoB = Double.parseDouble(reader.nextString().replace(",","."));
-            }else if(name.equals("Precio Gasolina  98") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_SINPLOMO98) && reader.peek() != JsonToken.NULL) {
                 sinplomo98 = Double.parseDouble(reader.nextString().replace(",", "."));
-            }else if(name.equals("Dirección") && reader.peek() != JsonToken.NULL){
+            }else if(name.equals(FIELD_DIRECCION) && reader.peek() != JsonToken.NULL){
                 direccion = reader.nextString();
-            }else if(name.equals("Latitud") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_LATITUD) && reader.peek() != JsonToken.NULL) {
                 latitud = Double.parseDouble(reader.nextString().replace(",","."));
-            }else if(name.equals("Longitud (WGS84)") && reader.peek() != JsonToken.NULL) {
+            }else if(name.equals(FIELD_LONGITUD) && reader.peek() != JsonToken.NULL) {
                 longitud = Double.parseDouble(reader.nextString().replace(",", "."));
-            }else if(name.equals("Horario") && reader.peek() != JsonToken.NULL){
+            }else if(name.equals(FIELD_HORARIO) && reader.peek() != JsonToken.NULL){
                 horario = reader.nextString();
             }else{
                 reader.skipValue();
-            }//if
+            }
 
-        }// while
+        }
+
         reader.endObject();
-        return new Gasolinera(id,localidad,provincia,direccion,gasoleoA, sinplomo95, rotulo, gasoleoB, sinplomo98, horario, latitud, longitud);
-    }// readGasolinera
-}//ParserJSON
+        return new Gasolinera(id,localidad,provincia,direccion,gasoleoA, sinplomo95, rotulo, gasoleoB, sinplomo98, horario, latitud, longitud, municipio, idccaa);
+    }
+}

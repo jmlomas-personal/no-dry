@@ -49,28 +49,33 @@ import static org.hamcrest.Matchers.not;
 
 public class IntegrationTest_US175722_Prueba7 {
 
+    private final static String MSG_FILTER_ERROR_NEG    = "El número introducido es negativo";
+
+    private final static String VALUE_SPINNER_CCAA      = "Asturias";
+    private final static String VALUE_SPINNER_TIPOGAS   = "Sin Plomo 95";
+    private final static String VALUE_MAX               = "-5";
+
     @Rule
     public ActivityTestRule<FiltersActivity> mActivityFiltersTestRule = new ActivityTestRule<>(FiltersActivity.class, true, false);
 
     @Test
     public void integrationTest(){
-        Context targetContext = InstrumentationRegistry.getInstrumentation()
-                .getTargetContext();
+        Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Intent intent = new Intent(targetContext, FiltersActivity.class);
         mActivityFiltersTestRule.launchActivity(intent);
 
         //seleccionamos una comunidad autónoma del desplegable
         onView(withId(R.id.spinner_CCAA)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("Asturias"))).perform(click());
-        onView(withId(R.id.spinner_CCAA)).check(matches(withSpinnerText(containsString("Asturias"))));
+        onData(allOf(is(instanceOf(String.class)), is(VALUE_SPINNER_CCAA))).perform(click());
+        onView(withId(R.id.spinner_CCAA)).check(matches(withSpinnerText(containsString(VALUE_SPINNER_CCAA))));
 
         //seleccionamos un tipo de gasolina del desplegable
         onView(withId(R.id.spinner_TiposGasolina)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("Sin Plomo 95"))).perform(click());
-        onView(withId(R.id.spinner_TiposGasolina)).check(matches(withSpinnerText(containsString("Sin Plomo 95"))));
+        onData(allOf(is(instanceOf(String.class)), is(VALUE_SPINNER_TIPOGAS))).perform(click());
+        onView(withId(R.id.spinner_TiposGasolina)).check(matches(withSpinnerText(containsString(VALUE_SPINNER_TIPOGAS))));
 
         //Editamos el campo Máximo a un número negativo
-        onView(withId(R.id.editText_maximo)).perform(typeText("-5"));
+        onView(withId(R.id.editText_maximo)).perform(typeText(VALUE_MAX));
 
         //quitar teclado
         closeSoftKeyboard();
@@ -79,6 +84,6 @@ public class IntegrationTest_US175722_Prueba7 {
         onView(withId(R.id.button_filtrar)).perform(click());
 
         //Comprobamos que se muestra el toast indicando que el numero introducido es negativo
-        onView(withText("El número introducido es negativo")).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText(MSG_FILTER_ERROR_NEG)).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }

@@ -2,10 +2,8 @@ package com.nodry.nodry.Utils;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.util.Log;
 
-import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Datos.IGasolinerasDAO;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,12 +18,11 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-/**
- * Created by MacbookAir on 16/11/16.
- */
-
 public class LocalFetchTest {
-    private static final String TEST_LOCAL_FILE_NAME = "localFileText.txt";
+
+    private static List<Gasolinera> listaGasolineras;
+    private static final String TEST_LOCAL_FILE_NAME    = "localFileText.txt";
+    private static final String CHARSET_UTF             = "UTF-8";
 
     private static final String TEST_ROTULO             = "CEPSA";
     private static final String TEST_DIRECCION          = "CARRETERA 6316 KM. 10,5";
@@ -40,7 +37,7 @@ public class LocalFetchTest {
     private static LocalFetch localFetch;
     public static BufferedInputStream bufferedDataGasolinerasTest;
     private static InputStream stream;
-    private static List<Gasolinera> listaGasolineras;
+
     private static String jsonData =
             "{" +
                     "\"Fecha\": \"25/10/2016 20:40:39\"," +
@@ -177,8 +174,8 @@ public class LocalFetchTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
-        stream = new ByteArrayInputStream(jsonData.getBytes("UTF-8"));
+        DataFetch.context = context;
+        stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
         bufferedDataGasolinerasTest = new BufferedInputStream(stream);
     }
 
@@ -191,7 +188,6 @@ public class LocalFetchTest {
             assertNotNull(localFetch.getBufferedData());
         }
         catch(IOException e) {
-            Log.d("El test no paso", e.toString());
             fail();
         }
     }

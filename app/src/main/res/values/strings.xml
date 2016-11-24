@@ -16,6 +16,7 @@
     <string name="mensaje_error">MENSAJE ERROR</string>
     <string name="textviewrotulo">textView_Rotulo</string>
     <string name="localidad">Localidad:</string>
+    <string name="municipio">Municipio:</string>
     <string name="textViewLocalidad">textView_Localidad</string>
     <string name="provincia">Provincia:</string>
     <string name="textViewProvincia">textView_Provincia</string>

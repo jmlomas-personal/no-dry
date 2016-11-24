@@ -1,17 +1,25 @@
-package com.nodry.nodry.Negocio;
+package com.nodry.nodry.Presentacion;
 
-import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
+import com.nodry.nodry.Utils.TipoGasolina;
 
 import java.util.Comparator;
 
 /**
- * Created by att3mpt on 11/16/16.
+ * Clase comparador para poder ordenar
+ * las gasolineras por precio.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-
 public class PrecioSort implements Comparator<Gasolinera> {
 
+    // Con el tipo de la gasolina a comparar el precio
     TipoGasolina tipoGasolina;
 
+    /**
+     * Constructor de la clase
+     * @param tipoGasolina con el tipo de gasolina a comparar el precio
+     */
     public PrecioSort(TipoGasolina tipoGasolina){
         this.tipoGasolina = tipoGasolina;
     }

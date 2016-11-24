@@ -10,10 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nodry.nodry.Datos.Gasolinera;
-import com.nodry.nodry.Negocio.MasBaratas;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 import com.nodry.nodry.Negocio.GestionGasolineras;
 import com.nodry.nodry.R;
+import com.nodry.nodry.Utils.MasBaratas;
 import com.nodry.nodry.Utils.Utils;
 
 import java.io.Serializable;
@@ -21,10 +21,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 /**
- * Actividad donde se ubican los filtros de
- * la aplicacion.
- * @author Juan Manuel Lomas Fernandez.
- * @version 1.0
+ * Clase de la actividad que muestra el
+ * detalle de una gasolinera.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     String CCAA;
     int IDEESS;
 
-    List<Gasolinera> gasolineras;
+    List<Gasolinera> listGasolineras;
     Gasolinera gasolinera;
     MasBaratas masBaratas;
 
@@ -40,11 +40,25 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     DecimalFormat df = new DecimalFormat("0.000");
 
     ImageView imagen;
-    TextView tvRotulo, tvLocalidad, tvProvincia, tvDireccion, tvSinPlomo95, tvSinPlomo98, tvDiesel, tvDieselPlus, tvHorario, tvEstado;
+    TextView tvRotulo, tvLocalidad, tvMunicipio, tvProvincia, tvDireccion, tvSinPlomo95, tvSinPlomo98, tvDiesel, tvDieselPlus, tvHorario, tvEstado;
     Button bSinPlomo95, bSinPlomo98, bDiesel, bDieselPlus;
     ImageButton bMapa;
 
-    private static final String CURRENCY = "€";
+    private static final String TEXT_CURRENCY           = " €";
+    private static final String TEXT_SUBS               = "-";
+    private static final String TEXT_NOT_AVAILABLE      = "No Disponible";
+    private static final String TEXT_OPEN               = "Abierto";
+    private static final String TEXT_CLOSED             = "Cerrado";
+
+    private static final String DEFAULT_IMAGE       = "por_defecto";
+    private static final String IMAGES_FOLDER       = "drawable";
+    private static final String TEXT_TO_REPLACE     = "; ";
+    private static final String TEXT_REPLACEMENT    = "\n";
+
+    // Campos para realizar llamadas a otras actividades
+    private static final String EXTRA_CCAA          = "CCAA";
+    private static final String EXTRA_IDEESS        = "IDEESS";
+    private static final String EXTRA_LIST          = "LIST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +74,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         tvRotulo        = (TextView) findViewById(R.id.textView_Rotulo);
         tvLocalidad     = (TextView) findViewById(R.id.textView_Localidad);
+        tvMunicipio     = (TextView) findViewById(R.id.textView_Municipio);
         tvProvincia     = (TextView) findViewById(R.id.textView_Provincia);
         tvDireccion     = (TextView) findViewById(R.id.textView_Direccion);
         tvSinPlomo95    = (TextView) findViewById(R.id.textView_Gasolina95);
@@ -83,9 +98,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         // Recuperamos la CCAA y el ID de la gasolinera
         intent = getIntent();
-        CCAA = intent.getStringExtra("CCAA");
-        IDEESS = intent.getIntExtra("IDEESS", 0);
-        gasolineras = (List) getIntent().getSerializableExtra("listaGasolineras");
+        CCAA = intent.getStringExtra(EXTRA_CCAA);
+        IDEESS = intent.getIntExtra(EXTRA_IDEESS, 0);
+        listGasolineras = (List) getIntent().getSerializableExtra(EXTRA_LIST);
 
         // Inicializamos y cargamos
         initialize();
@@ -125,6 +140,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Metodo que inicializa la actividad
+     */
     private void initialize(){
 
         bSinPlomo95.setVisibility(View.GONE);
@@ -134,37 +152,43 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /**
+     * Metodo que carga los necesarios para la actividad
+     */
     private void loadData(){
 
-        gestionGasolineras = new GestionGasolineras();
-        gasolinera = gestionGasolineras.getGasolinera(IDEESS, gasolineras);
-        masBaratas = gestionGasolineras.getMasBaratas(gasolinera.getLocalidad(), gasolineras);
+        gasolinera = Utils.getGasolinera(IDEESS, listGasolineras);
+        masBaratas = Utils.getMasBaratas(gasolinera.getMunicipio(), listGasolineras);
 
     }
 
+    /**
+     * Metodo que pinta los datos en la apariencia de la actividad
+     */
     private void paintData(){
 
-        int imageDefaultID = this.getResources().getIdentifier("por_defecto", "drawable", this.getPackageName());
-        Integer imageID = this.getResources().getIdentifier("drawable/" + gasolinera.getRotulo().trim().toLowerCase(), null, this.getPackageName());
+        int imageDefaultID = this.getResources().getIdentifier(DEFAULT_IMAGE, IMAGES_FOLDER, this.getPackageName());
+        Integer imageID = this.getResources().getIdentifier(IMAGES_FOLDER + "/" + gasolinera.getRotulo().trim().toLowerCase(), null, this.getPackageName());
         imagen.setImageResource((imageID == 0) ? imageDefaultID : imageID);
 
         tvRotulo.setText(gasolinera.getRotulo());
         tvLocalidad.setText(gasolinera.getLocalidad());
+        tvMunicipio.setText(gasolinera.getMunicipio());
         tvProvincia.setText(gasolinera.getProvincia());
         tvDireccion.setText(gasolinera.getDireccion());
 
-        tvSinPlomo95.setText( (gasolinera.getGasolina_95()>0)?""+gasolinera.getGasolina_95()+" €":"No Disponible" );
-        tvSinPlomo98.setText( (gasolinera.getGasolina_98()>0)?""+gasolinera.getGasolina_98()+" €":"No Disponible" );
-        tvDiesel.setText( (gasolinera.getGasoleo_a()>0)?""+gasolinera.getGasoleo_a()+" €":"No Disponible" );
-        tvDieselPlus.setText( (gasolinera.getGasoleo_b()>0)?""+gasolinera.getGasoleo_b()+" €":"No Disponible" );
+        tvSinPlomo95.setText(   (gasolinera.getGasolina_95() > 0)?  gasolinera.getGasolina_95()+ TEXT_CURRENCY: TEXT_NOT_AVAILABLE );
+        tvSinPlomo98.setText(   (gasolinera.getGasolina_98() > 0)?  gasolinera.getGasolina_98()+ TEXT_CURRENCY: TEXT_NOT_AVAILABLE );
+        tvDiesel.setText(       (gasolinera.getGasoleo_a() > 0)?    gasolinera.getGasoleo_a()+   TEXT_CURRENCY: TEXT_NOT_AVAILABLE );
+        tvDieselPlus.setText(   (gasolinera.getGasoleo_b() > 0)?    gasolinera.getGasoleo_b()+   TEXT_CURRENCY: TEXT_NOT_AVAILABLE );
 
-        tvHorario.setText(gasolinera.getHorario().replaceAll("; ","\n"));
+        tvHorario.setText(gasolinera.getHorario().replaceAll(TEXT_TO_REPLACE, TEXT_REPLACEMENT));
 
         if(Utils.estaAbierto(gasolinera.getHorario())){
-            tvEstado.setText("Abierto");
+            tvEstado.setText(TEXT_OPEN);
             tvEstado.setTextColor(Color.GREEN);
         }else{
-            tvEstado.setText("Cerrado");
+            tvEstado.setText(TEXT_CLOSED);
             tvEstado.setTextColor(Color.RED);
         }
 
@@ -176,7 +200,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 gasolinera.getGasolina_95() != masBaratas.getMasBarata95().getGasolina_95()) {
             aux = gasolinera.getGasolina_95() - masBaratas.getMasBarata95().getGasolina_95();
             bSinPlomo95.setVisibility(View.VISIBLE);
-            bSinPlomo95.setText("-"+df.format(aux)+" €");
+            bSinPlomo95.setText(TEXT_SUBS + df.format(aux) + TEXT_CURRENCY);
         }
 
         if(gasolinera.getGasolina_98() > 0 &&
@@ -185,7 +209,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 gasolinera.getGasolina_98() != masBaratas.getMasBarata98().getGasolina_98()) {
             aux = gasolinera.getGasolina_98() - masBaratas.getMasBarata98().getGasolina_98();
             bSinPlomo98.setVisibility(View.VISIBLE);
-            bSinPlomo98.setText("-"+df.format(aux)+" €");
+            bSinPlomo98.setText(TEXT_SUBS + df.format(aux) + TEXT_CURRENCY);
         }
 
         if(gasolinera.getGasoleo_a() > 0
@@ -194,7 +218,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 gasolinera.getGasoleo_a() != masBaratas.getMasBarataDiesel().getGasoleo_a()) {
             aux = gasolinera.getGasoleo_a() - masBaratas.getMasBarataDiesel().getGasoleo_a();
             bDiesel.setVisibility(View.VISIBLE);
-            bDiesel.setText("-"+df.format(aux)+" €");
+            bDiesel.setText(TEXT_SUBS + df.format(aux) + TEXT_CURRENCY);
         }
 
         if(gasolinera.getGasoleo_b() > 0 &&
@@ -203,22 +227,22 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 gasolinera.getGasoleo_b() != masBaratas.getMasBarataDieselPlus().getGasoleo_b()) {
             aux = gasolinera.getGasoleo_b() - masBaratas.getMasBarataDieselPlus().getGasoleo_b();
             bDieselPlus.setVisibility(View.VISIBLE);
-            bDieselPlus.setText("-"+df.format(aux)+" €");
+            bDieselPlus.setText(TEXT_SUBS + df.format(aux) + TEXT_CURRENCY);
         }
 
     }
 
     /**
-     * Metodo que abre la aplicacion de google maps dadas dos coordenadas
+     * Metodo que actualiza la actividad para una nueva gasolinera
      */
     private void refresh(){
 
         Intent myIntent = new Intent(this, DetailsActivity.class);
-        myIntent.putExtra("CCAA", CCAA); //Optional parameters
-        myIntent.putExtra("IDEESS", IDEESS); //Optional parameters
-        myIntent.putExtra("listaGasolineras", (Serializable)gasolineras); //Optional parameters
+        myIntent.putExtra(EXTRA_CCAA, CCAA);
+        myIntent.putExtra(EXTRA_IDEESS, IDEESS);
+        myIntent.putExtra(EXTRA_LIST, (Serializable)listGasolineras);
 
         this.startActivity(myIntent);
-
     }
 }
+

@@ -1,35 +1,30 @@
 package com.nodry.nodry.Utils;
 
-import android.content.Context;
-import android.util.Log;
-
 import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.FileNotFoundException;
 
 /**
- * Created by att3mpt on 11/8/16.
+ * Clase para la obtencion de datos desde un fichero local de la aplicacion.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-
 public class LocalFetch extends DataFetch {
 
-    public static final String TEMP_FILE_NAME = "temp.txt";
+    /**
+     * Constructor de la clase
+     */
+    public LocalFetch(){
+        super();
+    }
 
     @Override
-    public void getJSON() throws IOException {
-        bufferedDataGasolineras = Utils.readFromFile(TEMP_FILE_NAME, this.context);
-    }//getJSON
+    public void getJSON() throws FileNotFoundException {
+        bufferedDataGasolineras = Utils.readFromFile(CACHE_FILE_NAME, this.context);
+    }
 
-
-    /**
-     * Retorna el BufferedInputStream con el JSON, pero para que el objeto no este vacío debemos de
-     * llamar antes a getJSON
-     * @return
-     */
     @Override
     public BufferedInputStream getBufferedData() {
         return bufferedDataGasolineras;
-    }//getBufferedDataGasolineras
+    }
 
 }

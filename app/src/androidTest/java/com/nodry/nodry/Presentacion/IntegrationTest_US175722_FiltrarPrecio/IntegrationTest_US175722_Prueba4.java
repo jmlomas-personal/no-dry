@@ -51,6 +51,16 @@ import static org.hamcrest.Matchers.not;
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTest_US175722_Prueba4 {
 
+    private final static String MSG_FILTER_FILL_DATA    = "Introduzca un tipo de gasolina";
+
+    private final static String LBL_BUTTON_FILTROS      = "Filtros";
+    private final static String LBL_BUTTON_FILTER       = "FILTRAR";
+    private final static String LBL_CCAA                = "Comunidad Autónoma";
+    private final static String LBL_TIPO_COMBUSTIBLE    = "Tipo de combustible";
+    private final static String LBL_MAX                 = "Máximo:";
+
+    private final static String VALUE_MAX               = "1";
+
     @Rule
     public ActivityTestRule<FiltersActivity> mActivityFiltersTestRule = new ActivityTestRule<>(FiltersActivity.class, true, false);
 
@@ -61,28 +71,28 @@ public class IntegrationTest_US175722_Prueba4 {
         Intent intent = new Intent(targetContext, FiltersActivity.class);
         mActivityFiltersTestRule.launchActivity(intent);
         //El título filtros existe y coincide
-        onView(withId(R.id.lbl_Filtros)).check(matches(withText("Filtros")));
+        onView(withId(R.id.lbl_Filtros)).check(matches(withText(LBL_BUTTON_FILTROS)));
         //El botón filtrar existe y su texto coincide
         onView(withId(R.id.button_filtrar)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_filtrar)).check(matches(withText("FILTRAR")));
+        onView(withId(R.id.button_filtrar)).check(matches(withText(LBL_BUTTON_FILTER)));
         //La etiqueta Comunidad Autónoma es correcta y el spinner existe
-        onView(withId(R.id.lbl_filter_CCAA)).check(matches(withText("Comunidad Autónoma")));
+        onView(withId(R.id.lbl_filter_CCAA)).check(matches(withText(LBL_CCAA)));
         onView(withId(R.id.spinner_CCAA)).check(matches(isDisplayed()));
         //La etiqueta tipo de combustible y el desplegable correspondiente existe
-        onView(withId(R.id.textViewFiltros)).check(matches(withText("Tipo de combustible")));
+        onView(withId(R.id.textViewFiltros)).check(matches(withText(LBL_TIPO_COMBUSTIBLE)));
         onView(withId(R.id.spinner_TiposGasolina)).check(matches(isDisplayed()));
         //La etiqueta Máximo y el campo de escritura existen correctamente
-        onView(withId(R.id.infoMaximo)).check(matches(withText("Máximo:")));
+        onView(withId(R.id.infoMaximo)).check(matches(withText(LBL_MAX)));
         onView(withId(R.id.editText_maximo)).check(matches(isDisplayed()));
 
         //Editamos el campo Máximo:
-        onView(withId(R.id.editText_maximo)).perform(typeText("1"));
+        onView(withId(R.id.editText_maximo)).perform(typeText(VALUE_MAX));
         closeSoftKeyboard();
 
         //Pulsamos el botón Filtrar
         onView(withId(R.id.button_filtrar)).perform(click());
 
         //Comprobamos que se muestra el toast indicando que falta un campo por introducir
-        onView(withText("Introduzca un tipo de gasolina")).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText(MSG_FILTER_FILL_DATA)).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }

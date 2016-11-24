@@ -24,10 +24,13 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 /**
  *  Listar gasolineras
@@ -47,10 +50,11 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTest_US162756_Prueba3 {
 
+    private static final String EXPECTED_MSG = "No hay conexión de datos.";
+
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
+        DataFetch.context = InstrumentationRegistry.getTargetContext();
     }
 
     @Rule
@@ -58,33 +62,7 @@ public class IntegrationTest_US162756_Prueba3 {
 
     @Test
     public void integrationTest3() {
-        ViewInteraction textView = onView(
-                allOf(withId(android.R.id.message), withText("No hay conexión a internet"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.scrollView),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("No hay conexión a internet")));
+        onView(withText(EXPECTED_MSG)).inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
 }

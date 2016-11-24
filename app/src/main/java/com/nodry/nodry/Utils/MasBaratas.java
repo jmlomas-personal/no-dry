@@ -1,18 +1,22 @@
-package com.nodry.nodry.Negocio;
+package com.nodry.nodry.Utils;
 
-import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 
 /**
- * Created by Juan Manuel Lomas on 09/11/2016.
+ * Clase para manejar las gasolineras
+ * mas baratas para cada tipo de gasolina.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-
 public class MasBaratas {
 
+    // Atributos
     Gasolinera masBarata95;
     Gasolinera masBarata98;
     Gasolinera masBarataDiesel;
     Gasolinera masBarataDieselPlus;
 
+    // Getters y Setters
     public Gasolinera getMasBarata95() {
         return masBarata95;
     }

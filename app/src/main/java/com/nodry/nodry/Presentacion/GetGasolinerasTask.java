@@ -1,138 +1,120 @@
 package com.nodry.nodry.Presentacion;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
-import com.nodry.nodry.Datos.Gasolinera;
+import com.nodry.nodry.Comunes.Dominio.Gasolinera;
+import com.nodry.nodry.Comunes.Presentacion.IFormateable;
 import com.nodry.nodry.Negocio.GestionGasolineras;
-import com.nodry.nodry.Negocio.IGestionGasolineras;
+import com.nodry.nodry.Comunes.Negocio.IGestionGasolineras;
+import com.nodry.nodry.Utils.TipoError;
+import com.nodry.nodry.Utils.Utils;
 
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
+import static com.nodry.nodry.Utils.TipoError.ERROR;
+import static com.nodry.nodry.Utils.TipoError.INFORMACION;
+import static com.nodry.nodry.Utils.TipoError.OK;
+
 /**
- * Clase para la obtencion de datos de forma asincrona
- * en la aplicacion. Es necesaria ya que el hilo principal
- * no puede soportar cargas de mas de X segundos.
- * @author Alba Zubizarreta.
- * @version 1.0
+ * Clase para manejar tareas asincronas
+ * encargadas de realizar peticiones en segundo
+ * plano utilizando una conexion de datos.
+ * @author Code4Fun.org
+ * @version 11/2016
  */
-public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<Gasolinera>> implements INotificable {
+public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<Gasolinera>>{
 
-    // Contexto de la actividad origen
+    // Con el contexto de la aplicacion
     private Context context;
-
-    // String con la comunidad de las gasolineras a obtener
-    private HashMap<String, String> filtros;
-
-    // Adapter que se encargara de presentar los datos una vez obtenidos
-    private ArrayAdapter adapter;
-
-    // Manejador para la supervision de tiempos
+    // Con la tarea de monitorizacion
+    private CancelerTask cancelerTask;
     private Handler handler;
 
-    // Tarea que se encarga de que no se sobrepase el tiempo de peticion especificado
-    private CancelerTask cancelerTask;
+    // Mensajes para posibles errores
+    private static final String ERROR_TITLE                 = "ERROR";
+    private static final String ERROR_MSG_TIME_EXCEEDED     = "Se ha sobrepasado el tiempo de petición al servicio.";
+    private static final String ERROR_MSG_FILE_PROCESSING   = "Se produjo un error al tratar los datos.";
+    private static final String ERROR_MSG_FILE_NOT_FOUND    = "Error al intentar guardar en el fichero.";
+    private static final String ERROR_NO_INTERNET_CONEXION  = "No hay conexión de datos.";
 
-    // Mensajes de error
-    private static final String MSG_NO_CONEXION = "No hay conexion a internet";
-    private static final String MSG_NO_DATA = "No hay datos que mostrar,\nintentelo mas tarde de nuevo";
-    private static final String MSG_NO_MINVAL = "El valor de filtro es mayor,\na cualquiera de los valores";
-    private static final String MSG_NO_DATA_FOUND = "No se han encontrado datos";
+    private static final long RESPONSE_DELAY = 60000;   // Tiempo de respuesta permitido
+    private static final long TEST_DELAY = 0;           // Tiempo de latencia para pruebas
 
-    // Tiempo de peticion especificado de un minuto
-    private static final long RESPONSE_DELAY = 60000;
-
-    // Tiempo para que se vea el dialogo de carga
-    private static final long TEST_DELAY = 1000;
-
+    // Atributos de la clase
     private IGestionGasolineras gestionGasolineras;
+    private String CCAA;
+    private String errorMsg = "";
+    private TipoError tipoError = OK;
 
     /**
-     * Constructor
-     * @param adapter con el adaptador que visualizara los datos
-     * @param context con la actividad origen de la llamada
+     * Constructor de la clase
+     * @param context con el contexto de la aplicacion
+     * @param CCAA con la comunidad autonoma a utilizar para realizar la peticion de datos
      */
-    public GetGasolinerasTask (ArrayAdapter adapter, HashMap<String, String> filtros, Context context){
-        this.adapter = adapter;
+    public GetGasolinerasTask (Context context, String CCAA){
+        this.CCAA = CCAA;
         this.context = context;
-        this.filtros = filtros;
         this.handler = new Handler();
-        this.cancelerTask = new CancelerTask(this, this.context);
-
-        // Si la conexion no funciona mostramos el mensaje y acabamos
-        //if(!isNetworkAvailable(context)){
-        //    showMessage(ERROR_MSG ,MSG_NO_CONEXION);
-        //    ((ILoadable)context).conexionIncorrecta("No se han encontrado datos");
-        //}
+        this.cancelerTask = new CancelerTask(this);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((ILoadable)context).startLoading();
         handler.postDelayed(cancelerTask, RESPONSE_DELAY);
     }
 
     @Override
     protected List<Gasolinera> doInBackground(Void... param) {
-        // Para forzar a ver si funciona el dialogo de carga
-        try {
-            Thread.sleep(TEST_DELAY);
-        } catch (InterruptedException e) {
-            Log.d("Error", e.toString());
+        List<Gasolinera> listaGasolineras = null;
+
+        if(Utils.isNetworkAvailable(this.context)) {
+
+            try {
+                Thread.sleep(TEST_DELAY);
+            } catch (InterruptedException e) {
+                Log.d(ERROR_TITLE, e.toString());
+            }
+
+            gestionGasolineras = new GestionGasolineras();
+
+            try {
+                listaGasolineras = gestionGasolineras.obtenGasolinerasServicioRest(CCAA);
+            } catch (FileNotFoundException e) {
+                tipoError = ERROR;
+                errorMsg = ERROR_MSG_FILE_NOT_FOUND;
+            } catch (IOException e) {
+                tipoError = ERROR;
+                errorMsg = ERROR_MSG_FILE_PROCESSING;
+            }
+        }else{
+            tipoError = ERROR;
+            errorMsg = ERROR_NO_INTERNET_CONEXION;
         }
 
-        gestionGasolineras = new GestionGasolineras();
-
-        return gestionGasolineras.getGasolineras(filtros, false);
+        return listaGasolineras;
     }
 
     @Override
     protected void onPostExecute(List<Gasolinera> listaGasolineras) {
 
         handler.removeCallbacks(cancelerTask);
+        ((IFormateable) context).retrieveData(errorMsg, tipoError, listaGasolineras);
 
-        if(filtros.containsKey("WARN") &&
-                (listaGasolineras == null || listaGasolineras.isEmpty())){
-            showMessage(ERROR_MSG ,MSG_NO_MINVAL);
-            ((INotificable)context).showMessage("", MSG_NO_DATA_FOUND);
-            filtros.remove("WARN");
-        }else if(listaGasolineras == null || listaGasolineras.isEmpty()){
-            showMessage(ERROR_MSG ,MSG_NO_DATA);
-            ((INotificable)context).showMessage("", MSG_NO_DATA_FOUND);
-        }else {
-            ((IUpdateable) adapter).update(listaGasolineras);
-        }
-
-        ((ILoadable) context).stopLoading();
     }
 
     @Override
-    public void showMessage(String title, String msg) {
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false);
-        builder.setTitle(title);
-        builder.setMessage(msg);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                //finish();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+    protected void onCancelled() {
+
+        tipoError = INFORMACION;
+        errorMsg = ERROR_MSG_TIME_EXCEEDED;
+        ((IFormateable) context).retrieveData(errorMsg, tipoError, null);
+
     }
 
-}// GetGasolineras
+}

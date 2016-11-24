@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
-import com.nodry.nodry.Datos.IGasolinerasDAO;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,22 +12,22 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by att3mpt on 10/25/16.
- */
 public class RemoteFetchTest {
+
+    private static final String CCAA            = "06";
+    private static final String TITLE_ERROR     = "ERROR";
 
     RemoteFetch remoteFetch;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.setContext(context);
+        DataFetch.context = context;
     }
 
     @Before
     public void setUp() throws Exception {
-        remoteFetch = new RemoteFetch(IGasolinerasDAO.DEFAULT_CCAA);
+        remoteFetch = new RemoteFetch(CCAA);
     }
 
     @Test
@@ -37,12 +35,11 @@ public class RemoteFetchTest {
 
         try {
             remoteFetch.getJSON();
+            assertNotNull(remoteFetch.getBufferedData());
         }
         catch(IOException e) {
-            Log.d("El test no paso", e.toString());
+            Log.d(TITLE_ERROR, e.toString());
             fail();
         }
-
-        assertNotNull(remoteFetch.getBufferedData());
     }
 }
