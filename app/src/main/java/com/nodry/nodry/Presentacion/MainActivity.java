@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
 
         Intent myIntent = new Intent(this, DetailsActivity.class);
         myIntent.putExtra(EXTRA_CCAA,   CCAA);
-        myIntent.putExtra(EXTRA_IDEESS, listaGasolineras.get((int)l).getIDEESS());
+        myIntent.putExtra(EXTRA_IDEESS, ((GasolinerasArrayAdapter)adapter).getListaGasolinerasMostradas().get((int)l).getIDEESS());
 
         this.startActivity(myIntent);
     }

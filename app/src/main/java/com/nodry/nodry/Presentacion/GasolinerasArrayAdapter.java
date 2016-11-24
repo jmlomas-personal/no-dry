@@ -130,4 +130,8 @@ public class GasolinerasArrayAdapter extends ArrayAdapter<Gasolinera> implements
         listaGasolineras.addAll((List<Gasolinera>)data);
         notifyDataSetChanged();
     }
+
+    public List<Gasolinera> getListaGasolinerasMostradas(){
+        return listaGasolineras;
+    }
 }
