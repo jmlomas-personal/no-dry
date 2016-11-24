@@ -43,7 +43,6 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
     private static final String ERROR_NO_INTERNET_CONEXION  = "No hay conexión de datos.";
 
     private static final long RESPONSE_DELAY = 60000;   // Tiempo de respuesta permitido
-    private static final long TEST_DELAY = 0;           // Tiempo de latencia para pruebas
 
     // Atributos de la clase
     private IGestionGasolineras gestionGasolineras;
@@ -74,12 +73,6 @@ public class GetGasolinerasTask extends AsyncTask<Void, List<Gasolinera>, List<G
         List<Gasolinera> listaGasolineras = null;
 
         if(Utils.isNetworkAvailable(this.context)) {
-
-            try {
-                Thread.sleep(TEST_DELAY);
-            } catch (InterruptedException e) {
-                Log.d(ERROR_TITLE, e.toString());
-            }
 
             gestionGasolineras = new GestionGasolineras();
 

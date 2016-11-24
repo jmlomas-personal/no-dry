@@ -1,5 +1,7 @@
 package com.nodry.nodry.Utils;
 
+import android.content.Context;
+
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 
@@ -19,7 +21,7 @@ public class LocalFetch extends DataFetch {
 
     @Override
     public void getJSON() throws FileNotFoundException {
-        bufferedDataGasolineras = Utils.readFromFile(CACHE_FILE_NAME, this.context);
+        bufferedDataGasolineras = Utils.readFromFile(CACHE_FILE_NAME, Utils.getContext());
     }
 
     @Override

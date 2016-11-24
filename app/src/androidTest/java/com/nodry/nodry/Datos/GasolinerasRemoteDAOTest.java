@@ -7,6 +7,7 @@ import android.util.Log;
 import com.nodry.nodry.Comunes.Datos.IGasolinerasRemoteDAO;
 import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 import com.nodry.nodry.Utils.DataFetch;
+import com.nodry.nodry.Utils.Utils;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,7 +35,7 @@ public class GasolinerasRemoteDAOTest {
     public static void setUpClass() throws Exception {
 
         context = InstrumentationRegistry.getTargetContext();
-        DataFetch.context = context;
+        Utils.setContext(context);
 
     }
 

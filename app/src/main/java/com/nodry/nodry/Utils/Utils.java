@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
  */
 public class Utils {
 
+    private static Context context;
+
     private static Map<String, String> CCAAbyID;
     private static Map<String, String> CCAAbyValue;
 
@@ -126,6 +128,14 @@ public class Utils {
         CCAAList.add("País Vasco");
         CCAAList.add("Rioja (La)");
 
+    }
+
+    public static void setContext(Context context){
+        Utils.context = context;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     /**

@@ -12,6 +12,7 @@ import android.view.ViewParent;
 import com.nodry.nodry.Presentacion.MainActivity;
 import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.DataFetch;
+import com.nodry.nodry.Utils.Utils;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -66,7 +67,7 @@ public class IntegrationTest_US175729_Prueba2 {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        DataFetch.context = InstrumentationRegistry.getTargetContext();
+        Utils.setContext(InstrumentationRegistry.getTargetContext());
     }
 
     @Test

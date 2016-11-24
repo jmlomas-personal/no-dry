@@ -50,7 +50,7 @@ public class RemoteFetch extends DataFetch{
     public BufferedInputStream getBufferedData() throws IOException{
 
         if(bufferedDataGasolineras!=null) {
-            bufferedDataGasolineras = Utils.writeToFile(bufferedDataGasolineras, CACHE_FILE_NAME, this.context);
+            bufferedDataGasolineras = Utils.writeToFile(bufferedDataGasolineras, CACHE_FILE_NAME, Utils.getContext());
         }
 
         return bufferedDataGasolineras;

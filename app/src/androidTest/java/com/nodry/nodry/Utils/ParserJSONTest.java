@@ -168,7 +168,7 @@ public class ParserJSONTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.context = context;
+        Utils.setContext(context);
         remoteFetch = new RemoteFetch(CCAA);
 
         stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));

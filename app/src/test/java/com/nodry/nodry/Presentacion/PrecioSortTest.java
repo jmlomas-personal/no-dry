@@ -62,6 +62,7 @@ public class PrecioSortTest {
 
     @Test
     public void compareTest(){
+
         try {
             Gasolinera primeraOld = listaGasolineras.get(0),
                 ultimaOld = listaGasolineras.get(listaGasolineras.size()-1);
@@ -75,6 +76,7 @@ public class PrecioSortTest {
         }catch(Exception E){
             Assert.fail();
         }
+
     }
 
 }

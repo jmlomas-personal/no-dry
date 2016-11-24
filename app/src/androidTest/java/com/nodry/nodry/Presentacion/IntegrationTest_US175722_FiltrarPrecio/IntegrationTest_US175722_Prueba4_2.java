@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.not;
 
 public class IntegrationTest_US175722_Prueba4_2 {
 
-    private final static String MSG_FILTER_ERROR_COMBUS   = "Seleccione un valor máximo";
+    private final static String MSG_FILTER_ERROR_CCAA   = "Seleccione una CCAA valida";
 
     private final static String VALUE_SPINNER_TIPOGAS   = "Sin Plomo 95";
     private final static String VALUE_MAX               = "1";
@@ -71,14 +71,17 @@ public class IntegrationTest_US175722_Prueba4_2 {
         onData(allOf(is(instanceOf(String.class)), is(VALUE_SPINNER_TIPOGAS))).perform(click());
         onView(withId(R.id.spinner_TiposGasolina)).check(matches(withSpinnerText(containsString(VALUE_SPINNER_TIPOGAS))));
 
+        //Editamos el campo Máximo a un número negativo
+        onView(withId(R.id.editText_maximo)).perform(typeText(VALUE_MAX));
+
         //quitar teclado
         closeSoftKeyboard();
 
         //Pulsamos el botón Filtrar
         onView(withId(R.id.button_filtrar)).perform(click());
 
-        //Comprobamos que se muestra el toast indicando que se ha de introducir un valor máximo
-        onView(withText(MSG_FILTER_ERROR_COMBUS)).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        //Comprobamos que se muestra el toast indicando que el numero introducido es negativo
+        onView(withText(MSG_FILTER_ERROR_CCAA)).inRoot(withDecorView(not(is(mActivityFiltersTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
 }

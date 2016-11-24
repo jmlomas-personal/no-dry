@@ -1,7 +1,5 @@
 package com.nodry.nodry.Utils;
 
-import android.content.Context;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
@@ -15,7 +13,6 @@ public abstract class DataFetch {
     public static final String CACHE_FILE_NAME = "cache";
 
     public BufferedInputStream bufferedDataGasolineras;
-    public static Context context;
 
     /**
      * Constructor de la clase que inicializa el buffer de datos

@@ -22,7 +22,7 @@ public class RemoteFetchTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
-        DataFetch.context = context;
+        Utils.setContext(context);
     }
 
     @Before

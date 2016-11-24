@@ -58,7 +58,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     // Campos para realizar llamadas a otras actividades
     private static final String EXTRA_CCAA          = "CCAA";
     private static final String EXTRA_IDEESS        = "IDEESS";
-    private static final String EXTRA_LIST          = "LIST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +99,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         intent = getIntent();
         CCAA = intent.getStringExtra(EXTRA_CCAA);
         IDEESS = intent.getIntExtra(EXTRA_IDEESS, 0);
-        listGasolineras = (List) getIntent().getSerializableExtra(EXTRA_LIST);
+        listGasolineras = MainActivity.getListaGasolineras();
 
         // Inicializamos y cargamos
         initialize();
@@ -240,7 +239,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         Intent myIntent = new Intent(this, DetailsActivity.class);
         myIntent.putExtra(EXTRA_CCAA, CCAA);
         myIntent.putExtra(EXTRA_IDEESS, IDEESS);
-        myIntent.putExtra(EXTRA_LIST, (Serializable)listGasolineras);
 
         this.startActivity(myIntent);
     }

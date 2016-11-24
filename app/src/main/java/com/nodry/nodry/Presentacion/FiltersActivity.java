@@ -16,6 +16,8 @@ import com.nodry.nodry.R;
 import com.nodry.nodry.Utils.TipoGasolina;
 import com.nodry.nodry.Utils.Utils;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -167,13 +169,13 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             bOk = false;
         }
 
-        if(PRECIO == null && MAXVALUE != null && MAXVALUE != 0.0){
+        if(PRECIO == null && MAXVALUE != null && new BigDecimal(MAXVALUE, MathContext.DECIMAL64).compareTo(BigDecimal.ZERO) != 0){
             msg = MSG_FILTER_FILL_DATA;
             maximo.requestFocus();
             bOk = false;
         }
 
-        if(PRECIO != null && (MAXVALUE == null || MAXVALUE == 0.0)){
+        if(PRECIO != null && (MAXVALUE == null || new BigDecimal(MAXVALUE, MathContext.DECIMAL64).compareTo(BigDecimal.ZERO) == 0)){
             msg = MSG_FILTER_ERROR_COMBUS;
             maximo.requestFocus();
             bOk = false;

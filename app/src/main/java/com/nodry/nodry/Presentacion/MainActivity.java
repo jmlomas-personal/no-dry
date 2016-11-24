@@ -23,14 +23,12 @@ import com.nodry.nodry.Comunes.Presentacion.INotificable;
 import com.nodry.nodry.Comunes.Presentacion.IUpdateable;
 import com.nodry.nodry.Negocio.GestionGasolineras;
 import com.nodry.nodry.R;
-import com.nodry.nodry.Utils.DataFetch;
 import com.nodry.nodry.Utils.TipoError;
 import com.nodry.nodry.Utils.TipoGasolina;
 import com.nodry.nodry.Utils.Utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -76,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
     // Campos para realizar llamadas a otras actividades
     private static final String EXTRA_CCAA                  = "CCAA";
     private static final String EXTRA_IDEESS                = "IDEESS";
-    private static final String EXTRA_LIST                  = "LIST";
     private static final String EXTRA_PRECIO                = "PRECIO";
     private static final String EXTRA_MAXVALUE              = "MAXVALUE";
 
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataFetch.context = this;
+        Utils.setContext(this);
         gestionGasolineras = new GestionGasolineras();
         boolean bForce = true;
         String NEW_CCAA;
@@ -121,9 +118,22 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
             }
         }
 
-        CCAA = NEW_CCAA;
+        MainActivity.setCCAA(NEW_CCAA);
 
         refreshData(bForce);
+    }
+
+    // Setters estaticos
+    public static void setCCAA(String CCAA){
+        MainActivity.CCAA = CCAA;
+    }
+
+    public static void setListaGasolineras(List<Gasolinera> lista){
+        MainActivity.listaGasolineras = lista;
+    }
+
+    public static List<Gasolinera> getListaGasolineras(){
+       return listaGasolineras;
     }
 
     @Override
@@ -239,14 +249,14 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
         }
 
         if(data != null && !data.isEmpty()){
-            listaGasolineras = (List<Gasolinera>) data;
+            MainActivity.setListaGasolineras((List<Gasolinera>) data);
         }else{
             if(data != null && data.isEmpty()){
                 showAlert(ERROR_MSG_SERVICE_UPDATING);
             }
 
             try {
-                listaGasolineras = gestionGasolineras.obtenGasolinerasCache();
+                MainActivity.setListaGasolineras(gestionGasolineras.obtenGasolinerasCache());
                 _tipoError = TipoError.INFORMACION;
                 _msgError = INFORMATION_MSG_LOCAL;
             } catch (FileNotFoundException e) {
@@ -267,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
 
         if(listaGasolineras != null &&
                 !listaGasolineras.isEmpty()) {
-            CCAA = listaGasolineras.get(0).getIDCCAA();
+            MainActivity.setCCAA(listaGasolineras.get(0).getIDCCAA());
             formatData();
         }
 
@@ -321,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements ILoadable, INotif
         Intent myIntent = new Intent(this, DetailsActivity.class);
         myIntent.putExtra(EXTRA_CCAA,   CCAA);
         myIntent.putExtra(EXTRA_IDEESS, listaGasolineras.get((int)l).getIDEESS());
-        myIntent.putExtra(EXTRA_LIST,   (Serializable)listaGasolineras);
 
         this.startActivity(myIntent);
     }

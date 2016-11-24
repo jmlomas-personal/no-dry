@@ -181,7 +181,7 @@ public class GasolinerasLocalDAOTest {
     public static void setUpClass() throws Exception {
 
         context = InstrumentationRegistry.getTargetContext();
-        DataFetch.context = context;
+        Utils.setContext(context);
 
         stream = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
         streamSize = new ByteArrayInputStream(jsonData.getBytes(CHARSET_UTF));
