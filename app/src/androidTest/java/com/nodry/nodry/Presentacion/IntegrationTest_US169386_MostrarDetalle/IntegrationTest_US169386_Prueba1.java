@@ -9,6 +9,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.nodry.nodry.Comunes.Dominio.Gasolinera;
 import com.nodry.nodry.Presentacion.DetailsActivity;
+import com.nodry.nodry.Presentacion.MainActivity;
 import com.nodry.nodry.R;
 
 import org.junit.Rule;
@@ -102,7 +103,7 @@ public class IntegrationTest_US169386_Prueba1 {
         Intent intent = new Intent(targetContext, DetailsActivity.class);
         intent.putExtra(EXTRA_CCAA,     CCAA);
         intent.putExtra(EXTRA_IDEESS,   listaGasolineras.get(1).getIDEESS());
-        intent.putExtra(EXTRA_LIST,     (Serializable)listaGasolineras);
+        MainActivity.setListaGasolineras(listaGasolineras);
         mActivityDetailsTestRule.launchActivity(intent);
 
     // Pruebas realizadas sobre el Activity
